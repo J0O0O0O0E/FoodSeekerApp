@@ -2,9 +2,15 @@ package com.example.myapplication.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -12,25 +18,104 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "SignUpActivity";
+
+    private FirebaseAuth mAuth;
+    private Button btnSignup;
+    private EditText username,pw;
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            currentUser.reload();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_signup);
-        Button btnSignup = findViewById(R.id.secsignup_btn);
+        btnSignup = findViewById(R.id.secsignup_btn);
+        username = (EditText) findViewById(R.id.signup_name);
+        pw =findViewById(R.id.signup_passw);
 
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
-        // Set up a click listener for the signup button
-        btnSignup.setOnClickListener(v -> {
-            // Here, we assume the signup logic is handled, and the user has authenticated successfully
-            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish(); // Finish signup Activity so the user cannot navigate back to it
-        });
-
+// directly jump to main method when clicked
+//        // Set up a click listener for the signup button
+//        btnSignup.setOnClickListener(v -> {
+//            // Here, we assume the signup logic is handled, and the user has authenticated successfully
+//            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            finish(); // Finish signup Activity so the user cannot navigate back to it
+//        });
+        btnSignup.setOnClickListener(this);
 
     }
+
+
+    //https://stackoverflow.com/questions/12947620/email-address-validation-in-android-on-edittext
+    public void onClick(View view) {
+        String email = username.getText().toString().trim();
+        String password = pw.getText().toString().trim();
+
+        //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            username.setError("invalid email address");
+            username.requestFocus();
+            return;
+        }
+        // password length required by firebase
+        if (password.length()<6){
+            pw.setError("Length of password should be at least 6");
+            pw.requestFocus();
+            return;
+        }
+        // Sign up with Firebase Authentication
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(SignupActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                    }
+                });
+
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            // User is signed in
+            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            // User is not signed in
+            // Optionally clear input fields or do other interface updates
+        }
+    }
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
 }
