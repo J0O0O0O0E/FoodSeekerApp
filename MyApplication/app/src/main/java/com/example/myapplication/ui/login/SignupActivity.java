@@ -23,12 +23,12 @@ public class SignupActivity extends AppCompatActivity {
         Button btnSignup = findViewById(R.id.secsignup_btn);
 
 
-        // Set up a click listener for the login button
+        // Set up a click listener for the signup button
         btnSignup.setOnClickListener(v -> {
-            // Here, we assume the login logic is handled, and the user has authenticated successfully
+            // Here, we assume the signup logic is handled, and the user has authenticated successfully
             Intent intent = new Intent(SignupActivity.this, MainActivity.class);
             startActivity(intent);
-            finish(); // Finish LoginActivity so the user cannot navigate back to it
+            finish(); // Finish signup Activity so the user cannot navigate back to it
         });
 
 
