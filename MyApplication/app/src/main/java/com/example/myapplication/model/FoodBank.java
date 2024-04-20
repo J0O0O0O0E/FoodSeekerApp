@@ -22,6 +22,7 @@ public class FoodBank {
     // Country
     private String country;
 
+
     // Phone number
     private String phoneNumber;
 
@@ -29,28 +30,13 @@ public class FoodBank {
     private String email;
 
     // Operating status
-    private boolean isOperating;
+    private boolean status;
 
     // Opening hours
-    private String operatingHours;
-
-    // Service type
-    private String serviceType;
-
-    // Target group
-    private String targetGroup;
+    private String openHours;
 
     // Capacity
     private int capacity;
-
-    // Available resources
-    private String resources;
-
-    // Staff information
-    private int staffNumber;
-
-    // Volunteer information
-    private int volunteerNumber;
 
     // Uses a Location object to store location information
     private Location location;
@@ -61,8 +47,6 @@ public class FoodBank {
     // Foundation date
     private String foundationDate;
 
-    // Rating
-    private double rating;
 
     // Constructor
     public FoodBank(String id, String name, Location location, Location userLocation) {
@@ -124,6 +108,22 @@ public class FoodBank {
         return country;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getOpenHours() {
+        return openHours;
+    }
+
+    public void setOpenHours(String openHours) {
+        this.openHours = openHours;
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }
@@ -142,70 +142,6 @@ public class FoodBank {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public boolean isOperating() {
-        return isOperating;
-    }
-
-    public void setOperating(boolean operating) {
-        isOperating = operating;
-    }
-
-    public String getOperatingHours() {
-        return operatingHours;
-    }
-
-    public void setOperatingHours(String operatingHours) {
-        this.operatingHours = operatingHours;
-    }
-
-    public String getServiceType() {
-        return serviceType;
-    }
-
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    public String getTargetGroup() {
-        return targetGroup;
-    }
-
-    public void setTargetGroup(String targetGroup) {
-        this.targetGroup = targetGroup;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public String getResources() {
-        return resources;
-    }
-
-    public void setResources(String resources) {
-        this.resources = resources;
-    }
-
-    public int getStaffNumber() {
-        return staffNumber;
-    }
-
-    public void setStaffNumber(int staffNumber) {
-        this.staffNumber = staffNumber;
-    }
-
-    public int getVolunteerNumber() {
-        return volunteerNumber;
-    }
-
-    public void setVolunteerNumber(int volunteerNumber) {
-        this.volunteerNumber = volunteerNumber;
     }
 
     public Location getLocation() {
@@ -232,12 +168,13 @@ public class FoodBank {
         this.foundationDate = foundationDate;
     }
 
-    public double getRating() {
-        return rating;
+
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 }
 
