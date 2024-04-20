@@ -55,7 +55,7 @@ public class FoodBank {
     // Uses a Location object to store location information
     private Location location;
 
-    // Distance to user
+    // Distance to user (meters)
     private double distanceToUser;
 
     // Foundation date
