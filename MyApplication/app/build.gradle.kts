@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.activity)
     implementation(libs.legacy.support.v4)
+    implementation(libs.room.common)
+    implementation(libs.room.runtime)
+    implementation(libs.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -68,4 +71,5 @@ dependencies {
     // For example, add the dependencies for Firebase Authentication and Cloud Firestore
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    annotationProcessor(libs.room.compiler)
 }

@@ -35,7 +35,7 @@ public class Location {
     // using the Haversine formula to determine the great-circle distance
     // return meters
     public double calculateDistance(Location userLocation) {
-        double earthRadius = 6371000.0; // 地球半径，单位为米
+        double earthRadius = 6371000.0;
         double dLat = Math.toRadians(userLocation.latitude - this.latitude);
         double dLon = Math.toRadians(userLocation.longitude - this.longitude);
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
