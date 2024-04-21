@@ -24,16 +24,40 @@ public class FoodbankViewModel extends ViewModel {
     }
 
 
-    //Input String to get 10 FoodBank instance
+    //TODO Input String to get 10 FoodBank instance
     public ArrayList<FoodBankRepository> getFoodbankList(String input){
+
         return null;
     }
 
-    //Get info of foodbank arraylist
+
+
+
+    //TODO Get info of foodbank arraylist
     public ArrayList<FoodBankInfoRepository> getFoodbankInfo(String input){
 
-        return null;
+        //get foodbank list from database
+        ArrayList foodbankInfo = getFoodbankList(input);
+
+        //convert to foodbankinfo list and return
+
+        // fill here
+
+
+        //test foodbankinfo list
+        ArrayList fbinfo = new ArrayList<>();
+        FoodBankInfoRepository fb1 = new FoodBankInfoRepository("211 Moore St","open","1");
+        FoodBankInfoRepository fb2 = new FoodBankInfoRepository("241 Bunda St","close","2");
+        fbinfo.add(fb1);
+        fbinfo.add(fb2);
+        return fbinfo;
+        //test
+
+
+
+//        return null;
     }
+
 
 
 }
