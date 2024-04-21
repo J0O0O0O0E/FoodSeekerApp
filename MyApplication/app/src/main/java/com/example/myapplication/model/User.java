@@ -1,53 +1,65 @@
 package com.example.myapplication.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class User {
 
-    public List<FoodBank> subscribedFoodBanks;
 
     private String contactNumber;
 
-    private String userName = null;
+    public String email;
+
+    public List<String> subscribedFoodBanks;
 
 
-    public final String account;
+    private String userName;
 
 
-    public User(String account) {
-        this.account=account;
-        subscribedFoodBanks = new ArrayList<>();
+    public User() {
 
-    }
 
-    public void setUserName(String name){
-        userName = name;
     }
 
     public void setContactNumber(String number){
         contactNumber = number;
     }
 
-    public void addSubscribedFoodBank(FoodBank foodBank){
-        subscribedFoodBanks.add(foodBank);
+    public String getContactNumber() {
+        return contactNumber;
     }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setSubscribedFoodBanks(List<String> subscribedFoodBanks) {
+        this.subscribedFoodBanks = subscribedFoodBanks;
+    }
+
+    public List<String> getSubscribedFoodBanks() {
+        return subscribedFoodBanks;
+    }
+
+
+
+    public void setUserName(String name){
+        userName = name;
+    }
+
 
     public String getUserName() {
         return userName;
     }
 
-    public String getAccount() {
-        return account;
+    public void addSubscribedFoodBank(String foodBankName){
+        subscribedFoodBanks.add(foodBankName);
     }
 
-    public List<FoodBank> getSubscribedFoodBanks() {
-        return subscribedFoodBanks;
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
 
 
 
