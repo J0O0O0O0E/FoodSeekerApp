@@ -1,6 +1,6 @@
 package com.example.myapplication.repository;
 
-public class FoodBankInfoRepository {
+public class FoodBankInfo {
 
 //test code
     private String name;
