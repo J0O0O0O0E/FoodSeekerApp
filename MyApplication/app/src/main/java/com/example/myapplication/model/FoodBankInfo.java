@@ -1,4 +1,4 @@
-package com.example.myapplication.repository;
+package com.example.myapplication.model;
 
 public class FoodBankInfo {
 
@@ -7,7 +7,7 @@ public class FoodBankInfo {
     private String statue;
 
     private  String id;
-    public FoodBankInfoRepository(String name, String statue, String id) {
+    public FoodBankInfo(String name, String statue, String id) {
         this.name = name;
         this.statue = statue;
         this.id = id;
