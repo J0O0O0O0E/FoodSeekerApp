@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.room.common)
     implementation(libs.room.runtime)
     implementation(libs.core)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

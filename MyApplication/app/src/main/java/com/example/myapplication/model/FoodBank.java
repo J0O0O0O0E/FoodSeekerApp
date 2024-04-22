@@ -2,7 +2,7 @@ package com.example.myapplication.model;
 
 public class FoodBank {
     // Unique identifier
-    private String id;
+    private int id;
 
     // Name
     private String name;
@@ -41,26 +41,57 @@ public class FoodBank {
     // Uses a Location object to store location information
     private Location location;
 
+    private double latitude;
+
+    private double longitude;
+
     // Distance to user (meters)
     private double distanceToUser;
 
     // Foundation date
     private String foundationDate;
 
+    private int food1_pasta;
+    private int food2_bread;
+    private int food3_milk;
+    private int food4_pie;
+    private int food5_vet;
+
+    public double rating;
 
     // Constructor
-    public FoodBank(String id, String name, Location location, Location userLocation) {
+
+
+    public FoodBank(int id, String name, String street, String city, String state, String postalCode, String country, String phoneNumber, String email, boolean status, String openHours, int capacity, Location location, double latitude, double longitude, String foundationDate, int food1_pasta, int food2_bread, int food3_milk, int food4_pie, int food5_vet, double rating) {
         this.id = id;
         this.name = name;
-        this.location = location;
-        this.distanceToUser = location.calculateDistance(userLocation);
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.postalCode = postalCode;
+        this.country = country;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.status = status;
+        this.openHours = openHours;
+        this.capacity = capacity;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.foundationDate = foundationDate;
+        this.food1_pasta = food1_pasta;
+        this.food2_bread = food2_bread;
+        this.food3_milk = food3_milk;
+        this.food4_pie = food4_pie;
+        this.food5_vet = food5_vet;
+        this.rating = rating;
+        this.location = new Location(latitude, longitude);
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -108,22 +139,6 @@ public class FoodBank {
         return country;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getOpenHours() {
-        return openHours;
-    }
-
-    public void setOpenHours(String openHours) {
-        this.openHours = openHours;
-    }
-
     public void setCountry(String country) {
         this.country = country;
     }
@@ -144,12 +159,52 @@ public class FoodBank {
         this.email = email;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getOpenHours() {
+        return openHours;
+    }
+
+    public void setOpenHours(String openHours) {
+        this.openHours = openHours;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public Location getLocation() {
         return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public double getDistanceToUser() {
@@ -168,13 +223,81 @@ public class FoodBank {
         this.foundationDate = foundationDate;
     }
 
-
-    public int getCapacity() {
-        return capacity;
+    public int getFood1_pasta() {
+        return food1_pasta;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setFood1_pasta(int food1_pasta) {
+        this.food1_pasta = food1_pasta;
+    }
+
+    public int getFood2_bread() {
+        return food2_bread;
+    }
+
+    public void setFood2_bread(int food2_bread) {
+        this.food2_bread = food2_bread;
+    }
+
+    public int getFood3_milk() {
+        return food3_milk;
+    }
+
+    public void setFood3_milk(int food3_milk) {
+        this.food3_milk = food3_milk;
+    }
+
+    public int getFood4_pie() {
+        return food4_pie;
+    }
+
+    public void setFood4_pie(int food4_pie) {
+        this.food4_pie = food4_pie;
+    }
+
+    public int getFood5_vet() {
+        return food5_vet;
+    }
+
+    public void setFood5_vet(int food5_vet) {
+        this.food5_vet = food5_vet;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodBank{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", status=" + status +
+                ", openHours='" + openHours + '\'' +
+                ", capacity=" + capacity +
+                ", location=" + location +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", distanceToUser=" + distanceToUser +
+                ", foundationDate='" + foundationDate + '\'' +
+                ", food1_pasta=" + food1_pasta +
+                ", food2_bread=" + food2_bread +
+                ", food3_milk=" + food3_milk +
+                ", food4_pie=" + food4_pie +
+                ", food5_vet=" + food5_vet +
+                ", rating=" + rating +
+                '}';
     }
 }
 
