@@ -1,39 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.foodbank.FoodbankFragment">
+    tools:context=".ui.foodbank.FoodbankFragment"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="use this to test the GPS location, it will be the location if work"></TextView>
 
 
-    <RelativeLayout
-        android:layout_width="0dp"
+
+
+
+
+    <!--    search bar start-->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="136dp"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal">
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/et_input"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
             android:hint="search foodbank"
-            android:inputType="text"
-            android:textSize="20sp"
-            android:layout_marginStart="15dp"/>
+            android:inputType="text"></EditText>
+
 
         <Button
             android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="15dp"
+            android:layout_weight="1.5"
             android:text="search"></Button>
-    </RelativeLayout>
 
-<!--    Used to test the btn click-->
+    </LinearLayout>
+
+    <!--    search bar end-->
+
+    <!--    list of foodbank-->
+    <ListView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/lv_foodbank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</LinearLayout>

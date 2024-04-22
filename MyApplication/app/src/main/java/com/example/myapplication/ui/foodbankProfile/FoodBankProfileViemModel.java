@@ -2,9 +2,7 @@ package com.example.myapplication.ui.foodbankProfile;
 
 //import com.example.myapplication.repository.FoodBankRepository;
 
-import java.util.ArrayList;
-
-public class FoodbankProfileViemModel {
+public class FoodBankProfileViemModel {
 
     //Input Foodbank id get a instance
 //    public ArrayList<FoodBankRepository> getFoodbank (String id) {

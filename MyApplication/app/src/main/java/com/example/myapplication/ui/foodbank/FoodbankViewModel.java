@@ -8,9 +8,13 @@ import androidx.lifecycle.ViewModel;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.model.Location;
+import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.model.FoodBankInfo;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.List;
 
 public class FoodbankViewModel extends ViewModel {
@@ -80,38 +84,42 @@ public class FoodbankViewModel extends ViewModel {
         return mText;
     }
 
+    //TODO input information ,search for some foodbank
+    public static List<FoodBankInfo> searchFb(String input){
+        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch2();
+        return list;
+    }
 
+    //TODO at the start, check the current location, get the nearby foodbank list
+    //input two Double: longitude and latitude
+    public static List<FoodBankInfo> getNearByFb(Double longitude,Double latitude){
+        //read the location data and input
+        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch();
+        return list;
+    }
 
-//    public ArrayList<FoodBankRepository> getFoodbankList(String input){
-//
-//        return null;
-//    }
+    //TODO convert foodbank list to foodbankinfo list
+    public static List<FoodBankInfo> convertFb (List<FoodBank> fb){
+        return null;
+    }
 
+    //{for test only} create a fake foodbankinfo list
+    public static List<FoodBankInfo> fakeSearch(){
+        List<FoodBankInfo> list = new ArrayList<>();
+        list.add(new FoodBankInfo("Hospital","open","230 Dikson St","100m"));
+        list.add(new FoodBankInfo("Market","open","113 H St","500m"));
+        list.add(new FoodBankInfo("Park","close","25 Y St","1.1km"));
+        return  list;
+    }
 
-//    public ArrayList<FoodBankInfoRepository> getFoodbankInfo(String input){
-//
-//        //get foodbank list from database
-//        ArrayList foodbankInfo = getFoodbankList(input);
-//
-//        //convert to foodbankinfo list and return
-//
-//        // fill here
-//
-//
-//        //test foodbankinfo list
-//        ArrayList fbinfo = new ArrayList<>();
-//        FoodBankInfoRepository fb1 = new FoodBankInfoRepository("211 Moore St","open","1");
-//        FoodBankInfoRepository fb2 = new FoodBankInfoRepository("241 Bunda St","close","2");
-//        fbinfo.add(fb1);
-//        fbinfo.add(fb2);
-//        return fbinfo;
-//        //test
-//
-//
-//
-////        return null;
-//    }
-
+    public static List<FoodBankInfo> fakeSearch2(){
+        List<FoodBankInfo> list = new ArrayList<>();
+        list.add(new FoodBankInfo("KFC","open","230 Dikson St","500m"));
+        list.add(new FoodBankInfo("Coles","open","113 H St","1.8km"));
+        list.add(new FoodBankInfo("Bank","close","25 Y St","1.9km"));
+        list.add(new FoodBankInfo("Mc Download","close","25 Y St","1.9km"));
+        return  list;
+    }
     /*
     //can be used to frament or activity
     public class FoodBankActivity extends AppCompatActivity {

@@ -2,16 +2,15 @@ package com.example.myapplication.model;
 
 public class FoodBankInfo {
 
-//test code
-    private String name;
-    private String statue;
+    public String name;
+    public String status;
+    public String street;
+    public String distance;
 
-    private  String id;
-    public FoodBankInfo(String name, String statue, String id) {
+    public FoodBankInfo(String name, String status, String street, String distance) {
         this.name = name;
-        this.statue = statue;
-        this.id = id;
+        this.status = status;
+        this.street = street;
+        this.distance = distance;
     }
-
-    //test code
 }

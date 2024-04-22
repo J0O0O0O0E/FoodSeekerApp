@@ -12,24 +12,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.FoodbankAdaptor;
 import com.example.myapplication.databinding.FragmentFoodbankBinding;
+import com.example.myapplication.model.FoodBankInfo;
 
-public class FoodbankFragment extends Fragment implements View.OnClickListener {
+import java.util.List;
+
+public class FoodbankFragment extends Fragment  {
 
     private FragmentFoodbankBinding binding;
-
-//    private FoodbankViewModel mViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_foodbank, container, false);
 
-
+        //initial all views in layout
+        EditText ed_input = root.findViewById(R.id.et_input);
         Button btn_search = root.findViewById(R.id.btn_search);
-        btn_search.setOnClickListener(this);
+        ListView lv_foodbank = root.findViewById(R.id.lv_foodbank);
+
+        //get list of nearby foodbank
+        List<FoodBankInfo> list = FoodbankViewModel.getNearByFb(1.0,1.0);
+        FoodbankAdaptor fbAdapter = new FoodbankAdaptor(getContext(),list);
+        lv_foodbank.setAdapter(fbAdapter);
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //use input to search foodbank
+                List<FoodBankInfo> listNew = FoodbankViewModel.searchFb(ed_input.getText().toString());
+                FoodbankAdaptor newAdapter = new FoodbankAdaptor(getContext(),listNew);
+                lv_foodbank.setAdapter(newAdapter);
+            }
+        });
         return root;
 
     }
@@ -41,14 +61,4 @@ public class FoodbankFragment extends Fragment implements View.OnClickListener {
         binding = null;
     }
 
-    // when click search btn, use getFoodbank method to get a foodbank list,
-    // than add adapter, show the list view
-    @Override
-    public void onClick(View v) {
-        if(v.getId()== R.id.btn_search){
-
-        }
-
-
-    }
 }
