@@ -33,10 +33,21 @@ public class ProfileViewModel extends ViewModel {
         return mText;
     }
 
-
-    public void updateUserToRepository(){
-        userRepository.updateUser(user);
+    public void updateUserName(String name){
+        user.setUserName(name);
     }
+
+
+    public void updateUserNameToRepository(String name){
+        userRepository.updateUserName(name);
+    }
+
+    public void updateContactNumberToRepository(String number){
+        userRepository.updateContactNumber(number);
+    }
+
+
+
 
 
 
