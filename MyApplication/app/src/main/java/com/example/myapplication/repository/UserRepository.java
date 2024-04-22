@@ -94,9 +94,39 @@ public class UserRepository {
 
     }
 
-    public LiveData<User> getUser(){
+
+    public LiveData<User> getLiveUser(){
         return liveUser;
     }
+
+    public User getUser(){
+        return liveUser.getValue();
+    }
+
+
+    public String getUserEmail(){
+        return Objects.requireNonNull(liveUser.getValue()).email;
+    }
+
+    public void updateUser(User user){
+        liveUser.setValue(user);
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("contactNumber", this.getUser().getContactNumber());
+        updates.put("subscribedFoodBanks",this.getUser().subscribedFoodBanks);
+        updates.put("userName",this.getUser().getUserName());
+
+        fStore.collection("User").document(this.getUserEmail())
+                .update(updates).
+                addOnSuccessListener(aVoid -> {
+                    Log.d("UpdatedUser", "Contact number updated successfully.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UpdatedUser", "Error updating contact number", e);
+                });
+
+    }
+
+
 
 
 

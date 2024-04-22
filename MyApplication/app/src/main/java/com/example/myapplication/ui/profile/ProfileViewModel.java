@@ -14,9 +14,8 @@ public class ProfileViewModel extends ViewModel {
 
     public static UserRepository userRepository;
 
-    public static User user;
+    public User user;
 
-    public static String email;
 
 
 
@@ -25,8 +24,9 @@ public class ProfileViewModel extends ViewModel {
     public ProfileViewModel() {
         mText = new MutableLiveData<>();
         userRepository = UserRepository.getInstance();
-        String profileName = userRepository.getUser().getValue().email;
+        String profileName = userRepository.getUser().email;
         mText.setValue(profileName);
+        user = userRepository.getUser();
     }
 
     public LiveData<String> getText() {
@@ -34,15 +34,8 @@ public class ProfileViewModel extends ViewModel {
     }
 
 
-
-
-    public void setUserName(String newName){
-        user.setUserName(newName);
-
-    }
-
-    public void setContactNumber(String number){
-        user.setContactNumber(number);
+    public void updateUserToRepository(){
+        userRepository.updateUser(user);
     }
 
 
