@@ -54,6 +54,7 @@ public class UserRepository {
     public void loadUser(){
         if(currentUser != null){
             String email = currentUser.getEmail();
+            assert email != null;
             fStore.collection("User").
                     document(email).get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -105,26 +106,38 @@ public class UserRepository {
 
 
     public String getUserEmail(){
-        return Objects.requireNonNull(liveUser.getValue()).email;
+        return Objects.requireNonNull(liveUser.getValue()).getEmail();
     }
 
-    public void updateUser(User user){
-        liveUser.setValue(user);
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("contactNumber", this.getUser().getContactNumber());
-        updates.put("subscribedFoodBanks",this.getUser().subscribedFoodBanks);
-        updates.put("userName",this.getUser().getUserName());
+    public void updateUserName(String name){
+        Objects.requireNonNull(liveUser.getValue()).setUserName(name);
 
         fStore.collection("User").document(this.getUserEmail())
-                .update(updates).
+                .update("userName",this.getUser().getUserName()).
                 addOnSuccessListener(aVoid -> {
-                    Log.d("UpdatedUser", "Contact number updated successfully.");
+                    Log.d("UpdatedUser", "User name updated successfully.");
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("UpdatedUser", "Error updating contact number", e);
+                    Log.e("UpdatedUser", "Error updating user name", e);
                 });
 
     }
+
+    public void updateContactNumber(String number){
+        Objects.requireNonNull(liveUser.getValue()).setContactNumber(number);
+
+        fStore.collection("User").document(this.getUserEmail())
+                .update("contactNumber",this.getUser().getContactNumber()).
+                addOnSuccessListener(aVoid -> {
+                    Log.d("UpdatedUser", "User name updated successfully.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UpdatedUser", "Error updating user name", e);
+                });
+
+    }
+
+
 
 
 
