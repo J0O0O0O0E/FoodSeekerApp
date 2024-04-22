@@ -57,12 +57,12 @@ public class FoodBank {
     private int food4_pie;
     private int food5_vet;
 
-    public double rating;
+    private double rating;
 
     // Constructor
 
 
-    public FoodBank(int id, String name, String street, String city, String state, String postalCode, String country, String phoneNumber, String email, boolean status, String openHours, int capacity, Location location, double latitude, double longitude, String foundationDate, int food1_pasta, int food2_bread, int food3_milk, int food4_pie, int food5_vet, double rating) {
+    public FoodBank(int id, String name, String street, String city, String state, String postalCode, String country, String phoneNumber, String email, boolean status, String openHours, int capacity, double latitude, double longitude, String foundationDate, int food1_pasta, int food2_bread, int food3_milk, int food4_pie, int food5_vet, double rating) {
         this.id = id;
         this.name = name;
         this.street = street;
