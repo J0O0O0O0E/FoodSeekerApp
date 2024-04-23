@@ -1,6 +1,11 @@
 package com.example.myapplication.model;
 
-public class FoodBank {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class FoodBank  {
     // Unique identifier
     private int id;
 
@@ -299,5 +304,7 @@ public class FoodBank {
                 ", rating=" + rating +
                 '}';
     }
+
+
 }
 

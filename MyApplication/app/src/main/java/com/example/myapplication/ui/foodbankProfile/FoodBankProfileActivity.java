@@ -1,6 +1,8 @@
 package com.example.myapplication.ui.foodbankProfile;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,59 +14,45 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
 
-public class FoodBankProfileActivity extends AppCompatActivity {
+public class FoodBankProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_bank_profile);
 
-        //get foodbankinfo name
+        //get data in bundle
         Bundle bundle = getIntent().getExtras();
-        String  foodBankName = bundle.getString("foodBankName");
-        //search by name
-        FoodBank foodBank = FoodBankProfileViemModel.searchFbName(foodBankName);
 
+        if (bundle != null) {
+            // 设置其他数据到TextView
+            ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString("fb_name"));
+            ((TextView) findViewById(R.id.food_bank_phone)).setText(bundle.getString("fb_number"));
+            ((TextView) findViewById(R.id.food_bank_email)).setText(bundle.getString("fb_email"));
+            ((TextView) findViewById(R.id.food_bank_state)).setText(bundle.getString("fb_sate"));
+            ((TextView) findViewById(R.id.food_bank_open_hours)).setText(bundle.getString("fb_openHours"));
+            ((TextView) findViewById(R.id.food_bank_capacity)).setText(String.valueOf(bundle.getInt("fb_capacity")));
+            ((TextView) findViewById(R.id.food_bank_distance)).setText(String.valueOf(bundle.getDouble("fb_distance")));
+            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText(bundle.getString("fb_foundDate"));
 
-        //{test code}
-        TextView tv = findViewById(R.id.tv_foodbank_name);
-        tv.setText(foodBankName);
-
-        //TODO
-        if (foodBank != null) {
-            // 获取 XML 布局中的视图
-            TextView tvFoodbankName = findViewById(R.id.tv_foodbank_name);
-            TextView tvFoodbankAddress = findViewById(R.id.tv_foodbank_address);
-            TextView tvFoodbankPhone = findViewById(R.id.tv_foodbank_phone);
-            TextView tvFoodbankEmail = findViewById(R.id.tv_foodbank_email);
-            TextView tvFoodbankStatus = findViewById(R.id.tv_foodbank_status);
-            TextView tvFoodbankOpenHours = findViewById(R.id.tv_foodbank_open_hours);
-            TextView tvFoodbankCapacity = findViewById(R.id.tv_foodbank_capacity);
-            TextView tvFoodbankDistance = findViewById(R.id.tv_foodbank_distance);
-            TextView tvFoodbankFoundationDate = findViewById(R.id.tv_foodbank_foundation_date);
-
-            // 设置视图的内容
-            tvFoodbankName.setText(foodBank.getName());
-            tvFoodbankAddress.setText(
-                    "Address: " + foodBank.getStreet() + ", " + foodBank.getCity() + ", " + foodBank.getState() + ", " + foodBank.getPostalCode() + ", " + foodBank.getCountry()
-            );
-            tvFoodbankPhone.setText("Phone: " + foodBank.getPhoneNumber());
-            tvFoodbankEmail.setText("Email: " + foodBank.getEmail());
-            tvFoodbankStatus.setText("Status: " + (foodBank.isStatus() ? "Open" : "Closed"));
-            tvFoodbankOpenHours.setText("Open Hours: " + foodBank.getOpenHours());
-            tvFoodbankCapacity.setText("Capacity: " + foodBank.getCapacity() + " people");
-            tvFoodbankDistance.setText("Distance: " + foodBank.getDistanceToUser() + " meters");
-            tvFoodbankFoundationDate.setText("Founded: " + foodBank.getFoundationDate());
+            ImageView iv_back = findViewById(R.id.iv_back);
+            iv_back.setOnClickListener(this);
+            // city street country
+            String location = String.format("%s , %s , %s ",
+                    bundle.getString("fb_country"),
+                    bundle.getString("fb_city"),
+                    bundle.getString("fb_street")
+                    );
+            // 将拼接后的地址设置到TextView
+            ((TextView) findViewById(R.id.food_bank_location)).setText(location);
         }
 
+    }
 
-
-
-
-
-
-
-
-
+    @Override
+    public void onClick(View v) {
+        if(v.getId()==R.id.iv_back){
+            finish();
+        }
     }
 }

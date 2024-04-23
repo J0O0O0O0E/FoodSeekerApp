@@ -9,7 +9,7 @@ import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.model.Location;
 import com.example.myapplication.model.FoodBank;
-import com.example.myapplication.model.FoodBankInfo;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,20 +85,20 @@ public class FoodbankViewModel extends ViewModel {
     }
 
     //TODO input information ,search for some foodbank
-    public static List<FoodBankInfo> searchFb(String input){
-//        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch2();
-//        return list;
-        return null;
-    }
-
-    //TODO at the start, check the current location, get the nearby foodbank list
-    //input two Double: longitude and latitude
-    public static List<FoodBankInfo> getNearByFb(Double longitude,Double latitude){
-        //read the location data and input
-//        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch();
-//        return list;
-        return null;
-    }
+//    public static List<FoodBankInfo> searchFb(String input){
+////        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch2();
+////        return list;
+//        return null;
+//    }
+//
+//    //TODO at the start, check the current location, get the nearby foodbank list
+//    //input two Double: longitude and latitude
+//    public static List<FoodBankInfo> getNearByFb(Double longitude,Double latitude){
+//        //read the location data and input
+////        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch();
+////        return list;
+//        return null;
+//    }
 
 
 

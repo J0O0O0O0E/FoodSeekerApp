@@ -7,41 +7,40 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 import com.example.myapplication.R;
-import com.example.myapplication.model.FoodBankInfo;
+import com.example.myapplication.model.FoodBank;
 
 import java.util.List;
 
-public class FoodbankAdaptor extends BaseAdapter {
+public class FoodBankAdapterNew extends BaseAdapter {
     private Context mContext;
-    private List<FoodBankInfo> mFoodbankInfoList;
+    private List<FoodBank> mFoodBankList;
 
-    public FoodbankAdaptor() {
+    public FoodBankAdapterNew() {
 
     }
 
-    public FoodbankAdaptor(Context mContext, List<FoodBankInfo> mFoodbankInfoList) {
+    public FoodBankAdapterNew(Context mContext, List<FoodBank> mFoodBankList) {
         this.mContext = mContext;
-        this.mFoodbankInfoList = mFoodbankInfoList;
+        this.mFoodBankList = mFoodBankList;
     }
 
     public void setmContext(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setmFoodbankInfoList(List<FoodBankInfo> mFoodbankInfoList) {
-        this.mFoodbankInfoList = mFoodbankInfoList;
+    public void setmFoodBankList(List<FoodBank> mFoodbankList) {
+        this.mFoodBankList = mFoodBankList;
     }
 
     @Override
     public int getCount() {
-        return mFoodbankInfoList.size();
+        return mFoodBankList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mFoodbankInfoList.get(position);
+        return mFoodBankList.get(position);
     }
 
     @Override
@@ -57,12 +56,11 @@ public class FoodbankAdaptor extends BaseAdapter {
         TextView tv_street =view.findViewById(R.id.tv_street);
         TextView tv_distance = view.findViewById(R.id.tv_distance);
 
-        FoodBankInfo foodbankInfo =mFoodbankInfoList.get(position);
-        tv_name.setText(foodbankInfo.name);
-        tv_status.setText(foodbankInfo.status);
-        tv_street.setText(foodbankInfo.street);
-        tv_distance.setText(foodbankInfo.distance);
-
+        FoodBank foodBank =mFoodBankList.get(position);
+        tv_name.setText(foodBank.getName());
+        tv_status.setText(foodBank.getState());
+        tv_street.setText(foodBank.getStreet());
+        tv_distance.setText(Double.toString(foodBank.getDistanceToUser()));
         return view;
     }
 }
