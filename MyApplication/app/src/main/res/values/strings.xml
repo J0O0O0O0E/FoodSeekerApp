@@ -7,6 +7,10 @@
     <string name="title_profile">Profile</string>
     <string name="title_activity_announcement">AnnouncementActivity</string>
     <string name="title_anouncement">Announcement</string>
+    <string name="pen">pen</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="view_subscribed_food_banks">View Subscribed Food Banks</string>
+
     <string name="large_text">
 
         "Material is the metaphor.\n\n"
