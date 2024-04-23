@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.foodbank;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -21,6 +23,9 @@ public class FoodbankViewModel extends ViewModel {
     private MutableLiveData<ArrayList<FoodBank>> foodBanksLiveData;
     private FoodBankRepository foodBankRepository;
     private final MutableLiveData<String> mText;
+    private double latitude;
+    private double longtitude;
+
 
     public FoodbankViewModel() {
         mText = new MutableLiveData<>();
@@ -64,6 +69,7 @@ public class FoodbankViewModel extends ViewModel {
         if (foodBanks != null) {
             for (FoodBank foodBank : foodBanks) {
                 double distance = foodBank.getLocation().calculateDistance(userLocation);
+                Log.d("UpdateDistances", "ID:" + foodBank.getId() + " distance:" + distance);
                 foodBank.setDistanceToUser(distance);
             }
 

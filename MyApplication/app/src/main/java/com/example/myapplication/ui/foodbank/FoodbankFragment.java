@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
 import com.example.myapplication.utils.FoodBankConverter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FoodbankFragment extends Fragment {
@@ -59,8 +62,8 @@ public class FoodbankFragment extends Fragment {
         //read the location
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double latitude = 0.0;
-        double longitude = 0.0;
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
 
         if (location == null) {
             tv_gps.setText("location is empty");
@@ -70,8 +73,9 @@ public class FoodbankFragment extends Fragment {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
+        com.example.myapplication.model.Location userLocation = new com.example.myapplication.model.Location(latitude,longitude);
         //gps has been get
-        foodbankViewModel.setUserLocationAndUpdateDistances(latitude,longitude);
+        //foodbankViewModel.setUserLocationAndUpdateDistances(latitude,longitude);
 
 
         //initial all views in layout
@@ -87,6 +91,37 @@ public class FoodbankFragment extends Fragment {
             public void onChanged(ArrayList<FoodBank> foodBanks) {
                 fbList.clear();
                 fbList.addAll(foodBanks);
+                //
+                //
+                if (fbList != null) {
+                    for (FoodBank foodBank : fbList) {
+                        if (foodBank.getLocation() != null) {
+                            double distance = Math.round(foodBank.getLocation().calculateDistance(userLocation));
+                            Log.d("UpdateDistances", "ID:" + foodBank.getId() + " distance:" + distance);
+                            foodBank.setDistanceToUser(distance);
+                        } else {
+                            Log.d("UpdateDistances", "Location is null for FoodBank ID:" + foodBank.getId());
+                        }
+
+                    }
+
+                    // Sort the list based on distance to user
+                    Collections.sort(fbList, new Comparator<FoodBank>() {
+                        @Override
+                        public int compare(FoodBank fb1, FoodBank fb2) {
+                            return Double.compare(fb1.getDistanceToUser(), fb2.getDistanceToUser());
+                        }
+                    });}
+
+
+
+
+
+
+
+
+
+
                 List<FoodBankInfo> fbInfoList = FoodBankConverter.convert(fbList);
                 FoodbankAdaptor fbAdapter = new FoodbankAdaptor(getContext(), fbInfoList);
                 lv_foodbank.setAdapter(fbAdapter);

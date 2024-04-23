@@ -46,15 +46,15 @@ public class FoodBankProfileActivity extends AppCompatActivity {
             // 设置视图的内容
             tvFoodbankName.setText(foodBank.getName());
             tvFoodbankAddress.setText(
-                    "Address: " + foodBank.getStreet() + ", " + foodBank.getCity() + ", " + foodBank.getState() + ", " + foodBank.getPostalCode() + ", " + foodBank.getCountry()
+                    "Address: " + foodBank.getStreet() + ", " + foodBank.getSuburb() + ", " + foodBank.getRegion() + ", " + foodBank.getPostcode() + ", " + foodBank.getCountry()
             );
-            tvFoodbankPhone.setText("Phone: " + foodBank.getPhoneNumber());
+            tvFoodbankPhone.setText("Phone: " + foodBank.getTel());
             tvFoodbankEmail.setText("Email: " + foodBank.getEmail());
             tvFoodbankStatus.setText("Status: " + (foodBank.isStatus() ? "Open" : "Closed"));
-            tvFoodbankOpenHours.setText("Open Hours: " + foodBank.getOpenHours());
+            tvFoodbankOpenHours.setText("Open Hours: " + foodBank.getOpen_hours());
             tvFoodbankCapacity.setText("Capacity: " + foodBank.getCapacity() + " people");
             tvFoodbankDistance.setText("Distance: " + foodBank.getDistanceToUser() + " meters");
-            tvFoodbankFoundationDate.setText("Founded: " + foodBank.getFoundationDate());
+            tvFoodbankFoundationDate.setText("Founded: " + foodBank.getDoe());
         }
 
 

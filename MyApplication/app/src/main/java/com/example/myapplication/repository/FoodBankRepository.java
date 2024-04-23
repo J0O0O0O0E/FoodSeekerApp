@@ -3,6 +3,8 @@ package com.example.myapplication.repository;
 import com.example.myapplication.model.FoodBank;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.myapplication.model.Location;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +59,7 @@ public class FoodBankRepository {
                     keys.add(keyNode.getKey());
                     // Get the FoodBank object from the snapshot
                     FoodBank foodBank = keyNode.getValue(FoodBank.class);
+                    foodBank.setLocation(new Location(foodBank.getLat(),foodBank.getLon()));
                     // Add it to the food banks list
                     foodBanks.add(foodBank);
                 }
