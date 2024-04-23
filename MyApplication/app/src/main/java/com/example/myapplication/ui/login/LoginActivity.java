@@ -15,11 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 /**
  * LoginActivity is the activity responsible for user authentication.
@@ -105,6 +108,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+                        UserRepository.getInstance().setUser(user);
+//
+                        UserRepository.getInstance().loadUser();
+
                         updateUI(user);
                     } else {
                         // If sign in fails, display a message to the user.
