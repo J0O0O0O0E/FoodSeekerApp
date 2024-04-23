@@ -35,7 +35,7 @@ public class FoodBankRepository {
     // Constructor for the repository
     public FoodBankRepository() {
         // Get the Firebase database instance
-        database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance("https://comp2100-6442-4f828-default-rtdb.asia-southeast1.firebasedatabase.app");
         // Initialize the list to hold FoodBanks
         foodBanks = new ArrayList<>();
     }
