@@ -32,11 +32,11 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewAnnouncements);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));// which layout
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        // observer to observe livedata announcement set to see any changes
         viewModel.getAnnouncements().observe(getViewLifecycleOwner(), announcements -> {
-            // set the adapter for
             if (adapter == null) {
                 announcements.sort((a1, a2) -> a2.getTimestamp().compareTo(a1.getTimestamp()));
                 adapter = new AnnouncementAdapter(getContext(), announcements, this);
@@ -47,8 +47,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
         });
 
-
-
         return view;
     }
 
@@ -56,7 +54,8 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     // implement the recycler view interface. On item click
     @Override
     public void onItemClick(Announcement announcement) {
-        //创建一个 Bundle 对象并填充它，包括标题、图片 URL 和详细信息 URL。这些数据被用作传递给另一个 Fragment(announcement fragment) 的参数。
+        // Create a Bundle object and populate it with title, image URL, detail, and date.
+        // These data are passed to Fragment (announcement fragment) as parameters.
         Bundle bundle = new Bundle();
         bundle.putString("title", announcement.getTitle());
         bundle.putString("imageUrl", announcement.getImageUrl());
@@ -64,9 +63,11 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         bundle.putString("date", announcement.getTimestamp().toDate().toString());
 
 
-        //通过 NavHostFragment.findNavController(this) 获取当前 Fragment 的 NavController，这是 Navigation 组件用来管理导航的主要工具。
+        // Get the NavController of the current Fragment through NavHostFragment.findNavController(this),
+        // which is the primary tool used by the Navigation component to manage navigation.
         NavController navController = NavHostFragment.findNavController(this);
-        //调用 navigate 方法，传递导航操作的 ID（在 nav_graph.xml 中定义）和包含所需数据的 Bundle。这样，当导航到目标 Fragment 时，这个 Bundle 将传递给它。
+// Call the navigate method, passing the ID of the navigation action (defined in nav_graph.xml) and the Bundle containing the necessary data.
+        // This way, when navigating to the target Fragment, this Bundle will be passed to it.
         navController.navigate(R.id.navigation_announcement, bundle);
     }
 
@@ -74,11 +75,10 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        recyclerView = null; // 清理适配器
+        recyclerView = null;
         viewModel = null;
         adapter = null;
 
-        // 可以考虑清理其他资源
     }
 
 

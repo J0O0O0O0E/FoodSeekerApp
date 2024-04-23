@@ -19,51 +19,47 @@ import java.util.List;
 
 
 
-//make it singleton!!!!!!!!!!!!!!!!
+//TODO: make it singleton!!!!!!!!!!!!!!!!
 
 
 
 
 public class  AnnouncementRepository {
-    // 私有变量db，用于访问Firebase Firestore数据库
+    // Private variable 'db' for accessing the Firebase Firestore database
     private FirebaseFirestore db;
-    // 私有变量announcementsLiveData，类型为LiveData，用于存储并传递通告数据
+    // Private variable 'announcementsLiveData', of type LiveData, to store and pass announcement data
     private MutableLiveData<List<Announcement>> announcementsLiveData;
 
-    // 类的构造函数
     public AnnouncementRepository() {
-        // 实例化FirebaseFirestore对象
         db = FirebaseFirestore.getInstance();
-        // 实例化LiveData对象
         announcementsLiveData = new MutableLiveData<>();
-        // 调用加载数据的私有方法
+        // load data from cloud
         loadAnnouncements();
     }
 
-    // 定义私有方法loadAnnouncements，用于从Firestore实时加载数据
+    // load data from Firestore in real time
     private void loadAnnouncements() {
-        // 访问数据库中的"announcements"集合，并添加实时更新的监听器
+        // Access the "Announcement" collection in the fb and add a real-time update listener
         db.collection("Announcement")
                 .addSnapshotListener((snapshots, e) -> {
-                    // 如果发生错误，设置LiveData为null，并返回
+                    // check if error
                     if (e != null) {
-                        Log.e("AnnouncementRepo", "Error loading announcements", e);
+                        Log.e("AnnouncementRepo", "Error loading announcements, null", e);
                         announcementsLiveData.setValue(null);
                         return;
                     }
-                    // 创建一个新的Announcement列表，用于存储转换后的数据
+                    // list of Announcement to store the transformed data
                     List<Announcement> newAnnouncements = new ArrayList<>();
-                    // 遍历查询快照中的每个文档
+                    // Iterate over each document in the query snapshot
                     for (QueryDocumentSnapshot doc : snapshots) {
-                        // 将每个文档转换为Announcement对象，并添加到列表中
+                        // Convert each document into an Announcement object and add it to the list
                         newAnnouncements.add(doc.toObject(Announcement.class));
                     }
-                    // 将新的通告列表推送到LiveData中，触发观察者的更新
+                    // Push the new list of announcements to LiveData, triggering the observer (observer pattern) update
                     announcementsLiveData.postValue(newAnnouncements);
                 });
     }
 
-    // 公开方法getAnnouncements，返回包含通告数据的LiveData对象
     public LiveData<List<Announcement>> getAnnouncements() {
         return announcementsLiveData;
     }
