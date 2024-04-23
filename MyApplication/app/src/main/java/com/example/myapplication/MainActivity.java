@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,5 +33,23 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        // Set up a listener for navigation changes to show/hide the bottom navigation bar (for announcement )
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.navigation_announcement) {
+                // Hide the bottom navigation bar when in the announcement fragment
+                navView.setVisibility(View.GONE);
+            } else {
+                // Show the bottom navigation bar for all other destinations
+                navView.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    // method that handle the navigation when the user presses the back button in the ActionBar in announcement fragment
+    @Override
+    public boolean onSupportNavigateUp() {
+        return Navigation.findNavController(this, R.id.nav_host_fragment_activity_main).navigateUp();
+        // nav_host_... is the main activity fragments controller
     }
 }
