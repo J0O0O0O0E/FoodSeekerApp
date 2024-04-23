@@ -86,40 +86,23 @@ public class FoodbankViewModel extends ViewModel {
 
     //TODO input information ,search for some foodbank
     public static List<FoodBankInfo> searchFb(String input){
-        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch2();
-        return list;
+//        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch2();
+//        return list;
+        return null;
     }
 
     //TODO at the start, check the current location, get the nearby foodbank list
     //input two Double: longitude and latitude
     public static List<FoodBankInfo> getNearByFb(Double longitude,Double latitude){
         //read the location data and input
-        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch();
-        return list;
-    }
-
-    //TODO convert foodbank list to foodbankinfo list
-    public static List<FoodBankInfo> convertFb (List<FoodBank> fb){
+//        List<FoodBankInfo> list = FoodbankViewModel.fakeSearch();
+//        return list;
         return null;
     }
 
-    //{for test only} create a fake foodbankinfo list
-    public static List<FoodBankInfo> fakeSearch(){
-        List<FoodBankInfo> list = new ArrayList<>();
-        list.add(new FoodBankInfo("Hospital","open","230 Dikson St","100m"));
-        list.add(new FoodBankInfo("Market","open","113 H St","500m"));
-        list.add(new FoodBankInfo("Park","close","25 Y St","1.1km"));
-        return  list;
-    }
 
-    public static List<FoodBankInfo> fakeSearch2(){
-        List<FoodBankInfo> list = new ArrayList<>();
-        list.add(new FoodBankInfo("KFC","open","230 Dikson St","500m"));
-        list.add(new FoodBankInfo("Coles","open","113 H St","1.8km"));
-        list.add(new FoodBankInfo("Bank","close","25 Y St","1.9km"));
-        list.add(new FoodBankInfo("Mc Download","close","25 Y St","1.9km"));
-        return  list;
-    }
+
+
     /*
     //can be used to frament or activity
     public class FoodBankActivity extends AppCompatActivity {
