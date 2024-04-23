@@ -140,5 +140,10 @@ public class ProfileFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        editTextUserName = null;
+        editTextContactNumber = null;
+        email = null;
+
+
     }
 }
