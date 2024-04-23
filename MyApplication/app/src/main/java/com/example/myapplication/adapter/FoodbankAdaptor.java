@@ -7,40 +7,41 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+
 import com.example.myapplication.R;
-import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.model.FoodBankInfo;
 
 import java.util.List;
 
-public class FoodBankAdapterNew extends BaseAdapter {
+public class FoodbankAdaptor extends BaseAdapter {
     private Context mContext;
-    private List<FoodBank> mFoodBankList;
+    private List<FoodBankInfo> mFoodbankInfoList;
 
-    public FoodBankAdapterNew() {
+    public FoodbankAdaptor() {
 
     }
 
-    public FoodBankAdapterNew(Context mContext, List<FoodBank> mFoodBankList) {
+    public FoodbankAdaptor(Context mContext, List<FoodBankInfo> mFoodbankInfoList) {
         this.mContext = mContext;
-        this.mFoodBankList = mFoodBankList;
+        this.mFoodbankInfoList = mFoodbankInfoList;
     }
 
     public void setmContext(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setmFoodBankList(List<FoodBank> mFoodbankList) {
-        this.mFoodBankList = mFoodBankList;
+    public void setmFoodbankInfoList(List<FoodBankInfo> mFoodbankInfoList) {
+        this.mFoodbankInfoList = mFoodbankInfoList;
     }
 
     @Override
     public int getCount() {
-        return mFoodBankList.size();
+        return mFoodbankInfoList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mFoodBankList.get(position);
+        return mFoodbankInfoList.get(position);
     }
 
     @Override
@@ -56,11 +57,12 @@ public class FoodBankAdapterNew extends BaseAdapter {
         TextView tv_street =view.findViewById(R.id.tv_street);
         TextView tv_distance = view.findViewById(R.id.tv_distance);
 
-        FoodBank foodBank =mFoodBankList.get(position);
-        tv_name.setText(foodBank.getName());
-        tv_status.setText(foodBank.getState());
-        tv_street.setText(foodBank.getStreet());
-        tv_distance.setText(Double.toString(foodBank.getDistanceToUser()));
+        FoodBankInfo foodbankInfo =mFoodbankInfoList.get(position);
+        tv_name.setText(foodbankInfo.name);
+        tv_status.setText(foodbankInfo.status);
+        tv_street.setText(foodbankInfo.street);
+        tv_distance.setText(foodbankInfo.distance);
+
         return view;
     }
 }

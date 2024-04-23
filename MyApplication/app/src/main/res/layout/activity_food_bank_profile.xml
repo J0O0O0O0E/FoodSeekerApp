@@ -1,88 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        >
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_arrow_back_ios_new_24"></ImageView>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+    <!-- FoodBank Name -->
     <TextView
-        android:id="@+id/food_bank_name"
+        android:id="@+id/tv_foodbank_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:text="FoodBank Name"/>
 
+    <!-- Address -->
     <TextView
-        android:id="@+id/food_bank_phone"
+        android:id="@+id/tv_foodbank_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Phone" />
+        android:text="Address: Street, City, State, Postal Code, Country"/>
 
+    <!-- Phone Number -->
     <TextView
-        android:id="@+id/food_bank_email"
+        android:id="@+id/tv_foodbank_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email" />
+        android:text="Phone: (123) 456-7890"/>
 
-    <!-- 显示组合后的地址 -->
+    <!-- Email Address -->
     <TextView
-        android:id="@+id/food_bank_location"
+        android:id="@+id/tv_foodbank_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Location" />
+        android:text="Email: example@example.com"/>
 
+    <!-- Operating Status -->
     <TextView
-        android:id="@+id/food_bank_state"
+        android:id="@+id/tv_foodbank_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="State" />
+        android:text="Status: Open"/>
 
+    <!-- Opening Hours -->
     <TextView
-        android:id="@+id/food_bank_open_hours"
+        android:id="@+id/tv_foodbank_open_hours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open Hours" />
+        android:text="Open Hours: 9 AM - 5 PM"/>
 
+    <!-- Capacity -->
     <TextView
-        android:id="@+id/food_bank_capacity"
+        android:id="@+id/tv_foodbank_capacity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Capacity" />
+        android:text="Capacity: 100 people"/>
 
+    <!-- Distance to User -->
     <TextView
-        android:id="@+id/food_bank_distance"
+        android:id="@+id/tv_foodbank_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Distance to User" />
+        android:text="Distance: 500 meters"/>
 
+    <!-- Foundation Date -->
     <TextView
-        android:id="@+id/food_bank_foundation_date"
+        android:id="@+id/tv_foodbank_foundation_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Foundation Date" />
-
-    </LinearLayout>
+        android:text="Founded: January 1, 2000"/>
 
 </LinearLayout>

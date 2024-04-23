@@ -1,11 +1,6 @@
 package com.example.myapplication.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-
-public class FoodBank  {
+public class FoodBank {
     // Unique identifier
     private int id;
 
@@ -66,6 +61,9 @@ public class FoodBank  {
 
     // Constructor
 
+
+    public FoodBank() {
+    }
 
     public FoodBank(int id, String name, String street, String city, String state, String postalCode, String country, String phoneNumber, String email, boolean status, String openHours, int capacity, double latitude, double longitude, String foundationDate, int food1_pasta, int food2_bread, int food3_milk, int food4_pie, int food5_vet, double rating) {
         this.id = id;
@@ -304,7 +302,5 @@ public class FoodBank  {
                 ", rating=" + rating +
                 '}';
     }
-
-
 }
 

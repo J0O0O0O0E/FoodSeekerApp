@@ -1,14 +1,13 @@
 package com.example.myapplication.repository;
 
 import com.example.myapplication.model.FoodBank;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 // Repository class for handling FoodBank data interactions
 public class FoodBankRepository {
