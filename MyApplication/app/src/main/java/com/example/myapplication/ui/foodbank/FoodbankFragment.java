@@ -74,7 +74,7 @@ public class FoodbankFragment extends Fragment {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
-        com.example.myapplication.model.Location userLocation = new com.example.myapplication.model.Location(latitude,longitude);
+        com.example.myapplication.model.Location userLocation = new com.example.myapplication.model.Location(latitude, longitude);
         //gps has been get
         //foodbankViewModel.setUserLocationAndUpdateDistances(latitude,longitude);
 
@@ -112,15 +112,8 @@ public class FoodbankFragment extends Fragment {
                         public int compare(FoodBank fb1, FoodBank fb2) {
                             return Double.compare(fb1.getDistanceToUser(), fb2.getDistanceToUser());
                         }
-                    });}
-
-
-
-
-
-
-
-
+                    });
+                }
 
 
                 List<FoodBankInfo> fbInfoList = FoodBankConverter.convert(fbList);
@@ -129,9 +122,6 @@ public class FoodbankFragment extends Fragment {
                 // refresh list view
             }
         });
-
-
-
 
 
 //        List<FoodBankInfo> fbInfoList = FoodBankConverter.convert(FoodBankConverter.testFoodBank1());
