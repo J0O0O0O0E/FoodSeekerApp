@@ -65,6 +65,7 @@ public class FoodbankFragment extends Fragment {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
+
         if (location == null) {
             tv_gps.setText("location is empty");
 

@@ -1,79 +1,50 @@
 package com.example.myapplication.model;
+/**
+ * Represents a food bank entity with detailed attributes relating to its operation, location,
+ * and food inventory. This class manages a food bank's data, including storage capacities,
+ * various types of food items it stocks (like pasta, bread, milk, etc.), and operational details
+ * such as opening hours and contact information. It also includes location-specific data like
+ * geographical coordinates, address details, and proximity to the user, facilitating mapping
+ * and location-based services. The class is designed to interact with systems that require details
+ * about food bank operations, logistic, analytic and UI integration in applications
+ * that aim to connect food banks with users.
+ *
+ * @package com.example.myapplication.model
+ * @author Zijian Yang
+ */
 
 public class FoodBank {
-    // Capacity
     private int capacity;
-    // Country
     private String country;
-
-    // Foundation date
     private String doe;
-    // Email address
     private String email;
     private int food1_pasta;
     private int food2_bread;
     private int food3_milk;
     private int food4_pie;
     private int food5_vet;
-    // Unique identifier
     private int id;
     private int index;
     private double lat;
-
     private double lon;
-    // Name
     private String name;
-    // Opening hours
     private String open_hours;
-    // Postal code
     private String postcode;
     private String prefix;
     private double rating;
-
-
-
-
-
     private String region;
-    // Operating status
     private boolean status;
-    // Street address
     private String street;
-    // City
     private String suburb;
     private String suffix;
-    // Phone number
     private String tel;
     private String unit_type;
-
-
-
-
-
-
-
-
-
-
-
-
     // Uses a Location object to store location information
     private Location location;
-
-
-
-    // Distance to user (meters)
+    // Distance to user (meter)
     private double distanceToUser;
 
-
-
-
-
-
-
     // Constructor
-
-
     public FoodBank() {
     }
 
