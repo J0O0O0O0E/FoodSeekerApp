@@ -126,11 +126,7 @@ public class FoodbankFragment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get location
-                //use input to search foodbank
-//                List<FoodBankInfo> listNew = FoodbankViewModel.searchFb(ed_input.getText().toString());
-//                FoodbankAdaptor newAdapter = new FoodbankAdaptor(getContext(), listNew);
-//                lv_foodbank.setAdapter(newAdapter);
+
 
             }
         });
