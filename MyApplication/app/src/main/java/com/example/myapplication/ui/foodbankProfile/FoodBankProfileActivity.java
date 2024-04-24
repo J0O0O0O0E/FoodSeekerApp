@@ -3,6 +3,9 @@ package com.example.myapplication.ui.foodbankProfile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +44,17 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_bookmark = findViewById(R.id.iv_bookmark);
             ImageView iv_share = findViewById(R.id.iv_share);
+
+//            {test for gps}
+            WebView wv_map = findViewById(R.id.wv_map);
+            WebSettings webSettings = wv_map.getSettings();
+            webSettings.setJavaScriptEnabled(true); // Active JavaScript
+            wv_map.setWebViewClient(new WebViewClient()); // Prevent external browsers from opening links
+            double latitude = bundle.getDouble("fb_latitude");
+            double longitude = bundle.getDouble("fb_longitude");
+            String mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+            wv_map.loadUrl(mapUrl);
+
 
             iv_back.setOnClickListener(this);
             iv_bookmark.setOnClickListener(this);
