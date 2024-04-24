@@ -25,17 +25,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.R;
-import com.example.myapplication.adapter.FoodbankAdaptor;
+import com.example.myapplication.adapter.FoodBankAdapterNew;
 import com.example.myapplication.databinding.FragmentFoodbankBinding;
 import com.example.myapplication.model.FoodBank;
-import com.example.myapplication.model.FoodBankInfo;
 import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
-import com.example.myapplication.utils.FoodBankConverter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * A Fragment representing a list of Food Banks within the application.
@@ -118,11 +115,15 @@ public class FoodbankFragment extends Fragment {
                         }
                     });
                 }
-                // Convert FoodBank objects to FoodBankInfo objects for display
-                List<FoodBankInfo> fbInfoList = FoodBankConverter.convert(fbList);
-                // Set the adapter for the ListView with the converted list
-                FoodbankAdaptor fbAdapter = new FoodbankAdaptor(getContext(), fbInfoList);
-                lv_foodbank.setAdapter(fbAdapter);
+
+            //add information to adapter
+//                List<FoodBankInfo> fbInfoList = FoodBankConverter.convert(fbList);
+//                FoodbankAdaptor fbAdapter = new FoodbankAdaptor(getContext(), fbInfoList);
+//                lv_foodbank.setAdapter(fbAdapter);
+
+                FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),fbList);
+                lv_foodbank.setAdapter(foodBankAdapterNew);
+                // refresh list view
             }
         });
 
@@ -131,11 +132,11 @@ public class FoodbankFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //get location
-
                 //use input to search foodbank
-                List<FoodBankInfo> listNew = FoodbankViewModel.searchFb(ed_input.getText().toString());
-                FoodbankAdaptor newAdapter = new FoodbankAdaptor(getContext(), listNew);
-                lv_foodbank.setAdapter(newAdapter);
+//                List<FoodBankInfo> listNew = FoodbankViewModel.searchFb(ed_input.getText().toString());
+//                FoodbankAdaptor newAdapter = new FoodbankAdaptor(getContext(), listNew);
+//                lv_foodbank.setAdapter(newAdapter);
+
             }
         });*/
 
@@ -143,12 +144,38 @@ public class FoodbankFragment extends Fragment {
         lv_foodbank.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FoodBankInfo clickedFoodBankInfo = (FoodBankInfo) parent.getItemAtPosition(position);
-                Intent detailIntent = new Intent(getActivity(), FoodBankProfileActivity.class);
+//                FoodBankInfo clickedFoodBankInfo = (FoodBankInfo) parent.getItemAtPosition(position);
+//                Intent detailIntent = new Intent(getActivity(), FoodBankProfileActivity.class);
+//
+//                //send foodbankinfo name
+//                Bundle bundle = new Bundle();
+//                bundle.putString("foodBankName", clickedFoodBankInfo.name);
+//                detailIntent.putExtras(bundle);
+//                startActivity(detailIntent);
 
-                //send foodbankinfo name
+                FoodBank clickedFoodBank = (FoodBank) parent.getItemAtPosition(position);
+                Intent detailIntent = new Intent(getActivity(), FoodBankProfileActivity.class);
+                //send foodbank Information
                 Bundle bundle = new Bundle();
-                bundle.putString("foodBankName", clickedFoodBankInfo.name);
+                bundle.putString("fb_name", clickedFoodBank.getName());
+                bundle.putString("fb_number", clickedFoodBank.getTel());
+                bundle.putString("fb_email", clickedFoodBank.getEmail());
+
+                if(clickedFoodBank.isStatus()){
+                    bundle.putString("fb_sate", "open");
+                }else{
+                    bundle.putString("fb_sate", "close");
+                }
+
+                bundle.putString("fb_street", clickedFoodBank.getStreet());
+                bundle.putString("fb_city", clickedFoodBank.getSuburb());
+                bundle.putString("fb_postalCode", clickedFoodBank.getPostcode());
+                bundle.putString("fb_country", clickedFoodBank.getCountry());
+                bundle.putString("fb_openHours", clickedFoodBank.getOpen_hours());
+                bundle.putInt("fb_capacity",clickedFoodBank.getCapacity());
+                bundle.putDouble("fb_distance", clickedFoodBank.getDistanceToUser());
+                bundle.putString("fb_foundDate", clickedFoodBank.getDoe());
+
                 detailIntent.putExtras(bundle);
                 startActivity(detailIntent);
             }

@@ -1,6 +1,9 @@
 package com.example.myapplication.ui.foodbankProfile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,59 +15,73 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
 
-public class FoodBankProfileActivity extends AppCompatActivity {
+public class FoodBankProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static int BOOKMARK_INDEX = 0;
+    private static String shareMessage = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_bank_profile);
 
-        //get foodbankinfo name
+        //get data in bundle
         Bundle bundle = getIntent().getExtras();
-        String  foodBankName = bundle.getString("foodBankName");
-        //search by name
-        FoodBank foodBank = FoodBankProfileViemModel.searchFbName(foodBankName);
 
+        if (bundle != null) {
+            // 设置其他数据到TextView
+            ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString("fb_name"));
+            ((TextView) findViewById(R.id.food_bank_phone)).setText(bundle.getString("fb_number"));
+            ((TextView) findViewById(R.id.food_bank_email)).setText(bundle.getString("fb_email"));
+            ((TextView) findViewById(R.id.food_bank_state)).setText(bundle.getString("fb_sate"));
+            ((TextView) findViewById(R.id.food_bank_open_hours)).setText(bundle.getString("fb_openHours"));
+            ((TextView) findViewById(R.id.food_bank_capacity)).setText(String.valueOf(bundle.getInt("fb_capacity")));
+            ((TextView) findViewById(R.id.food_bank_distance)).setText(String.valueOf(bundle.getDouble("fb_distance")));
+            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText(bundle.getString("fb_foundDate"));
 
-        //{test code}
-        TextView tv = findViewById(R.id.tv_foodbank_name);
-        tv.setText(foodBankName);
+            ImageView iv_back = findViewById(R.id.iv_back);
+            ImageView iv_bookmark = findViewById(R.id.iv_bookmark);
+            ImageView iv_share = findViewById(R.id.iv_share);
 
-        //TODO
-        if (foodBank != null) {
-            // 获取 XML 布局中的视图
-            TextView tvFoodbankName = findViewById(R.id.tv_foodbank_name);
-            TextView tvFoodbankAddress = findViewById(R.id.tv_foodbank_address);
-            TextView tvFoodbankPhone = findViewById(R.id.tv_foodbank_phone);
-            TextView tvFoodbankEmail = findViewById(R.id.tv_foodbank_email);
-            TextView tvFoodbankStatus = findViewById(R.id.tv_foodbank_status);
-            TextView tvFoodbankOpenHours = findViewById(R.id.tv_foodbank_open_hours);
-            TextView tvFoodbankCapacity = findViewById(R.id.tv_foodbank_capacity);
-            TextView tvFoodbankDistance = findViewById(R.id.tv_foodbank_distance);
-            TextView tvFoodbankFoundationDate = findViewById(R.id.tv_foodbank_foundation_date);
+            iv_back.setOnClickListener(this);
+            iv_bookmark.setOnClickListener(this);
+            iv_share.setOnClickListener(this);
 
-            // 设置视图的内容
-            tvFoodbankName.setText(foodBank.getName());
-            tvFoodbankAddress.setText(
-                    "Address: " + foodBank.getStreet() + ", " + foodBank.getSuburb() + ", " + foodBank.getRegion() + ", " + foodBank.getPostcode() + ", " + foodBank.getCountry()
+            // city street country
+            String location = String.format("%s , %s , %s ",
+                    bundle.getString("fb_country"),
+                    bundle.getString("fb_city"),
+                    bundle.getString("fb_street")
             );
-            tvFoodbankPhone.setText("Phone: " + foodBank.getTel());
-            tvFoodbankEmail.setText("Email: " + foodBank.getEmail());
-            tvFoodbankStatus.setText("Status: " + (foodBank.isStatus() ? "Open" : "Closed"));
-            tvFoodbankOpenHours.setText("Open Hours: " + foodBank.getOpen_hours());
-            tvFoodbankCapacity.setText("Capacity: " + foodBank.getCapacity() + " people");
-            tvFoodbankDistance.setText("Distance: " + foodBank.getDistanceToUser() + " meters");
-            tvFoodbankFoundationDate.setText("Founded: " + foodBank.getDoe());
+
+            // 将拼接后的地址设置到TextView
+            ((TextView) findViewById(R.id.food_bank_location)).setText(location);
+
+            //{}
+            shareMessage = bundle.getString("fb_name")+" "+bundle.getString("fb_street")+ "\n"+bundle.getString("fb_number");
         }
 
+    }
 
-
-
-
-
-
-
-
-
+    @Override
+    public void onClick(View v) {
+        if(v.getId()==R.id.iv_back){
+            finish();
+        } else if (v.getId()==R.id.iv_bookmark) {
+            if(BOOKMARK_INDEX == 0){
+                BOOKMARK_INDEX = 1;
+                ImageView iv = findViewById(R.id.iv_bookmark);
+                iv.setImageResource(R.drawable.baseline_bookmark_added_24);
+            }else{
+                BOOKMARK_INDEX = 0;
+                ImageView iv = findViewById(R.id.iv_bookmark);
+                iv.setImageResource(R.drawable.baseline_bookmark_add_24);
+            }
+        } else if (v.getId()==R.id.iv_share) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            startActivity(Intent.createChooser(intent, "Share via"));
+        }
     }
 }
