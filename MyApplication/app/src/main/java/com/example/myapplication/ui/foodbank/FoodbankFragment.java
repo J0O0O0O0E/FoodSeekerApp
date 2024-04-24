@@ -105,7 +105,6 @@ public class FoodbankFragment extends Fragment {
                         } else {
                             Log.d("UpdateDistances", "Location is null for FoodBank ID:" + foodBank.getId());
                         }
-
                     }
                     // Sort the list of FoodBanks by distance from the user
                     Collections.sort(fbList, new Comparator<FoodBank>() {
@@ -116,11 +115,7 @@ public class FoodbankFragment extends Fragment {
                     });
                 }
 
-            //add information to adapter
-//                List<FoodBankInfo> fbInfoList = FoodBankConverter.convert(fbList);
-//                FoodbankAdaptor fbAdapter = new FoodbankAdaptor(getContext(), fbInfoList);
-//                lv_foodbank.setAdapter(fbAdapter);
-
+                //add information to adapter
                 FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),fbList);
                 lv_foodbank.setAdapter(foodBankAdapterNew);
                 // refresh list view
@@ -128,7 +123,7 @@ public class FoodbankFragment extends Fragment {
         });
 
         //search button click
-/*        btn_search.setOnClickListener(new View.OnClickListener() {
+        btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //get location
@@ -138,21 +133,12 @@ public class FoodbankFragment extends Fragment {
 //                lv_foodbank.setAdapter(newAdapter);
 
             }
-        });*/
+        });
 
         // Handle item clicks in the ListView
         lv_foodbank.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                FoodBankInfo clickedFoodBankInfo = (FoodBankInfo) parent.getItemAtPosition(position);
-//                Intent detailIntent = new Intent(getActivity(), FoodBankProfileActivity.class);
-//
-//                //send foodbankinfo name
-//                Bundle bundle = new Bundle();
-//                bundle.putString("foodBankName", clickedFoodBankInfo.name);
-//                detailIntent.putExtras(bundle);
-//                startActivity(detailIntent);
-
                 FoodBank clickedFoodBank = (FoodBank) parent.getItemAtPosition(position);
                 Intent detailIntent = new Intent(getActivity(), FoodBankProfileActivity.class);
                 //send foodbank Information

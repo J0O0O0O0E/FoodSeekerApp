@@ -28,7 +28,7 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
         Bundle bundle = getIntent().getExtras();
 
         if (bundle != null) {
-            // 设置其他数据到TextView
+            // set data to textview
             ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString("fb_name"));
             ((TextView) findViewById(R.id.food_bank_phone)).setText(bundle.getString("fb_number"));
             ((TextView) findViewById(R.id.food_bank_email)).setText(bundle.getString("fb_email"));
