@@ -3,7 +3,6 @@ package com.example.myapplication.repository;
 import com.example.myapplication.model.FoodBank;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.example.myapplication.model.Location;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -11,7 +10,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-// Repository class for handling FoodBank data interactions
+/**
+ * Repository class for handling data interactions with FoodBank objects within a Firebase database.
+ * This class provides functionality to read, insert, update, and delete FoodBank data asynchronously.
+ * It uses Firebase's real-time database capabilities to manage data flow and inform interested components
+ * or activities through a callback interface once data operations are completed or if an error occurs.
+ *
+ * @package com.example.myapplication.repository
+ * @author Si Chen, Zijian Yang
+ */
 public class FoodBankRepository {
     // Firebase database instance
     private FirebaseDatabase database;
