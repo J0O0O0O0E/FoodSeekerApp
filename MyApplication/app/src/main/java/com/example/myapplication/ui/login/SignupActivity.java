@@ -18,12 +18,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,6 +76,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         String email = username.getText().toString().trim();
         String password = pw.getText().toString().trim();
+        UserRepository userRepository = UserRepository.getInstance();
 
         //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
@@ -82,17 +93,41 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         // Sign up with Firebase Authentication
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "createUserWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
-                    } else {
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(SignupActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        updateUI(null);
-                    }
-                });
+                            if (task.isSuccessful()) {
+
+                                Toast.makeText(SignupActivity.this, "User Created",
+                                        Toast.LENGTH_SHORT).show();
+
+                                Log.d(TAG, "createUserWithEmail:success");
+
+
+                                FirebaseUser user = mAuth.getCurrentUser();
+
+                                if (user != null) {
+                                    userRepository.createUserProfile(user);
+                                    updateUI(user);
+                                }
+                                else{
+                                    updateUI(null);
+                                }
+                            }
+                        }
+
+
+//                        assert user != null;
+//                        String emailAddress = user.getEmail();
+//                        Map<String, Object> userMap = new HashMap<>();
+//
+//                        userMap.put("contactNumber","");
+//                        userMap.put("email",emailAddress);
+//                        userMap.put("subscribedFoodBanks",new ArrayList<>());
+//                        userMap.put("userName","");
+//
+//                        UserRepository userRepository = new UserRepository();
+//                        FirebaseFirestore fireStore = userRepository.fStore;
+
+
+                    );
 
     }
 
