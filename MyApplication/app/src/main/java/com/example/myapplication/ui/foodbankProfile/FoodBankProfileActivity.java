@@ -3,6 +3,9 @@ package com.example.myapplication.ui.foodbankProfile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,24 +33,35 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
         if (bundle != null) {
             // set data to textview
             ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString("fb_name"));
-            ((TextView) findViewById(R.id.food_bank_phone)).setText(bundle.getString("fb_number"));
-            ((TextView) findViewById(R.id.food_bank_email)).setText(bundle.getString("fb_email"));
-            ((TextView) findViewById(R.id.food_bank_state)).setText(bundle.getString("fb_sate"));
-            ((TextView) findViewById(R.id.food_bank_open_hours)).setText(bundle.getString("fb_openHours"));
-            ((TextView) findViewById(R.id.food_bank_capacity)).setText(String.valueOf(bundle.getInt("fb_capacity")));
-            ((TextView) findViewById(R.id.food_bank_distance)).setText(String.valueOf(bundle.getDouble("fb_distance")));
-            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText(bundle.getString("fb_foundDate"));
+            ((TextView) findViewById(R.id.food_bank_phone)).setText("Number: " + bundle.getString("fb_number"));
+            ((TextView) findViewById(R.id.food_bank_email)).setText("Email : "+bundle.getString("fb_email"));
+            ((TextView) findViewById(R.id.food_bank_state)).setText("Status: "+bundle.getString("fb_sate"));
+            ((TextView) findViewById(R.id.food_bank_open_hours)).setText("Open hours: "+bundle.getString("fb_openHours"));
+            ((TextView) findViewById(R.id.food_bank_capacity)).setText("Capacity: "+String.valueOf(bundle.getInt("fb_capacity")));
+            ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: "+String.valueOf(bundle.getDouble("fb_distance")));
+            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Fundation Date: " + bundle.getString("fb_foundDate"));
 
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_bookmark = findViewById(R.id.iv_bookmark);
             ImageView iv_share = findViewById(R.id.iv_share);
+
+//            {test for gps}
+            WebView wv_map = findViewById(R.id.wv_map);
+            WebSettings webSettings = wv_map.getSettings();
+            webSettings.setJavaScriptEnabled(true); // Active JavaScript
+            wv_map.setWebViewClient(new WebViewClient()); // Prevent external browsers from opening links
+            double latitude = bundle.getDouble("fb_latitude");
+            double longitude = bundle.getDouble("fb_longitude");
+            String mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+            wv_map.loadUrl(mapUrl);
+
 
             iv_back.setOnClickListener(this);
             iv_bookmark.setOnClickListener(this);
             iv_share.setOnClickListener(this);
 
             // city street country
-            String location = String.format("%s , %s , %s ",
+            String location = "Location: " + String.format("%s , %s , %s ",
                     bundle.getString("fb_country"),
                     bundle.getString("fb_city"),
                     bundle.getString("fb_street")
