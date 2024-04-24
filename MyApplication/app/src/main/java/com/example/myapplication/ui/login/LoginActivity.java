@@ -37,16 +37,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnSignup;
     private EditText username,pw;
 
-    //check if the user is signed in
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            startActivity( new Intent(LoginActivity.this, MainActivity.class));
-//        }
-//    }
+//    check if the user is signed in
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            startActivity( new Intent(LoginActivity.this, MainActivity.class));
+        }
+    }
 
 
     @Override
