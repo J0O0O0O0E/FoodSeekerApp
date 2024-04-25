@@ -47,7 +47,11 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.activity)
     implementation(libs.legacy.support.v4)
-    implementation(libs.glide)
+    implementation(libs.room.common)
+    implementation(libs.room.runtime)
+    implementation(libs.core)
+    implementation(libs.firebase.database)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -69,15 +73,7 @@ dependencies {
     // For example, add the dependencies for Firebase Authentication and Cloud Firestore
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-storage:20.0.0")
-    implementation ("com.github.bumptech.glide:glide:4.13.0")
+    implementation("com.google.firebase:firebase-database")
 
-
-
-
-
-
-
-
-
+    annotationProcessor(libs.room.compiler)
 }
