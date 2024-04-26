@@ -10,14 +10,12 @@
     android:layout_marginRight="10dp"
     >
 
+<!--    {test output gps}-->
     <TextView
+        android:id="@+id/tv_gps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="use this to test the GPS location, it will be the location if work"></TextView>
-
-
-
-
 
 
     <!--    search bar start-->

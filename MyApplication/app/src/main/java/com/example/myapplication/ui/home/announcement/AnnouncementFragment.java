@@ -29,7 +29,7 @@ public class AnnouncementFragment extends Fragment {
 
 
         if (getArguments() != null) {
-            //getArgument 接受从主fragment通过navController 下放的bundle中储存的数据
+            // getArguments retrieves data passed using bundle from the main fragment via the NavController
             String title = getArguments().getString("title");
             String imageUrl = getArguments().getString("imageUrl");
             String detail = getArguments().getString("detail");
@@ -40,7 +40,7 @@ public class AnnouncementFragment extends Fragment {
             //https://www.reddit.com/r/Firebase/comments/jessg6/newline_n_not_working_while_loading_text_from/
             String displayText = detail.replace("\\n", "\n");
             detailView.setText(displayText);
-            // Use Glide o rsimilar library to load the image
+            // Use Glide to load the image
             Glide.with(this).load(imageUrl).into(imageView);
 
         }

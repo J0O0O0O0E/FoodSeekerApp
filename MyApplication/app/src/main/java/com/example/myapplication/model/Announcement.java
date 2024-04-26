@@ -12,10 +12,9 @@ public class Announcement {
     private Timestamp date;
 
     public Announcement() {
-        // Firestore需要空构造函数 应该是给toproject
+        // firestore requires a empty constructor
     }
 
-    // 如果属性名与Firestore中的字段名完全相同，就不需要@PropertyName注解
     public String getTitle() {
         return title;
     }

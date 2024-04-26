@@ -1,178 +1,51 @@
 package com.example.myapplication.model;
+/**
+ * Represents a food bank entity with detailed attributes relating to its operation, location,
+ * and food inventory. This class manages a food bank's data, including storage capacities,
+ * various types of food items it stocks (like pasta, bread, milk, etc.), and operational details
+ * such as opening hours and contact information. It also includes location-specific data like
+ * geographical coordinates, address details, and proximity to the user, facilitating mapping
+ * and location-based services. The class is designed to interact with systems that require details
+ * about food bank operations, logistic, analytic and UI integration in applications
+ * that aim to connect food banks with users.
+ *
+ * @package com.example.myapplication.model
+ * @author Zijian Yang
+ */
 
 public class FoodBank {
-    // Unique identifier
-    private int id;
-
-    // Name
-    private String name;
-
-    // Street address
-    private String street;
-
-    // City
-    private String city;
-
-    // State/Province
-    private String state;
-
-    // Postal code
-    private String postalCode;
-
-    // Country
-    private String country;
-
-
-    // Phone number
-    private String phoneNumber;
-
-    // Email address
-    private String email;
-
-    // Operating status
-    private boolean status;
-
-    // Opening hours
-    private String openHours;
-
-    // Capacity
     private int capacity;
-
-    // Uses a Location object to store location information
-    private Location location;
-
-    private double latitude;
-
-    private double longitude;
-
-    // Distance to user (meters)
-    private double distanceToUser;
-
-    // Foundation date
-    private String foundationDate;
-
+    private String country;
+    private String doe;
+    private String email;
     private int food1_pasta;
     private int food2_bread;
     private int food3_milk;
     private int food4_pie;
     private int food5_vet;
-
+    private int id;
+    private int index;
+    private double lat;
+    private double lon;
+    private String name;
+    private String open_hours;
+    private String postcode;
+    private String prefix;
     private double rating;
+    private String region;
+    private boolean status;
+    private String street;
+    private String suburb;
+    private String suffix;
+    private String tel;
+    private String unit_type;
+    // Uses a Location object to store location information
+    private Location location;
+    // Distance to user (meter)
+    private double distanceToUser;
 
     // Constructor
-
-
-    public FoodBank(int id, String name, String street, String city, String state, String postalCode, String country, String phoneNumber, String email, boolean status, String openHours, int capacity, double latitude, double longitude, String foundationDate, int food1_pasta, int food2_bread, int food3_milk, int food4_pie, int food5_vet, double rating) {
-        this.id = id;
-        this.name = name;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.status = status;
-        this.openHours = openHours;
-        this.capacity = capacity;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.foundationDate = foundationDate;
-        this.food1_pasta = food1_pasta;
-        this.food2_bread = food2_bread;
-        this.food3_milk = food3_milk;
-        this.food4_pie = food4_pie;
-        this.food5_vet = food5_vet;
-        this.rating = rating;
-        this.location = new Location(latitude, longitude);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getOpenHours() {
-        return openHours;
-    }
-
-    public void setOpenHours(String openHours) {
-        this.openHours = openHours;
+    public FoodBank() {
     }
 
     public int getCapacity() {
@@ -183,44 +56,28 @@ public class FoodBank {
         this.capacity = capacity;
     }
 
-    public Location getLocation() {
-        return location;
+    public String getCountry() {
+        return country;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public String getDoe() {
+        return doe;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setDoe(String doe) {
+        this.doe = doe;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getDistanceToUser() {
-        return distanceToUser;
-    }
-
-    public void setDistanceToUser(double distanceToUser) {
-        this.distanceToUser = distanceToUser;
-    }
-
-    public String getFoundationDate() {
-        return foundationDate;
-    }
-
-    public void setFoundationDate(String foundationDate) {
-        this.foundationDate = foundationDate;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getFood1_pasta() {
@@ -263,6 +120,70 @@ public class FoodBank {
         this.food5_vet = food5_vet;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getOpen_hours() {
+        return open_hours;
+    }
+
+    public void setOpen_hours(String open_hours) {
+        this.open_hours = open_hours;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
     public double getRating() {
         return rating;
     }
@@ -271,33 +192,76 @@ public class FoodBank {
         this.rating = rating;
     }
 
-    @Override
-    public String toString() {
-        return "FoodBank{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", street='" + street + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", country='" + country + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", status=" + status +
-                ", openHours='" + openHours + '\'' +
-                ", capacity=" + capacity +
-                ", location=" + location +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", distanceToUser=" + distanceToUser +
-                ", foundationDate='" + foundationDate + '\'' +
-                ", food1_pasta=" + food1_pasta +
-                ", food2_bread=" + food2_bread +
-                ", food3_milk=" + food3_milk +
-                ", food4_pie=" + food4_pie +
-                ", food5_vet=" + food5_vet +
-                ", rating=" + rating +
-                '}';
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getUnit_type() {
+        return unit_type;
+    }
+
+    public void setUnit_type(String unit_type) {
+        this.unit_type = unit_type;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public double getDistanceToUser() {
+        return distanceToUser;
+    }
+
+    public void setDistanceToUser(double distanceToUser) {
+        this.distanceToUser = distanceToUser;
     }
 }
 
