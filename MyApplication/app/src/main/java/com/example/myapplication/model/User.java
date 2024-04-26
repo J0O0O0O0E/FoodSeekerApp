@@ -56,8 +56,8 @@ public class User {
         return userName;
     }
 
-    public void addSubscribedFoodBank(String foodBankName){
-        subscribedFoodBanks.add(foodBankName);
+    public void addSubscribedFoodBank(String foodBankId){
+        subscribedFoodBanks.add(foodBankId);
     }
 
 
