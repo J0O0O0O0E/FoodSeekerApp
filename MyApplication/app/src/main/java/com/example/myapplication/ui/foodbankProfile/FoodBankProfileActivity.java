@@ -2,6 +2,7 @@ package com.example.myapplication.ui.foodbankProfile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -17,11 +18,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.model.User;
 
 public class FoodBankProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static int BOOKMARK_INDEX = 0;
     private static String shareMessage = "";
+    private static int foodBankId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,8 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
 
         //get data in bundle
         Bundle bundle = getIntent().getExtras();
+        foodBankId = bundle.getInt("fb_foodBankId");
+
 
         if (bundle != null) {
             // set data to textview
@@ -44,6 +49,9 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_bookmark = findViewById(R.id.iv_bookmark);
             ImageView iv_share = findViewById(R.id.iv_share);
+            ImageView iv_subscribe = findViewById(R.id.iv_subscribe);
+            TextView tvZ_test = findViewById(R.id.tv_test);
+
 
 //            {test for gps}
             WebView wv_map = findViewById(R.id.wv_map);
@@ -59,6 +67,9 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             iv_back.setOnClickListener(this);
             iv_bookmark.setOnClickListener(this);
             iv_share.setOnClickListener(this);
+            iv_subscribe.setOnClickListener(this);
+
+
 
             // city street country
             String location = "Location: " + String.format("%s , %s , %s ",
@@ -96,6 +107,11 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(intent, "Share via"));
+        } else if (v.getId()==R.id.iv_subscribe){
+            //get  subscribed fb id
+//          user.addSubscribedFoodBank(Integer.toString(foodBankId));
+
+
         }
     }
 }
