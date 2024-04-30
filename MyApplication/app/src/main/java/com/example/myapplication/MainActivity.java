@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 // Hide the bottom navigation bar when in the announcement fragment
                 navView.setVisibility(View.GONE);
                 //check if user try enter foodbank fragment
-            } else if(destination.getId() == R.id.navigation_foodbank){
+            }
+            else if(destination.getId() == R.id.navigation_foodbank){
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
                     controller.navigate(R.id.navigation_home);
@@ -59,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-            } else{
+            }
+            else{
                 // Show the bottom navigation bar for all other destinations
                 navView.setVisibility(View.VISIBLE);
             }

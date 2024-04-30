@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ import com.example.myapplication.adapter.FoodBankAdapterNew;
 import com.example.myapplication.databinding.FragmentFoodbankBinding;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
+import com.example.myapplication.utils.LocationChecker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,7 +88,7 @@ public class FoodbankFragment extends Fragment {
         if (location == null) {
             tv_gps.setText("location is empty");
         } else {
-            tv_gps.setText(Double.toString(location.getLatitude()) + "\n" + Double.toString(location.getLongitude()));
+            //tv_gps.setText(Double.toString(location.getLatitude()) + "\n" + Double.toString(location.getLongitude()));
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
@@ -95,6 +98,12 @@ public class FoodbankFragment extends Fragment {
         EditText ed_input = root.findViewById(R.id.et_input);
         Button btn_search = root.findViewById(R.id.btn_search);
         ListView lv_foodbank = root.findViewById(R.id.lv_foodbank);
+        Spinner sp_states = root.findViewById(R.id.sp_states);
+
+        ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(getContext(),R.layout.state_item_list, LocationChecker.getStateArray());
+        sp_states.setAdapter(stateAdapter);
+        sp_states.setSelection(0);
+
         // Initialize an empty list to hold FoodBank objects
         ArrayList<FoodBank> fbList = new ArrayList<>();
         // Observe changes in FoodBank data from the ViewModel
@@ -138,6 +147,23 @@ public class FoodbankFragment extends Fragment {
             }
         });
 
+        //Handle state select
+        sp_states.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //{test}
+                ArrayList<FoodBank> fbList2 = fbList;
+                fbList2 = LocationChecker.stateSelector(position,fbList2);
+                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),fbList2);
+                lv_foodbank.setAdapter(foodBankAdapterNew1);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // Handle item clicks in the ListView
         lv_foodbank.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -158,7 +184,7 @@ public class FoodbankFragment extends Fragment {
 
                 bundle.putString("fb_street", clickedFoodBank.getStreet());
                 bundle.putString("fb_city", clickedFoodBank.getSuburb());
-                bundle.putString("fb_postalCode", clickedFoodBank.getPostcode());
+                bundle.putString("fb_postCode", clickedFoodBank.getPostcode());
                 bundle.putString("fb_country", clickedFoodBank.getCountry());
                 bundle.putString("fb_openHours", clickedFoodBank.getOpen_hours());
                 bundle.putInt("fb_capacity",clickedFoodBank.getCapacity());

@@ -40,11 +40,12 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString("fb_name"));
             ((TextView) findViewById(R.id.food_bank_phone)).setText("Number: " + bundle.getString("fb_number"));
             ((TextView) findViewById(R.id.food_bank_email)).setText("Email : "+bundle.getString("fb_email"));
-            ((TextView) findViewById(R.id.food_bank_state)).setText("Status: "+bundle.getString("fb_sate"));
+            ((TextView) findViewById(R.id.food_bank_state)).setText("State: "+bundle.getString("fb_sate"));
             ((TextView) findViewById(R.id.food_bank_open_hours)).setText("Open hours: "+bundle.getString("fb_openHours"));
             ((TextView) findViewById(R.id.food_bank_capacity)).setText("Capacity: "+String.valueOf(bundle.getInt("fb_capacity")));
             ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: "+String.valueOf(bundle.getDouble("fb_distance")));
             ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Fundation Date: " + bundle.getString("fb_foundDate"));
+            ((TextView) findViewById(R.id.food_bank_postcode)).setText("Post code: " + bundle.getString( "fb_postCode"));
 
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_bookmark = findViewById(R.id.iv_bookmark);
