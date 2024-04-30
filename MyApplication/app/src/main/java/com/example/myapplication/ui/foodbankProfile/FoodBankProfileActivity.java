@@ -19,12 +19,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.User;
+import com.example.myapplication.repository.UserRepository;
 
 public class FoodBankProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static int BOOKMARK_INDEX = 0;
     private static String shareMessage = "";
     private static int foodBankId;
+
+    private User user = UserRepository.getInstance().getUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,11 +110,12 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(intent, "Share via"));
-        } else if (v.getId()==R.id.iv_subscribe){
-            //get  subscribed fb id
-//          user.addSubscribedFoodBank(Integer.toString(foodBankId));
-
-
+        } else if (v.getId() == R.id.iv_subscribe) {
+            if (!user.subscribedFoodBanks.contains(Integer.toString(foodBankId))) {
+                UserRepository.getInstance().addSubscribedFoodBanks(Integer.toString(foodBankId));
+            } else {
+                UserRepository.getInstance().removeSubscribedFoodBanks(Integer.toString(foodBankId));
+            }
         }
     }
 }
