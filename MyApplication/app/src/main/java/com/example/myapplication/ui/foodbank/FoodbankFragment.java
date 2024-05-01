@@ -31,6 +31,7 @@ import com.example.myapplication.adapter.FoodBankAdapterNew;
 import com.example.myapplication.databinding.FragmentFoodbankBinding;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
+import com.example.myapplication.utils.DevelopFoodbank;
 import com.example.myapplication.utils.LocationChecker;
 
 import java.util.ArrayList;
@@ -130,6 +131,10 @@ public class FoodbankFragment extends Fragment {
                         }
                     });
                 }
+
+                //{test}
+                DevelopFoodbank.foodbanks = fbList;
+                Log.d("test",DevelopFoodbank.searchId(204).getName());
 
                 //add information to adapter
                 FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),fbList);
