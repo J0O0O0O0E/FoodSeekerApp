@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -133,6 +134,34 @@ public class UserRepository {
                 })
                 .addOnFailureListener(e -> {
                     Log.e("UpdatedUser", "Error updating user name", e);
+                });
+
+    }
+
+    public void addSubscribedFoodBanks(String id){
+        Objects.requireNonNull(liveUser.getValue()).addSubscribedFoodBank(id);
+
+        fStore.collection("User").document(this.getUserEmail())
+                .update("subscribedFoodBanks", FieldValue.arrayUnion(id)).
+                addOnSuccessListener(aVoid -> {
+                    Log.d("UpdatedFoodBanks", "Food banks updated successfully.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UpdatedFoodBanks", "Error updating food banks", e);
+                });
+
+    }
+
+    public void removeSubscribedFoodBanks(String id){
+        Objects.requireNonNull(liveUser.getValue()).removeSubscribedFoodBank(id);
+
+        fStore.collection("User").document(this.getUserEmail())
+                .update("subscribedFoodBanks", FieldValue.arrayRemove(id)).
+                addOnSuccessListener(aVoid -> {
+                    Log.d("UpdatedFoodBanks", "Food banks updated successfully.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UpdatedFoodBanks", "Error updating food banks", e);
                 });
 
     }
