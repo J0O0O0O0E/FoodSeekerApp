@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,15 +16,18 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 import com.example.myapplication.databinding.FragmentProfileBinding;
 import com.example.myapplication.model.User;
 import com.example.myapplication.repository.UserRepository;
 import com.example.myapplication.ui.home.HomeViewModel;
+import com.example.myapplication.ui.subscribedFoodBanks.SubscribedFoodBanksActivity;
 
 import java.util.Objects;
 
@@ -125,6 +129,13 @@ public class ProfileFragment extends Fragment {
 
                 isContactNumberChanged = false;
             }
+        });
+
+        Button subscribedFoodBanksButton = root.findViewById(R.id.button);
+
+        subscribedFoodBanksButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SubscribedFoodBanksActivity.class);
+            startActivity(intent);
         });
 
 
