@@ -60,7 +60,9 @@ public class User {
         subscribedFoodBanks.add(foodBankId);
     }
 
-
+    public void removeSubscribedFoodBank(String foodBankId){
+        subscribedFoodBanks.remove(foodBankId);
+    }
 
 
 
