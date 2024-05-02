@@ -2,7 +2,6 @@ package com.example.myapplication.ui.foodbankProfile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,10 +17,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import com.example.myapplication.model.User;
 import com.example.myapplication.repository.UserRepository;
 
 public class FoodBankProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private BarChart barChart;
 
     private static int BOOKMARK_INDEX = 0;
     private static String shareMessage = "";
@@ -32,6 +43,9 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_bank_profile);
+
+        //initialize chart
+        barChart = findViewById(R.id.barChart);
 
         //get data in bundle
         Bundle bundle = getIntent().getExtras();
@@ -48,6 +62,10 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ((TextView) findViewById(R.id.food_bank_capacity)).setText("Capacity: "+String.valueOf(bundle.getInt("fb_capacity")));
             ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: "+String.valueOf(bundle.getDouble("fb_distance")));
             ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Fundation Date: " + bundle.getString("fb_foundDate"));
+
+            //creat the chart
+            setupBarChart(bundle);
+
 
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_bookmark = findViewById(R.id.iv_bookmark);
@@ -117,5 +135,34 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
                 UserRepository.getInstance().removeSubscribedFoodBanks(Integer.toString(foodBankId));
             }
         }
+    }
+
+    /**
+     * Sets up the bar chart with food quantities data.
+     *
+     * @param bundle The Bundle containing the food quantities data.
+     */
+    private void setupBarChart(Bundle bundle) {
+        // Create a list to hold the bar entries (x-axis value and y-axis value)
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(1, bundle.getInt("Pasta")));
+        entries.add(new BarEntry(2, bundle.getInt("Bread")));
+        entries.add(new BarEntry(3, bundle.getInt("Milk")));
+        entries.add(new BarEntry(4, bundle.getInt("Pie")));
+        entries.add(new BarEntry(5, bundle.getInt("Vegetable")));
+
+        BarDataSet dataSet = new BarDataSet(entries, "Food Quantities");
+        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        dataSet.setValueTextSize(12f);
+        String[] labels = new String[]{"Pasta", "Bread", "Milk", "Pie", "Vegetable"};
+
+        dataSet.setLabel(Arrays.toString(labels));
+
+        BarData data = new BarData(dataSet);
+
+        barChart.setData(data);
+        barChart.getDescription().setEnabled(false);
+        //refresh and display the data
+        barChart.invalidate();
     }
 }
