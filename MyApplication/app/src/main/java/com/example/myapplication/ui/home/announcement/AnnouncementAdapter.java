@@ -74,7 +74,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
     public void updateAnnouncements(List<Announcement> newAnnouncements) {
         newAnnouncements.sort((a1, a2) -> a2.getTimestamp().compareTo(a1.getTimestamp()));
         this.announcements = newAnnouncements;
-        notifyDataSetChanged();  // notify adapter that there is a change in data
+        notifyDataSetChanged();  // notify adapter that there is a    change in data
     }
 
 

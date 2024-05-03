@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.core)
     implementation(libs.firebase.database)
     implementation(libs.play.services.location)
+    implementation(libs.glide)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -75,6 +76,9 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage:20.0.0")
     implementation ("com.github.bumptech.glide:glide:4.13.0")
+    implementation("com.google.firebase:firebase-database")
+
+    annotationProcessor(libs.room.compiler)
 
 
 
