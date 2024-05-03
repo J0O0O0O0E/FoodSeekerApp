@@ -1,7 +1,7 @@
 package com.example.myapplication.tokenizer;
 
 public class Token {
-    public enum Type {NAME, KEYWORD, INT, COMPARISON}
+    public enum Type {NAME, KEYWORD, INT, COMPARISON,AND}
 
     static final String[] keyword = {"name", "capacity", "rating"};
     private final String token;
