@@ -71,7 +71,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-
+    public boolean containUpper(String str){
+        boolean flag = false;
+        for(int i = 0;i<str.length();i++){
+            if(Character.isUpperCase(str.charAt(i))){
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
     //https://stackoverflow.com/questions/12947620/email-address-validation-in-android-on-edittext
     public void onClick(View view) {
         String email = username.getText().toString().trim();
@@ -87,6 +96,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         // password length required by firebase
         if (password.length()<6){
             pw.setError("Length of password should be at least 6");
+            pw.requestFocus();
+            return;
+        }
+        // password must contain capital letters
+        if (!containUpper(password)){
+            pw.setError("Password must contain capital letters!");
             pw.requestFocus();
             return;
         }

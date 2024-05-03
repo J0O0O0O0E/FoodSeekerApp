@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+
 /**
  * LoginActivity is the activity responsible for user authentication.
  * This activity provides a user interface where users can login to the app.
@@ -85,6 +86,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     }
+    public boolean containUpper(String str){
+        boolean flag = false;
+        for(int i = 0;i<str.length();i++){
+            if(!Character.isUpperCase(str.charAt(i))){
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
 
     public void onClick(View view) {
         String email = username.getText().toString().trim();
@@ -92,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            username.setError("invalid email address");
+            username.setError("Invalid email address");
             username.requestFocus();
             return;
         }
@@ -102,6 +113,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             pw.requestFocus();
             return;
         }
+
+        // password must contain capital letters
+        if (!containUpper(password)){
+            pw.setError("Password must contain capital letters!");
+            pw.requestFocus();
+            return;
+        }
+
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
