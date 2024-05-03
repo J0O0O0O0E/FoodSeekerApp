@@ -10,7 +10,7 @@ import com.example.myapplication.repository.UserRepository;
 import java.util.Objects;
 
 public class ProfileViewModel extends ViewModel {
-    private final MutableLiveData<String> mText;
+//    private final MutableLiveData<String> mText;
 
     public static UserRepository userRepository;
 
@@ -22,16 +22,16 @@ public class ProfileViewModel extends ViewModel {
 
 
     public ProfileViewModel() {
-        mText = new MutableLiveData<>();
+//        mText = new MutableLiveData<>();
         userRepository = UserRepository.getInstance();
-        String profileName = userRepository.getUser().email;
-        mText.setValue(profileName);
+//        String profileName = userRepository.getUser().email;
+//        mText.setValue(profileName);
         user = userRepository.getUser();
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
+//    public LiveData<String> getText() {
+//        return mText;
+//    }
 
     public void updateUserName(String name){
         user.setUserName(name);
