@@ -38,5 +38,6 @@ public class TestAnnouncementRepository {
         MutableLiveData<List<Announcement>> liveData = (MutableLiveData<List<Announcement>>) repository.getAnnouncements();
         assertNotNull(liveData.getValue());
         assertTrue(liveData.getValue().isEmpty());
+
     }
 }
