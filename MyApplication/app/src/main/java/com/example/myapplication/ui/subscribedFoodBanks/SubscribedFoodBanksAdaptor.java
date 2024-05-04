@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.home.announcement.RecyclerViewInterface;
+import com.example.myapplication.ui.home.announcement.RecyclerViewClickInterface;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedF
 
     private List<String> foodBanksId;
 
-    private final RecyclerViewInterface recyclerViewInterface;
+    private final RecyclerViewClickInterface recyclerViewClickInterface;
 
-    public SubscribedFoodBanksAdaptor(Context context, List<String> foodBanksId, RecyclerViewInterface recyclerViewInterface) {
-        this.recyclerViewInterface = recyclerViewInterface;
+    public SubscribedFoodBanksAdaptor(Context context, List<String> foodBanksId, RecyclerViewClickInterface recyclerViewClickInterface) {
+        this.recyclerViewClickInterface = recyclerViewClickInterface;
         this.context = context;
         this.foodBanksId = foodBanksId;
 

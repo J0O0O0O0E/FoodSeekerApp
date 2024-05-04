@@ -18,18 +18,33 @@ import java.util.List;
 //https://www.youtube.com/watch?v=YgjYVbg1oiA
 
 
-
-//TODO: make it singleton!!!!!!!!!!!!!!!!
-
-
-
-
+/**
+ * A repository class to manage the retrieval and handling of announcement data
+ * from Firebase Firestore. This class follows the Singleton pattern to ensure
+ * only one instance of the repository is created throughout the application.
+ * <p>
+ * @author Zhi LI
+ * <p>
+ * Bibliography:
+ * - <a href="https://www.youtube.com/watch?v=YgjYVbg1oiA">...</a>
+ * - <a href="https://firebase.google.com/docs/firestore/query-data/listen">...</a>
+ * - <a href="https://www.youtube.com/watch?v=YgjYVbg1oiA">...</a>
+ */
 public class  AnnouncementRepository {
-    // Private variable 'db' for accessing the Firebase Firestore database
+
+    // Instance of FirebaseFirestore to interact with Firestore database
     private FirebaseFirestore db;
-    // Private variable 'announcementsLiveData', of type LiveData, to store and pass announcement data
+
+    // LiveData to store and update announcement data observed by the UI
     private MutableLiveData<List<Announcement>> announcementsLiveData;
 
+    // Singleton instance of the AnnouncementRepository
+    private static AnnouncementRepository instance;
+
+    /**
+     * Private constructor to initialize the Firestore instance and LiveData.
+     * Also, triggers loading of announcements from Firestore.
+     */
     public AnnouncementRepository() {
         db = FirebaseFirestore.getInstance();
         announcementsLiveData = new MutableLiveData<>();
@@ -37,29 +52,51 @@ public class  AnnouncementRepository {
         loadAnnouncements();
     }
 
-    // load data from Firestore in real time
-    private void loadAnnouncements() {
+    /**
+     * Provides the global access point for the AnnouncementRepository instance.
+     * If the instance doesn't exist, a new one is created.
+     *
+     * @return the singleton instance of AnnouncementRepository
+     */
+    public static AnnouncementRepository getInstance() {
+        if (instance == null) {
+            instance = new AnnouncementRepository();
+        }
+        return instance;
+    }
+
+    /**
+     * Loads announcements from the "Announcement" collection in Firestore in real-time.
+     * If any changes occur in the Firestore collection,
+     * the LiveData is updated using addSnapshotListener.
+     */    private void loadAnnouncements() {
         // Access the "Announcement" collection in the fb and add a real-time update listener
         db.collection("Announcement")
                 .addSnapshotListener((snapshots, e) -> {
                     // check if error
                     if (e != null) {
                         Log.e("AnnouncementRepo", "Error loading announcements, null", e);
-                        announcementsLiveData.setValue(null);
+                        announcementsLiveData.setValue(null);// Handle error by setting LiveData to null
                         return;
                     }
-                    // list of Announcement to store the transformed data
+                    // list of Announcement to store the data
                     List<Announcement> newAnnouncements = new ArrayList<>();
                     // Iterate over each document in the query snapshot
                     for (QueryDocumentSnapshot doc : snapshots) {
                         // Convert each document into an Announcement object and add it to the list
                         newAnnouncements.add(doc.toObject(Announcement.class));
                     }
-                    // Push the new list of announcements to LiveData, triggering the observer (observer pattern) update
+                    // Push the new list of announcements to LiveData, triggering the observer update
                     announcementsLiveData.postValue(newAnnouncements);
                 });
     }
 
+    /**
+     * Returns the LiveData containing the list of announcements. This allows UI components
+     * to observe changes and update accordingly.
+     *
+     * @return LiveData containing the current list of announcements
+     */
     public LiveData<List<Announcement>> getAnnouncements() {
         return announcementsLiveData;
     }
