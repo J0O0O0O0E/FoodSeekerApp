@@ -86,10 +86,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     }
-    public boolean containUpper(String str){
+    public boolean isValidEmail(String email){
+        return !((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
+    }
+
+    public boolean isLengthLessThan6(String psw){
+        return(psw.length() < 6);
+    }
+
+
+    public boolean containUpper(String psw){
         boolean flag = false;
-        for(int i = 0;i<str.length();i++){
-            if(!Character.isUpperCase(str.charAt(i))){
+        for(int i = 0;i<psw.length();i++){
+            if(!Character.isUpperCase(psw.charAt(i))){
                 flag = true;
                 break;
             }
@@ -102,18 +111,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = pw.getText().toString().trim();
 
         //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (isValidEmail(email)) {
             username.setError("Invalid email address");
             username.requestFocus();
             return;
         }
         // password length required by firebase
-        if (password.length() < 6) {
+        if (isLengthLessThan6(password)) {
             pw.setError("Length of password should be at least 6");
             pw.requestFocus();
             return;
         }
-
         // password must contain capital letters
         if (!containUpper(password)){
             pw.setError("Password must contain capital letters!");
