@@ -1,5 +1,7 @@
 package com.example.myapplication;
 import com.example.myapplication.ui.login.LoginActivity;
+import com.example.myapplication.ui.login.SignupActivity;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
@@ -50,7 +52,7 @@ public class TestSignupActivity {
 
 
 
-    private LoginActivity loginActivity;
+    private SignupActivity signupActivity;
 
 
     // By simulating the behavior of LoginActivity,
@@ -59,7 +61,7 @@ public class TestSignupActivity {
     // It also ensures certainty that the results will not be affected by other factors.
     @Before
     public void setup() {
-        loginActivity = mock(LoginActivity.class);
+        signupActivity = mock(SignupActivity.class);
 
         // Mock
         // Check if email is valid
@@ -67,10 +69,10 @@ public class TestSignupActivity {
         String[] correctEmails = {correct_email1, correct_email2, correct_email3, correct_email4, correct_email5, correct_email6};
 
         for (String email : falseEmails) {
-            when(loginActivity.isValidEmail(email)).thenReturn(false);
+            when(signupActivity.isValidEmail(email)).thenReturn(false);
         }
         for (String email : correctEmails) {
-            when(loginActivity.isValidEmail(email)).thenReturn(true);
+            when(signupActivity.isValidEmail(email)).thenReturn(true);
         }
 
         // Mock
@@ -79,10 +81,10 @@ public class TestSignupActivity {
         String[] longPsws = {long_psw1, long_psw2, long_psw3};
 
         for (String psw : shortPsws) {
-            when(loginActivity.isLengthLessThan6(psw)).thenReturn(true);
+            when(signupActivity.isLengthLessThan6(psw)).thenReturn(true);
         }
         for (String psw : longPsws) {
-            when(loginActivity.isLengthLessThan6(psw)).thenReturn(false);
+            when(signupActivity.isLengthLessThan6(psw)).thenReturn(false);
         }
 
         // Mock
@@ -91,10 +93,10 @@ public class TestSignupActivity {
         String[] correctPsws = {correct_psw1, correct_psw2, correct_psw3, correct_psw4, correct_psw5, correct_psw6};
 
         for (String psw : wrongPsws) {
-            when(loginActivity.containUpper(psw)).thenReturn(false);
+            when(signupActivity.containUpper(psw)).thenReturn(false);
         }
         for (String psw : correctPsws) {
-            when(loginActivity.containUpper(psw)).thenReturn(true);
+            when(signupActivity.containUpper(psw)).thenReturn(true);
         }
     }
 
@@ -102,52 +104,52 @@ public class TestSignupActivity {
     @Test
     public void testEmail() {
         // Use assert to test Email format
-        assertFalse("It is supposed to be a wrong email format", loginActivity.isValidEmail(false_email1));
-        assertFalse("It is supposed to be a wrong email format", loginActivity.isValidEmail(false_email2));
-        assertFalse("It is supposed to be a wrong email format", loginActivity.isValidEmail(false_email3));
-        assertFalse("It is supposed to be a wrong email format", loginActivity.isValidEmail(false_email4));
-        assertFalse("It is supposed to be a wrong email format", loginActivity.isValidEmail(false_email5));
-        assertFalse("It is supposed to be a wrong email format", loginActivity.isValidEmail(false_email6));
+        assertFalse("It is supposed to be a wrong email format", signupActivity.isValidEmail(false_email1));
+        assertFalse("It is supposed to be a wrong email format", signupActivity.isValidEmail(false_email2));
+        assertFalse("It is supposed to be a wrong email format", signupActivity.isValidEmail(false_email3));
+        assertFalse("It is supposed to be a wrong email format", signupActivity.isValidEmail(false_email4));
+        assertFalse("It is supposed to be a wrong email format", signupActivity.isValidEmail(false_email5));
+        assertFalse("It is supposed to be a wrong email format", signupActivity.isValidEmail(false_email6));
 
-        assertTrue("It is supposed to be a correct email format", loginActivity.isValidEmail(correct_email1));
-        assertTrue("It is supposed to be a correct email format", loginActivity.isValidEmail(correct_email2));
-        assertTrue("It is supposed to be a correct email format", loginActivity.isValidEmail(correct_email3));
-        assertTrue("It is supposed to be a correct email format", loginActivity.isValidEmail(correct_email4));
-        assertTrue("It is supposed to be a correct email format", loginActivity.isValidEmail(correct_email5));
-        assertTrue("It is supposed to be a correct email format", loginActivity.isValidEmail(correct_email6));
+        assertTrue("It is supposed to be a correct email format", signupActivity.isValidEmail(correct_email1));
+        assertTrue("It is supposed to be a correct email format", signupActivity.isValidEmail(correct_email2));
+        assertTrue("It is supposed to be a correct email format", signupActivity.isValidEmail(correct_email3));
+        assertTrue("It is supposed to be a correct email format", signupActivity.isValidEmail(correct_email4));
+        assertTrue("It is supposed to be a correct email format", signupActivity.isValidEmail(correct_email5));
+        assertTrue("It is supposed to be a correct email format", signupActivity.isValidEmail(correct_email6));
     }
 
     @Test
     public void testPasswordLength(){
         //Use assert to test Password Length
-        assertTrue("Expected: password length < 6 Actual: Method returned false", loginActivity.isLengthLessThan6(short_psw1));
-        assertTrue("Expected: password length < 6 Actual: Method returned false", loginActivity.isLengthLessThan6(short_psw2));
-        assertTrue("Expected: password length < 6 Actual: Method returned false", loginActivity.isLengthLessThan6(short_psw3));
-        assertTrue("Expected: password length < 6 Actual: Method returned false", loginActivity.isLengthLessThan6(short_psw4));
-        assertTrue("Expected: password length < 6 Actual: Method returned false", loginActivity.isLengthLessThan6(short_psw5));
-        assertTrue("Expected: password length < 6 Actual: Method returned false", loginActivity.isLengthLessThan6(short_psw6));
+        assertTrue("Expected: password length < 6 Actual: Method returned false", signupActivity.isLengthLessThan6(short_psw1));
+        assertTrue("Expected: password length < 6 Actual: Method returned false", signupActivity.isLengthLessThan6(short_psw2));
+        assertTrue("Expected: password length < 6 Actual: Method returned false", signupActivity.isLengthLessThan6(short_psw3));
+        assertTrue("Expected: password length < 6 Actual: Method returned false", signupActivity.isLengthLessThan6(short_psw4));
+        assertTrue("Expected: password length < 6 Actual: Method returned false", signupActivity.isLengthLessThan6(short_psw5));
+        assertTrue("Expected: password length < 6 Actual: Method returned false", signupActivity.isLengthLessThan6(short_psw6));
 
-        assertFalse("Expected: password length > 6 actual: Method returned true", loginActivity.isLengthLessThan6(long_psw1));
-        assertFalse("Expected: password length > 6 actual: Method returned true", loginActivity.isLengthLessThan6(long_psw2));
-        assertFalse("Expected: password length > 6 actual: Method returned true", loginActivity.isLengthLessThan6(long_psw3));
+        assertFalse("Expected: password length > 6 actual: Method returned true", signupActivity.isLengthLessThan6(long_psw1));
+        assertFalse("Expected: password length > 6 actual: Method returned true", signupActivity.isLengthLessThan6(long_psw2));
+        assertFalse("Expected: password length > 6 actual: Method returned true", signupActivity.isLengthLessThan6(long_psw3));
     }
 
     @Test
     public void testPasswordCapital(){
         //Use assert to test Password Capital
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw1));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw2));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw3));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw4));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw5));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw6));
+        assertFalse("Expected: password does not contain capital Actual: Method return true", signupActivity.containUpper(wrong_psw1));
+        assertFalse("Expected: password does not contain capital Actual: Method return true", signupActivity.containUpper(wrong_psw2));
+        assertFalse("Expected: password does not contain capital Actual: Method return true", signupActivity.containUpper(wrong_psw3));
+        assertFalse("Expected: password does not contain capital Actual: Method return true", signupActivity.containUpper(wrong_psw4));
+        assertFalse("Expected: password does not contain capital Actual: Method return true", signupActivity.containUpper(wrong_psw5));
+        assertFalse("Expected: password does not contain capital Actual: Method return true", signupActivity.containUpper(wrong_psw6));
 
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw1));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw2));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw3));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw4));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw5));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw6));
+        assertTrue("Expected: password contains capital Actual: Method return False", signupActivity.containUpper(correct_psw1));
+        assertTrue("Expected: password contains capital Actual: Method return False", signupActivity.containUpper(correct_psw2));
+        assertTrue("Expected: password contains capital Actual: Method return False", signupActivity.containUpper(correct_psw3));
+        assertTrue("Expected: password contains capital Actual: Method return False", signupActivity.containUpper(correct_psw4));
+        assertTrue("Expected: password contains capital Actual: Method return False", signupActivity.containUpper(correct_psw5));
+        assertTrue("Expected: password contains capital Actual: Method return False", signupActivity.containUpper(correct_psw6));
     }
 
 
