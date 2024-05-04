@@ -38,7 +38,7 @@ public class  AnnouncementRepository {
     }
 
     // load data from Firestore in real time
-    private void loadAnnouncements() {
+    public void loadAnnouncements() {
         // Access the "Announcement" collection in the fb and add a real-time update listener
         db.collection("Announcement")
                 .addSnapshotListener((snapshots, e) -> {
