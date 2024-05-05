@@ -57,6 +57,8 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    implementation (libs.constraintlayout)
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
 
 
 
@@ -79,6 +81,8 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
 
     annotationProcessor(libs.room.compiler)
+
+
 
 
 
