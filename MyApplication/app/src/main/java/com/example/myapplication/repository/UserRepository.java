@@ -15,57 +15,60 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class UserRepository {
 
     private static UserRepository instance;
     public FirebaseAuth mAuth;
     public FirebaseFirestore fStore;
-
     public FirebaseUser currentUser;
-
     public MutableLiveData<User> liveUser;
-
-
-
-
+    private final Lock lock = new ReentrantLock();
 
     private UserRepository(){
         this.mAuth = FirebaseAuth.getInstance();
         this.fStore = FirebaseFirestore.getInstance();
         this.currentUser = mAuth.getCurrentUser();
-
+        this.liveUser = new MutableLiveData<>();
     }
 
-    public static synchronized UserRepository getInstance() {
+    public static UserRepository getInstance() {
         if (instance == null) {
-            instance = new UserRepository();
+            synchronized (UserRepository.class) {
+                if (instance == null) {
+                    instance = new UserRepository();
+                }
+            }
         }
         return instance;
     }
-
 
     public void loadUser(){
         if(currentUser != null){
             String email = currentUser.getEmail();
             assert email != null;
-            fStore.collection("User").
-                    document(email).get()
+            fStore.collection("User").document(email).get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             User user = documentSnapshot.toObject(User.class);
                             if(user != null){
-                                liveUser = new MutableLiveData<>();
-                                liveUser.setValue(user);
-
-                            }else {
+                                lock.lock();
+                                try {
+                                    liveUser.setValue(user);
+                                } finally {
+                                    lock.unlock();
+                                }
+                            } else {
                                 Log.d(TAG, "No user data found in FireStore for ID: " + currentUser.getEmail());
                             }
                         }
@@ -73,10 +76,10 @@ public class UserRepository {
         }
     }
 
-
     public void createUserProfile(FirebaseUser user) {
         String emailAddress = user.getEmail();
         Map<String, Object> userMap = new HashMap<>();
+        userMap.put("author", false);
         userMap.put("contactNumber", "");
         userMap.put("email", emailAddress);
         userMap.put("subscribedFoodBanks", new ArrayList<>());
@@ -91,54 +94,107 @@ public class UserRepository {
     }
 
     public void setUser(FirebaseUser firebaseUser){
-        this.currentUser=firebaseUser;
-
+        lock.lock();
+        try {
+            this.currentUser = firebaseUser;
+        } finally {
+            lock.unlock();
+        }
     }
-
 
     public LiveData<User> getLiveUser(){
         return liveUser;
     }
 
     public User getUser(){
-        return liveUser.getValue();
+        lock.lock();
+        try {
+            return liveUser.getValue();
+        } finally {
+            lock.unlock();
+        }
     }
 
-
     public String getUserEmail(){
-        return Objects.requireNonNull(liveUser.getValue()).getEmail();
+        lock.lock();
+        try {
+            return Objects.requireNonNull(liveUser.getValue()).getEmail();
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void updateUserName(String name){
-        Objects.requireNonNull(liveUser.getValue()).setUserName(name);
+        lock.lock();
+        try {
+            Objects.requireNonNull(liveUser.getValue()).setUserName(name);
 
-        fStore.collection("User").document(this.getUserEmail())
-                .update("userName",this.getUser().getUserName()).
-                addOnSuccessListener(aVoid -> {
-                    Log.d("UpdatedUser", "User name updated successfully.");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("UpdatedUser", "Error updating user name", e);
-                });
-
+            fStore.collection("User").document(this.getUserEmail())
+                    .update("userName", this.getUser().getUserName())
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("UpdatedUser", "User name updated successfully.");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("UpdatedUser", "Error updating user name", e);
+                    });
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void updateContactNumber(String number){
-        Objects.requireNonNull(liveUser.getValue()).setContactNumber(number);
+        lock.lock();
+        try {
+            Objects.requireNonNull(liveUser.getValue()).setContactNumber(number);
 
-        fStore.collection("User").document(this.getUserEmail())
-                .update("contactNumber",this.getUser().getContactNumber()).
-                addOnSuccessListener(aVoid -> {
-                    Log.d("UpdatedUser", "User name updated successfully.");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("UpdatedUser", "Error updating user name", e);
-                });
-
+            fStore.collection("User").document(this.getUserEmail())
+                    .update("contactNumber", this.getUser().getContactNumber())
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("UpdatedUser", "Contact number updated successfully.");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("UpdatedUser", "Error updating contact number", e);
+                    });
+        } finally {
+            lock.unlock();
+        }
     }
 
+    public void addSubscribedFoodBanks(String id){
+        lock.lock();
+        try {
+            Objects.requireNonNull(liveUser.getValue()).addSubscribedFoodBank(id);
 
+            fStore.collection("User").document(this.getUserEmail())
+                    .update("subscribedFoodBanks", FieldValue.arrayUnion(id))
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("UpdatedFoodBanks", "Food banks updated successfully.");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("UpdatedFoodBanks", "Error updating food banks", e);
+                    });
+        } finally {
+            lock.unlock();
+        }
+    }
 
+    public void removeSubscribedFoodBanks(String id){
+        lock.lock();
+        try {
+            Objects.requireNonNull(liveUser.getValue()).removeSubscribedFoodBank(id);
+
+            fStore.collection("User").document(getUserEmail())
+                    .update("subscribedFoodBanks", FieldValue.arrayRemove(id))
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("UpdatedFoodBanks", "Food banks updated successfully.");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("UpdatedFoodBanks", "Error updating food banks", e);
+                    });
+        } finally {
+            lock.unlock();
+        }
+    }
 
 
 

@@ -158,8 +158,19 @@ public class FoodbankFragment extends Fragment {
                 bundle.putDouble("fb_distance", clickedFoodBank.getDistanceToUser());
                 bundle.putString("fb_foundDate", clickedFoodBank.getDoe());
 
+
+                // Add food quantities
+                bundle.putInt("Pasta", clickedFoodBank.getFood1_pasta());
+                bundle.putInt("Bread", clickedFoodBank.getFood2_bread());
+                bundle.putInt("Milk", clickedFoodBank.getFood3_milk());
+                bundle.putInt("Pie", clickedFoodBank.getFood4_pie());
+                bundle.putInt("Vegetable", clickedFoodBank.getFood5_vet());
+
                 bundle.putDouble("fb_latitude",clickedFoodBank.getLat());
                 bundle.putDouble("fb_longitude",clickedFoodBank.getLon());
+                bundle.putInt("fb_foodBankId",clickedFoodBank.getId());
+
+
                 detailIntent.putExtras(bundle);
                 startActivity(detailIntent);
             }
