@@ -85,6 +85,7 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
 
     // Returns the total number of announcements.
+    // Used by recycle view
     @Override
     public int getItemCount() {
         return announcements.size();
@@ -96,7 +97,8 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
      * Updates the list of announcements in the RecyclerView.
      *
      * @param newAnnouncements The new list of announcements.
-     */    public void updateAnnouncements(List<Announcement> newAnnouncements) {
+     */
+    public void updateAnnouncements(List<Announcement> newAnnouncements) {
         // Sorts announcements by timestamp and notifies the adapter of the change.
         newAnnouncements.sort((a1, a2) -> a2.getTimestamp().compareTo(a1.getTimestamp()));
         this.announcements = newAnnouncements;

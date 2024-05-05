@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickInterface
             // Sort announcements by timestamp and update the RecyclerView.
             if (adapter == null) {
                 announcements.sort((a1, a2) -> a2.getTimestamp().compareTo(a1.getTimestamp()));
-                adapter = new AnnouncementAdapter(getContext(), announcements, this);
+                adapter = new  AnnouncementAdapter(getContext(), announcements, this);
                 recyclerView.setAdapter(adapter);
             } else {
                 adapter.updateAnnouncements(announcements);
