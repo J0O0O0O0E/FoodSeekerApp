@@ -11,18 +11,29 @@
     >
 
 <!--    {test output gps}-->
-    <TextView
-        android:id="@+id/tv_gps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="use this to test the GPS location, it will be the location if work"></TextView>
-
+<!--    <TextView-->
+<!--        android:id="@+id/tv_gps"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="use this to test the GPS location, it will be the location if work"></TextView>-->
 
     <!--    search bar start-->
+
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="70dp"
+        android:text="input name or 'distance/capacity/rating &gt;&lt;= integer'"
+        android:textColor=" #696969"
+        android:layout_marginLeft="5dp"
+        ></TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <Spinner
@@ -40,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:hint="search foodbank"
+            android:hint=""
             android:inputType="text"></EditText>
 
         <Button

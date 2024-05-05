@@ -30,13 +30,18 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.FoodBankAdapterNew;
 import com.example.myapplication.databinding.FragmentFoodbankBinding;
 import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.parser.FoodBankParser;
+import com.example.myapplication.tokenizer.MainTokenizer;
+import com.example.myapplication.tokenizer.Token;
 import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
 import com.example.myapplication.utils.DevelopFoodbank;
 import com.example.myapplication.utils.LocationChecker;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * A Fragment representing a list of Food Banks within the application.
@@ -69,7 +74,7 @@ public class FoodbankFragment extends Fragment {
 
 
         // Find the TextView for displaying GPS coordinates
-        TextView tv_gps = root.findViewById(R.id.tv_gps);
+//        TextView tv_gps = root.findViewById(R.id.tv_gps);
         // Get the system LocationManager to retrieve GPS location
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -87,7 +92,7 @@ public class FoodbankFragment extends Fragment {
         double longitude = location.getLongitude();
         // Display the location coordinates if available, otherwise show error message
         if (location == null) {
-            tv_gps.setText("location is empty");
+//            tv_gps.setText("location is empty");
         } else {
             //tv_gps.setText(Double.toString(location.getLatitude()) + "\n" + Double.toString(location.getLongitude()));
             latitude = location.getLatitude();
@@ -107,6 +112,9 @@ public class FoodbankFragment extends Fragment {
 
         // Initialize an empty list to hold FoodBank objects
         ArrayList<FoodBank> fbList = new ArrayList<>();
+        final ArrayList<FoodBank> localFoodBankList = new ArrayList<>();
+        //{test}
+        final FoodBankAdapterNew foodBankAdapterNew3 = new FoodBankAdapterNew(getContext(),new ArrayList<FoodBank>());
         // Observe changes in FoodBank data from the ViewModel
         foodbankViewModel.getFoodBanksLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<FoodBank>>() {
             @Override
@@ -133,11 +141,14 @@ public class FoodbankFragment extends Fragment {
                 }
 
                 //{test}
-                DevelopFoodbank.foodbanks = fbList;
-                Log.d("test",DevelopFoodbank.searchId(204).getName());
+//                DevelopFoodbank.foodbanks = fbList;
+//                Log.d("test",DevelopFoodbank.searchId(204).getName());
 
+                for (FoodBank foodBank : fbList) {
+                    localFoodBankList.add(foodBank);
+                }
                 //add information to adapter
-                FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),fbList);
+                FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),localFoodBankList);
                 lv_foodbank.setAdapter(foodBankAdapterNew);
                 // refresh list view
             }
@@ -147,6 +158,29 @@ public class FoodbankFragment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //read the input text and clear it
+                String input = ed_input.getText().toString();
+                //ed_input.setText("");
+
+                //call method and get a foodbank list
+                if(input==null||input.trim().isEmpty()){
+                    Snackbar.make(getView(), "Empty input!", Snackbar.LENGTH_SHORT).show();
+                }else{
+                    MainTokenizer tokenizer = new MainTokenizer(input);
+                    List<Token> tokens = tokenizer.getAllTokens();
+
+                    //{test: print log}
+                    for (Token token : tokens) {
+                        Log.d("test",token.toString());
+                    }
+                    for (int i = 0; i < 20; i++) {
+                        Log.d("test","test");
+                    }
+
+                    ArrayList<FoodBank> results = FoodBankParser.filterFoodBanks(tokens, localFoodBankList);
+                    FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),results);
+                    lv_foodbank.setAdapter(foodBankAdapterNew);
+                }
 
 
             }
@@ -157,10 +191,26 @@ public class FoodbankFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //{test}
-                ArrayList<FoodBank> fbList2 = fbList;
-                fbList2 = LocationChecker.stateSelector(position,fbList2);
-                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),fbList2);
+//                ArrayList<FoodBank> fbList2 = fbList;
+//                fbList2 = LocationChecker.stateSelector(position,fbList2);
+//                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),fbList2);
+//                lv_foodbank.setAdapter(foodBankAdapterNew1);
+
+                localFoodBankList.clear();
+                for (FoodBank foodBank : LocationChecker.stateSelector(position, fbList)) {
+                    localFoodBankList.add(foodBank);
+                }
+                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),localFoodBankList);
                 lv_foodbank.setAdapter(foodBankAdapterNew1);
+
+
+//                ArrayList<FoodBank> fbList2 = fbList;
+//                fbList2 = LocationChecker.stateSelector(position,fbList2);
+//                localFoodBankList.clear();
+//
+//
+//                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),fbList2);
+//                lv_foodbank.setAdapter(foodBankAdapterNew1);
             }
 
             @Override
