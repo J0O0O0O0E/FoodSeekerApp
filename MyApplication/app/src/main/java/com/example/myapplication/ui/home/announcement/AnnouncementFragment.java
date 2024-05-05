@@ -14,6 +14,18 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 
+/**
+ * A Fragment subclass used to display details of an announcement.
+ * This fragment retrieves announcement data passed through a Bundle and
+ * displays it, including handling images with Glide and formatting text.
+ * <p>
+ * @author Zhi LI
+ * <p>
+ * Bibliography:
+ * - <a href="https://www.techyourchance.com/android-fragment-lifecycle/">...</a>
+ * - <a href="https://developer.android.com/reference/android/app/Fragment#onCreateView(android.view.LayoutInflater,%20android.view.ViewGroup,%20android.os.Bundle)">...</a>
+ * - <a href="https://www.reddit.com/r/Firebase/comments/jessg6/newline_n_not_working_while_loading_text_from/">...</a>
+ */
 public class AnnouncementFragment extends Fragment {
 
     @Nullable
@@ -27,7 +39,7 @@ public class AnnouncementFragment extends Fragment {
         TextView detailView = view.findViewById(R.id.detail_text);
         TextView dateView = view.findViewById(R.id.date_text);
 
-
+        // Check for arguments passed to this fragment and update the UI accordingly
         if (getArguments() != null) {
             // getArguments retrieves data passed using bundle from the main fragment via the NavController
             String title = getArguments().getString("title");
@@ -37,10 +49,12 @@ public class AnnouncementFragment extends Fragment {
             titleView.setText(title);
             dateView.setText(date);
 
+            // Handle special text formatting issues, specifically the newline character problem
+            // sourced from Firestore data
             //https://www.reddit.com/r/Firebase/comments/jessg6/newline_n_not_working_while_loading_text_from/
             String displayText = detail.replace("\\n", "\n");
             detailView.setText(displayText);
-            // Use Glide to load the image
+            // Load the image using Glide into the ImageView
             Glide.with(this).load(imageUrl).into(imageView);
 
         }

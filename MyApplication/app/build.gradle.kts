@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.play.services.location)
     implementation(libs.glide)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -60,6 +61,7 @@ dependencies {
     //testImplementation("'org.robolectric:robolectric:4.7.3'")
     testImplementation("org.mockito:mockito-core:4.7.0")
     androidTestImplementation("org.mockito:mockito-android:4.7.0")
+
 
 
 
