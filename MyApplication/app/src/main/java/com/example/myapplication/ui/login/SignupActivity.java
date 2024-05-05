@@ -71,7 +71,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
     public boolean isValidEmail(String email){
-        return ((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
+        return !((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
     }
 
     public boolean isLengthLessThan6(String psw){
@@ -94,7 +94,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         UserRepository userRepository = UserRepository.getInstance();
 
         //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
-        if (isValidEmail(email)){
+        if (!isValidEmail(email)){
             username.setError("invalid email address");
             username.requestFocus();
             return;
