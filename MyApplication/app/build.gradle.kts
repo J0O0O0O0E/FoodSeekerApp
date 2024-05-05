@@ -57,6 +57,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+//  For unit test
+    //testImplementation("'org.robolectric:robolectric:4.7.3'")
+    testImplementation("org.mockito:mockito-core:4.7.0")
+    androidTestImplementation("org.mockito:mockito-android:4.7.0")
 
 
 
