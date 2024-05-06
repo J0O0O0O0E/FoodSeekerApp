@@ -118,11 +118,14 @@ public class HomeFragment extends Fragment implements RecyclerViewClickInterface
     public void onDestroyView() {
         super.onDestroyView();
         if (fab != null) {
-            fab.setOnClickListener(null);
+//            fab.setOnClickListener(null);
         }
         if (recyclerView != null) {
             recyclerView.setAdapter(null);
         }
+        viewModel = null;
+        adapter = null;
+
     }
 
 
