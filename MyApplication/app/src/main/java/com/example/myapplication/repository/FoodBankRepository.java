@@ -111,5 +111,22 @@ public class FoodBankRepository {
             }
         });
     }
+    //TODO getfoodbank by id
+    public FoodBank getFoodBankById(int id){
+        if (foodBanks.size()==0){
+            System.out.println("Please load foodbanks from database before u use this method.");
+            return null;
+        }
+        else {
+            for (FoodBank foodBank:
+                 foodBanks) {
+                if (foodBank.getId()==id){
+                    return foodBank;
+                }
+            }
+            System.out.println("No such id");
+            return null;
+        }
+    }
 }
 
