@@ -68,6 +68,8 @@ public class FoodBankParser {
                 return attributeValue > value;
             case "=":
                 return Math.abs(attributeValue - value) < EPSILON; // 使用误差范围来判断相等性
+            case "<":
+                return attributeValue < value;
             default:
                 throw new IllegalArgumentException("Unsupported operator: " + operator);
         }

@@ -113,6 +113,9 @@ public class FoodbankFragment extends Fragment {
         // Initialize an empty list to hold FoodBank objects
         ArrayList<FoodBank> fbList = new ArrayList<>();
         final ArrayList<FoodBank> localFoodBankList = new ArrayList<>();
+        final List<Integer> localPosition = new ArrayList<>();
+        localPosition.add(0);
+
         //{test}
         final FoodBankAdapterNew foodBankAdapterNew3 = new FoodBankAdapterNew(getContext(),new ArrayList<FoodBank>());
         // Observe changes in FoodBank data from the ViewModel
@@ -164,8 +167,20 @@ public class FoodbankFragment extends Fragment {
 
                 //call method and get a foodbank list
                 if(input==null||input.trim().isEmpty()){
-                    Snackbar.make(getView(), "Empty input!", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "Input is empty!", Snackbar.LENGTH_SHORT).show();
+                    localFoodBankList.clear();
+                    for (FoodBank foodBank : fbList) {
+                        localFoodBankList.add(foodBank);
+                    }
+
+
+
+
                 }else{
+                    // TODO synax errot
+                    // if () {
+
+
                     MainTokenizer tokenizer = new MainTokenizer(input);
                     List<Token> tokens = tokenizer.getAllTokens();
 
@@ -177,10 +192,22 @@ public class FoodbankFragment extends Fragment {
                         Log.d("test","test");
                     }
 
-                    ArrayList<FoodBank> results = FoodBankParser.filterFoodBanks(tokens, localFoodBankList);
+                        //{1.0}
+//                    ArrayList<FoodBank> results = FoodBankParser.filterFoodBanks(tokens, localFoodBankList);
+//                    FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),results);
+//                    lv_foodbank.setAdapter(foodBankAdapterNew);
+
+                    localFoodBankList.clear();
+                    for (FoodBank foodBank : FoodBankParser.filterFoodBanks(tokens, fbList)) {
+                        localFoodBankList.add(foodBank);
+                    }
+                }
+                    // read current filter
+                    ArrayList<FoodBank> results = LocationChecker.stateSelector(localPosition.get(0), localFoodBankList);
                     FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),results);
                     lv_foodbank.setAdapter(foodBankAdapterNew);
-                }
+
+
 
 
             }
@@ -190,18 +217,28 @@ public class FoodbankFragment extends Fragment {
         sp_states.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                localPosition.clear();
+                localPosition.add(position);
                 //{test}
 //                ArrayList<FoodBank> fbList2 = fbList;
 //                fbList2 = LocationChecker.stateSelector(position,fbList2);
 //                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),fbList2);
 //                lv_foodbank.setAdapter(foodBankAdapterNew1);
 
-                localFoodBankList.clear();
-                for (FoodBank foodBank : LocationChecker.stateSelector(position, fbList)) {
-                    localFoodBankList.add(foodBank);
-                }
-                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),localFoodBankList);
+                //{v 1.0}
+//                localFoodBankList.clear();
+//                for (FoodBank foodBank : LocationChecker.stateSelector(position, fbList)) {
+//                    localFoodBankList.add(foodBank);
+//                }
+//                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),localFoodBankList);
+//                lv_foodbank.setAdapter(foodBankAdapterNew1);
+
+
+
+                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),LocationChecker.stateSelector(position, localFoodBankList));
                 lv_foodbank.setAdapter(foodBankAdapterNew1);
+
+
 
 
 //                ArrayList<FoodBank> fbList2 = fbList;

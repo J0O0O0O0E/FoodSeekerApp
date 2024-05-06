@@ -48,7 +48,6 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ((TextView) findViewById(R.id.food_bank_postcode)).setText("Post code: " + bundle.getString( "fb_postCode"));
 
             ImageView iv_back = findViewById(R.id.iv_back);
-            ImageView iv_bookmark = findViewById(R.id.iv_bookmark);
             ImageView iv_share = findViewById(R.id.iv_share);
             ImageView iv_subscribe = findViewById(R.id.iv_subscribe);
             TextView tvZ_test = findViewById(R.id.tv_test);
@@ -66,7 +65,6 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
 
 
             iv_back.setOnClickListener(this);
-            iv_bookmark.setOnClickListener(this);
             iv_share.setOnClickListener(this);
             iv_subscribe.setOnClickListener(this);
 
@@ -92,16 +90,6 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         if(v.getId()==R.id.iv_back){
             finish();
-        } else if (v.getId()==R.id.iv_bookmark) {
-            if(BOOKMARK_INDEX == 0){
-                BOOKMARK_INDEX = 1;
-                ImageView iv = findViewById(R.id.iv_bookmark);
-                iv.setImageResource(R.drawable.baseline_bookmark_added_24);
-            }else{
-                BOOKMARK_INDEX = 0;
-                ImageView iv = findViewById(R.id.iv_bookmark);
-                iv.setImageResource(R.drawable.baseline_bookmark_add_24);
-            }
         } else if (v.getId()==R.id.iv_share) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
