@@ -23,11 +23,12 @@
     <TextView
         android:id="@+id/tv_tip"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="40dp"
         android:layout_marginTop="70dp"
-        android:text="input name or 'distance/capacity/rating &gt;&lt;= integer'"
+        android:text="input name or input 'distance/capacity/rating &gt;&lt;= integer'"
         android:textColor=" #696969"
         android:layout_marginLeft="5dp"
+
         ></TextView>
 
     <LinearLayout

@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.foodbank;
 
+import static com.example.myapplication.ui.foodbank.FoodbankViewModel.searchFoodBankByName;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -167,30 +169,35 @@ public class FoodbankFragment extends Fragment {
 
                 //call method and get a foodbank list
                 if(input==null||input.trim().isEmpty()){
+                    //if input is null, reset the search result
                     Snackbar.make(getView(), "Input is empty!", Snackbar.LENGTH_SHORT).show();
                     localFoodBankList.clear();
                     for (FoodBank foodBank : fbList) {
                         localFoodBankList.add(foodBank);
                     }
 
+                }else if(FoodbankViewModel.containsOnlyEnglishDigitsAndSpace(input)) {
+                    localFoodBankList.clear();
+                    for (FoodBank foodBank : searchFoodBankByName(input, fbList)) {
+                        localFoodBankList.add(foodBank);
+                    }
 
-
-
-                }else{
-                    // TODO synax errot
-                    // if () {
-
-
+                }
+                else{
+                    //input is details
                     MainTokenizer tokenizer = new MainTokenizer(input);
                     List<Token> tokens = tokenizer.getAllTokens();
-
+                    if(tokens == null||tokens.size()==0){
+                        Snackbar.make(getView(),"Synax error!",Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
                     //{test: print log}
-                    for (Token token : tokens) {
-                        Log.d("test",token.toString());
-                    }
-                    for (int i = 0; i < 20; i++) {
-                        Log.d("test","test");
-                    }
+//                    for (Token token : tokens) {
+//                        Log.d("test",token.toString());
+//                    }
+//                    for (int i = 0; i < 20; i++) {
+//                        Log.d("test","test");
+//                    }
 
                         //{1.0}
 //                    ArrayList<FoodBank> results = FoodBankParser.filterFoodBanks(tokens, localFoodBankList);
@@ -202,7 +209,7 @@ public class FoodbankFragment extends Fragment {
                         localFoodBankList.add(foodBank);
                     }
                 }
-                    // read current filter
+                    // load current state filter and add search result to the adapter
                     ArrayList<FoodBank> results = LocationChecker.stateSelector(localPosition.get(0), localFoodBankList);
                     FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),results);
                     lv_foodbank.setAdapter(foodBankAdapterNew);
@@ -285,7 +292,7 @@ public class FoodbankFragment extends Fragment {
                 bundle.putDouble("fb_latitude",clickedFoodBank.getLat());
                 bundle.putDouble("fb_longitude",clickedFoodBank.getLon());
                 bundle.putInt("fb_foodBankId",clickedFoodBank.getId());
-
+                bundle.putDouble("fb_rate",clickedFoodBank.getRating());
 
                 detailIntent.putExtras(bundle);
                 startActivity(detailIntent);

@@ -60,6 +60,12 @@
             android:text="Phone" />
 
         <TextView
+            android:id="@+id/food_bank_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate" />
+
+        <TextView
             android:id="@+id/food_bank_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

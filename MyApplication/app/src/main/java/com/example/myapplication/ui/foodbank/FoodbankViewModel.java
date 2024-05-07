@@ -123,6 +123,41 @@ public class FoodbankViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
+
+    // return true  if input string only contains Englis characters,number and space
+    public static boolean containsOnlyEnglishDigitsAndSpace(String input) {
+        String pattern = "^[a-zA-Z0-9\\s]+$";
+        return input.matches(pattern);
+    }
+
+    //search foodbank by name
+    public static ArrayList<FoodBank> searchFoodBankByName(String input, ArrayList<FoodBank> allFoodBank) {
+        ArrayList<FoodBank> result = new ArrayList<>();
+        input = convertToUpperCase(input);
+        for (FoodBank foodBank : allFoodBank) {
+            if (foodBank.getName().contains(input)) {
+                result.add(foodBank);
+            }
+        }
+        return result;
+    }
+
+    // convert input string to upperCase
+    public static String convertToUpperCase(String input) {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+            if (Character.isLetter(currentChar)) {
+                output.append(Character.toUpperCase(currentChar));
+            } else {
+                output.append(currentChar);
+            }
+        }
+        return output.toString();
+    }
+
+
 }
 
 
