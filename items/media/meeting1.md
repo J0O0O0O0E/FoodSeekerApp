@@ -12,7 +12,7 @@
 - **Open Floor for Discussion:** Brainstorm and discuss main decisions and strategies for the project design.
 - **Decision Making:** Make key decisions on project strategies and prioritize tasks.
 - **Feature and Task Allocation:** Assign tasks based on individual skills and interest areas.
-- **Setting Deadlines and Milestones:** Establish clear deadlines and important project milestones.
+- **Setting Deadlines and Milestones:** Establish clear deadlines.
 - **Summary and Recap:** Summarize key decisions and assign action items.
 - **Closing Remarks:** Conclude with motivational insights to maintain focus. 
 
