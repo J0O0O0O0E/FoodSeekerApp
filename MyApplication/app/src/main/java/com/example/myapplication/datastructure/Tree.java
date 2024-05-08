@@ -13,13 +13,15 @@ public abstract class Tree {
 
     public List<FoodBank> higherCapacityFoodBankList = new ArrayList<>();
     public List<FoodBank> higherRatingFoodBankList = new ArrayList<>();
-    public List<FoodBank> higherFood1_pastaFoodBankList = new ArrayList<>();
+    /*public List<FoodBank> higherFood1_pastaFoodBankList = new ArrayList<>();
     public List<FoodBank> higherfood2_breadFoodBankList = new ArrayList<>();
     public List<FoodBank> higherfood3_milkFoodBankList = new ArrayList<>();
     public List<FoodBank> higherfood4_pieFoodBankList = new ArrayList<>();
-    public List<FoodBank> higherfood5_vetFoodBankList = new ArrayList<>();
+    public List<FoodBank> higherfood5_vetFoodBankList = new ArrayList<>();*/
     public List<FoodBank> nameFoodBankFoodBankList = new ArrayList<>();
+/*
     public List<FoodBank> locationFoodBankList = new ArrayList<>();
+*/
 
     public Tree() {
         this.value = null;

@@ -1,5 +1,6 @@
 package com.example.myapplication.repository;
 
+import com.example.myapplication.datastructure.AVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +28,10 @@ public class FoodBankRepository {
     private ArrayList<FoodBank> foodBanks;
     // Interface for data status callbacks
     private DataStatus dataStatus;
+    //AVLTree by capacity
+    private AVLTree avlTree;
+
+
 
     /**
      * The DataStatus interface defines the callback methods that handle various data operation statuses in the FoodBankRepository.
@@ -69,6 +74,7 @@ public class FoodBankRepository {
         database = FirebaseDatabase.getInstance("https://comp2100-6442-4f828-default-rtdb.asia-southeast1.firebasedatabase.app");
         // Initialize the list to hold FoodBanks
         foodBanks = new ArrayList<>();
+        avlTree = new AVLTree();
     }
 
     /**
@@ -87,6 +93,7 @@ public class FoodBankRepository {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clear the existing list
                 foodBanks.clear();
+                avlTree = new AVLTree();
                 // List to hold the keys of the nodes
                 ArrayList<String> keys = new ArrayList<>();
                 // Loop through the snapshot children
@@ -99,7 +106,12 @@ public class FoodBankRepository {
                     foodBank.setLocation(new Location(foodBank.getLat(), foodBank.getLon()));
                     // Add it to the food banks list
                     foodBanks.add(foodBank);
+                    avlTree = avlTree.insert(avlTree, foodBank);
                 }
+                //TODO log out the tree
+
+                avlTree.printInOrder();
+                avlTree.countNodes();
                 // Notify that data is loaded along with the keys of the nodes
                 dataStatus.DataIsLoaded(foodBanks, keys);
             }
@@ -111,7 +123,6 @@ public class FoodBankRepository {
             }
         });
     }
-    //TODO getfoodbank by id
     public FoodBank getFoodBankById(int id){
         if (foodBanks.size()==0){
             System.out.println("Please load foodbanks from database before u use this method.");
