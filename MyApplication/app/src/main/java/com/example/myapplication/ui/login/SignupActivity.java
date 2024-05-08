@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -126,6 +127,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                                 if (user != null) {
                                     userRepository.createUserProfile(user);
+                                    FoodBankRepository.getInstance();
                                     updateUI(user);
                                 }
                                 else{

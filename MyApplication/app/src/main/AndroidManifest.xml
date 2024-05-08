@@ -23,6 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.subscribedFoodBanks.SubscribedFoodBanksActivity"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.foodbankProfile.FoodBankProfileActivity"
