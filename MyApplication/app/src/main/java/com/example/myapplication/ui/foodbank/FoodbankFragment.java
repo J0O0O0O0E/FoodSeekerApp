@@ -34,6 +34,7 @@ import com.example.myapplication.databinding.FragmentFoodbankBinding;
 import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.parser.FoodBankParser;
+import com.example.myapplication.parser.FoodBankParserTree;
 import com.example.myapplication.tokenizer.MainTokenizer;
 import com.example.myapplication.tokenizer.Token;
 import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
@@ -170,11 +171,11 @@ public class FoodbankFragment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //read the input text and clear it
-                String input = ed_input.getText().toString();
-                //ed_input.setText("");
 
-                //call method and get a foodbank list
+                String input = ed_input.getText().toString();
+
+
+
                 if(input==null||input.trim().isEmpty()){
                     //if input is null, reset the search result
                     Snackbar.make(getView(), "Input is empty!", Snackbar.LENGTH_SHORT).show();
@@ -192,37 +193,32 @@ public class FoodbankFragment extends Fragment {
                 }
                 else{
                     //input is details
+
+
                     MainTokenizer tokenizer = new MainTokenizer(input);
                     List<Token> tokens = tokenizer.getAllTokens();
                     if(tokens == null||tokens.size()==0){
                         Snackbar.make(getView(),"Synax error!",Snackbar.LENGTH_SHORT).show();
                         return;
                     }
-                    //{test: print log}
-//                    for (Token token : tokens) {
-//                        Log.d("test",token.toString());
-//                    }
-//                    for (int i = 0; i < 20; i++) {
-//                        Log.d("test","test");
-//                    }
-
-                        //{1.0}
-//                    ArrayList<FoodBank> results = FoodBankParser.filterFoodBanks(tokens, localFoodBankList);
-//                    FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),results);
-//                    lv_foodbank.setAdapter(foodBankAdapterNew);
-
+                    //If input is valid , use parser to get the result
                     localFoodBankList.clear();
-                    for (FoodBank foodBank : FoodBankParser.filterFoodBanks(tokens, fbList)) {
+
+                    // modify at this place
+//                    for (FoodBank foodBank : FoodBankParser.filterFoodBanks(tokens, fbList)) {
+//                        localFoodBankList.add(foodBank);
+//                    }
+
+                    for (FoodBank foodBank : FoodBankParserTree.filterFoodBanks(tokens, foodbankViewModel.getDoubleAVLTreeLiveData().getValue())) {
                         localFoodBankList.add(foodBank);
                     }
+
                 }
                     // load current state filter and add search result to the adapter
+
                     ArrayList<FoodBank> results = LocationChecker.stateSelector(localPosition.get(0), localFoodBankList);
                     FoodBankAdapterNew foodBankAdapterNew = new FoodBankAdapterNew(getContext(),results);
                     lv_foodbank.setAdapter(foodBankAdapterNew);
-
-
-
 
             }
         });
@@ -233,35 +229,8 @@ public class FoodbankFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 localPosition.clear();
                 localPosition.add(position);
-                //{test}
-//                ArrayList<FoodBank> fbList2 = fbList;
-//                fbList2 = LocationChecker.stateSelector(position,fbList2);
-//                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),fbList2);
-//                lv_foodbank.setAdapter(foodBankAdapterNew1);
-
-                //{v 1.0}
-//                localFoodBankList.clear();
-//                for (FoodBank foodBank : LocationChecker.stateSelector(position, fbList)) {
-//                    localFoodBankList.add(foodBank);
-//                }
-//                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),localFoodBankList);
-//                lv_foodbank.setAdapter(foodBankAdapterNew1);
-
-
-
                 FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),LocationChecker.stateSelector(position, localFoodBankList));
                 lv_foodbank.setAdapter(foodBankAdapterNew1);
-
-
-
-
-//                ArrayList<FoodBank> fbList2 = fbList;
-//                fbList2 = LocationChecker.stateSelector(position,fbList2);
-//                localFoodBankList.clear();
-//
-//
-//                FoodBankAdapterNew foodBankAdapterNew1 = new FoodBankAdapterNew(getContext(),fbList2);
-//                lv_foodbank.setAdapter(foodBankAdapterNew1);
             }
 
             @Override

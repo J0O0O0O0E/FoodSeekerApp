@@ -9,9 +9,9 @@ import java.util.function.Predicate;
 
 public class FoodBankParser {
     public static ArrayList<FoodBank> filterFoodBanks(List<Token> tokens, List<FoodBank> foodBanks) {
-        if(tokens.isEmpty()){
-            return null;
-        }
+
+
+
 
         ArrayList<Predicate<FoodBank>> predicates = new ArrayList<>();
         for (int i = 0; i < tokens.size(); i += 3) {
@@ -49,17 +49,6 @@ public class FoodBankParser {
                 throw new IllegalArgumentException("Invalid key");
         }
     }
-
-//    private static boolean compare(int attributeValue, String operator, int value) {
-//        switch (operator) {
-//            case ">":
-//                return attributeValue > value;
-//            case "=":
-//                return attributeValue == value;
-//            default:
-//                throw new IllegalArgumentException("Unsupported operator: " + operator);
-//        }
-//    }
 
     private static boolean compare(double attributeValue, String operator, double value) {
         final double EPSILON = 0.000001; // 定义一个足够小的误差范围来比较浮点数
