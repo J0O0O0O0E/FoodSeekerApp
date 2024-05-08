@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.foodbank.FoodbankFragment"
-    android:orientation="vertical"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    >
-
-<!--    {test output gps}-->
-<!--    <TextView-->
-<!--        android:id="@+id/tv_gps"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="use this to test the GPS location, it will be the location if work"></TextView>-->
-
-    <!--    search bar start-->
-
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <TextView
         android:id="@+id/tv_tip"
@@ -27,25 +15,31 @@
         android:layout_marginTop="70dp"
         android:text="input name or input 'distance/capacity/rating &gt;&lt;= integer'"
         android:textColor=" #696969"
-        android:layout_marginLeft="5dp"
-
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         ></TextView>
 
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tip">
 
         <Spinner
             android:id="@+id/sp_states"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:background="#e9e9e9"
             android:layout_weight="2"
+            android:background="#e9e9e9"
             android:gravity="center_vertical"
-            android:spinnerMode="dialog"
-            ></Spinner>
+            android:spinnerMode="dialog"></Spinner>
 
         <EditText
             android:id="@+id/et_input"
@@ -60,29 +54,24 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:text="search"
             android:paddingHorizontal="1dp"
             android:paddingVertical="1dp"
+            android:text="search"
             android:textSize="15dp"></Button>
-
-
     </LinearLayout>
-    <!--    search bar end-->
 
-
-
-
-    <!--    list of foodbank-->
     <ListView
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
         android:id="@+id/lv_foodbank"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        ></ListView>
 
 
 
-
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
