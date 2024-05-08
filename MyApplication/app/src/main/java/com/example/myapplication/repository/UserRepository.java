@@ -33,7 +33,7 @@ public class UserRepository {
     public FirebaseUser currentUser;
     public MutableLiveData<User> liveUser;
 
-    public User user;
+//    public User user;
 
     private final Lock lock = new ReentrantLock();
 
@@ -68,7 +68,7 @@ public class UserRepository {
                                 lock.lock();
                                 try {
                                     liveUser.setValue(userLoaded);
-                                    user = userLoaded;
+//                                    user = userLoaded;
                                 } finally {
                                     lock.unlock();
                                 }
@@ -117,7 +117,7 @@ public class UserRepository {
     public User getUser(){
         lock.lock();
         try {
-            return user;
+            return liveUser.getValue();
         } finally {
             lock.unlock();
         }
@@ -126,7 +126,7 @@ public class UserRepository {
     public String getUserEmail(){
         lock.lock();
         try {
-            return Objects.requireNonNull(user).getEmail();
+            return Objects.requireNonNull(liveUser.getValue()).getEmail();
         } finally {
             lock.unlock();
         }
@@ -135,7 +135,12 @@ public class UserRepository {
     public void updateUserName(String name){
         lock.lock();
         try {
-            Objects.requireNonNull(user).setUserName(name);
+//            Objects.requireNonNull(liveUser.getValue()).setUserName(name);
+            User currentUser = liveUser.getValue();
+            assert currentUser != null;
+            currentUser.setUserName(name);
+            liveUser.postValue(currentUser);
+
 
             fStore.collection("User").document(this.getUserEmail())
                     .update("userName", this.getUser().getUserName())
@@ -145,7 +150,7 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedUser", "Error updating user name", e);
                     });
-            liveUser.setValue(user);
+//            liveUser.setValue(user);
         } finally {
             lock.unlock();
         }
@@ -154,7 +159,12 @@ public class UserRepository {
     public void updateContactNumber(String number){
         lock.lock();
         try {
-            Objects.requireNonNull(user).setContactNumber(number);
+//            Objects.requireNonNull(liveUser.getValue()).setContactNumber(number);
+            User currentUser = liveUser.getValue();
+            assert currentUser != null;
+            currentUser.setContactNumber(number);
+            liveUser.postValue(currentUser);
+
 
             fStore.collection("User").document(this.getUserEmail())
                     .update("contactNumber", this.getUser().getContactNumber())
@@ -164,7 +174,7 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedUser", "Error updating contact number", e);
                     });
-            liveUser.setValue(user);
+//            liveUser.setValue(user);
         } finally {
             lock.unlock();
         }
@@ -173,7 +183,11 @@ public class UserRepository {
     public void addSubscribedFoodBanks(String id){
         lock.lock();
         try {
-            Objects.requireNonNull(user).addSubscribedFoodBank(id);
+//            Objects.requireNonNull(liveUser.getValue()).addSubscribedFoodBank(id);
+            User currentUser = liveUser.getValue();
+            assert currentUser != null;
+            currentUser.addSubscribedFoodBank(id);
+            liveUser.postValue(currentUser);
 
             fStore.collection("User").document(this.getUserEmail())
                     .update("subscribedFoodBanks", FieldValue.arrayUnion(id))
@@ -183,7 +197,7 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedFoodBanks", "Error updating food banks", e);
                     });
-            liveUser.setValue(user);
+//            liveUser.setValue(user);
 
         } finally {
             lock.unlock();
@@ -193,7 +207,11 @@ public class UserRepository {
     public void removeSubscribedFoodBanks(String id){
         lock.lock();
         try {
-            Objects.requireNonNull(user).removeSubscribedFoodBank(id);
+//            Objects.requireNonNull(liveUser.getValue()).removeSubscribedFoodBank(id);
+            User currentUser = liveUser.getValue();
+            assert currentUser != null;
+            currentUser.removeSubscribedFoodBank(id);
+            liveUser.postValue(currentUser);
 
             fStore.collection("User").document(getUserEmail())
                     .update("subscribedFoodBanks", FieldValue.arrayRemove(id))
@@ -203,7 +221,7 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedFoodBanks", "Error updating food banks", e);
                     });
-            liveUser.setValue(user);
+//            liveUser.setValue(user);
         } finally {
             lock.unlock();
         }
