@@ -154,13 +154,19 @@
 
     <WebView
         android:id="@+id/wv_map"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_width="68dp"
+        android:layout_height="179dp"
         android:layout_gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/food_bank_foundation_date"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        ></WebView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/food_bank_foundation_date"></WebView>
 
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintTop_toBottomOf="@+id/wv_map"
+        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

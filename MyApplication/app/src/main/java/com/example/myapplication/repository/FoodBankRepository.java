@@ -114,17 +114,7 @@ public class FoodBankRepository {
 
 
 
-    public FoodBank getFoodBankById(int id) {
-        if (foodBanks.isEmpty()) {
-            return null;
-        }
 
-        Optional<FoodBank> result = foodBanks.stream()
-                .filter(foodBank -> foodBank.getId() == id)
-                .findFirst();
-
-        return result.orElse(null);
-    }
 
     public List<FoodBank> getFoodBankListByIdList(List<String> idList){
         if (foodBanks.isEmpty()) {
@@ -183,18 +173,13 @@ public class FoodBankRepository {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    try {
-                        lock.lock();
+
                         dataStatus.Error(databaseError.toException());
-                    } finally {
-                        lock.unlock();
-                    }
+
                 }
             });
-        } finally {
-            lock.unlock();
         }
-    }
+
 
     private void loadFoodBanks() {
         readFoodBanks(new FoodBankRepository.DataStatus() {
