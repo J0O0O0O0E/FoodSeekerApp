@@ -2,10 +2,14 @@ package com.example.myapplication.repository;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
+import android.net.Uri;
 import static com.google.firebase.firestore.model.mutation.Precondition.updateTime;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import android.widget.Toast;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.example.myapplication.model.User;
@@ -18,6 +22,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.LocalDateTime;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +55,8 @@ public class UserRepository {
 
 
     private final Lock lock = new ReentrantLock();
+    private StorageReference storageReference;
+
 
     private UserRepository(){
         this.mAuth = FirebaseAuth.getInstance();
@@ -57,6 +66,8 @@ public class UserRepository {
         this.executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(this::updateTime, 0, 1,
                 TimeUnit.MINUTES);
+        this.storageReference = FirebaseStorage.getInstance().getReference();
+
     }
 
     public static UserRepository getInstance() {
@@ -69,7 +80,6 @@ public class UserRepository {
         }
         return instance;
     }
-
 
     public void loadUser(){
         if(currentUser != null){
@@ -99,8 +109,10 @@ public class UserRepository {
     public void createUserProfile(FirebaseUser user) {
         String emailAddress = user.getEmail();
         Map<String, Object> userMap = new HashMap<>();
+        userMap.put("author", false);
         userMap.put("contactNumber", "");
         userMap.put("email", emailAddress);
+        userMap.put("imgUrl","");
         userMap.put("subscribedFoodBanks", new ArrayList<>());
         userMap.put("userName", "");
 
@@ -158,6 +170,15 @@ public class UserRepository {
         lock.unlock();
     }
 
+
+    public String getuserimg(){
+        lock.lock();
+        try {
+            return Objects.requireNonNull(liveUser.getValue()).getimgUrl();
+        } finally {
+            lock.unlock();
+        }
+    }
 
     public void updateUserName(String name){
         lock.lock();
@@ -248,12 +269,11 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedFoodBanks", "Error updating food banks", e);
                     });
-
+//            liveUser.setValue(user);
         } finally {
             lock.unlock();
         }
     }
-
 
 
 

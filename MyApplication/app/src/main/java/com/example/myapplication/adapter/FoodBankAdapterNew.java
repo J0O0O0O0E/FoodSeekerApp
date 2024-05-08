@@ -13,7 +13,9 @@ import androidx.annotation.ColorInt;
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class FoodBankAdapterNew extends BaseAdapter {
     private Context mContext;
@@ -67,7 +69,25 @@ public class FoodBankAdapterNew extends BaseAdapter {
             tv_status.setTextColor(Color.parseColor("#FF2400"));
         }
         tv_street.setText(foodBank.getStreet());
-        tv_distance.setText(Double.toString(foodBank.getDistanceToUser())+"m");
+
+
+//        tv_distance.setText(Double.toString(foodBank.getDistanceToUser())+"m");
+        tv_distance.setText(formatDistance(foodBank.getDistanceToUser()));
         return view;
+    }
+
+    //format the distance output
+    private static String formatDistance(double input){
+        if(input < 1000){
+            return String.format("%.0fm",input);
+        }else{
+            double km = input / 1000;
+            ////Create a NumberFormat object for formatting numbers,
+            // ensuring that every three digits are separated by commas
+            NumberFormat nf = NumberFormat.getInstance(Locale.US);
+            nf.setMaximumFractionDigits(1); // Set up to one decimal place
+            nf.setMinimumFractionDigits(1); // Set to at least one decimal place
+            return nf.format(km) + "km";
+        }
     }
 }

@@ -1,13 +1,19 @@
 package com.example.myapplication.model;
 
+import com.google.firebase.firestore.PropertyName;
+
 import java.util.List;
 
 public class User {
 
 
+    private Boolean author;
+
     private String contactNumber;
 
     public String email;
+
+    private String imgUrl;
 
     public List<String> subscribedFoodBanks;
 
@@ -20,6 +26,15 @@ public class User {
 
     }
 
+    public void setAuthor(Boolean author) {
+        this.author = author;
+    }
+
+    @PropertyName("author")
+    public Boolean getAuthor() {
+        return author;
+    }
+
     public void setContactNumber(String number){
         contactNumber = number;
     }
@@ -28,13 +43,22 @@ public class User {
         return contactNumber;
     }
 
-
     public void setEmail(String email) {
         this.email = email;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+
+    @PropertyName("imgUrl")
+    public String getimgUrl() {
+        return imgUrl;
     }
 
     public void setSubscribedFoodBanks(List<String> subscribedFoodBanks) {

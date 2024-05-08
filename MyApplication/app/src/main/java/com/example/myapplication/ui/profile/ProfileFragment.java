@@ -1,16 +1,21 @@
 package com.example.myapplication.ui.profile;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,18 +23,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.myapplication.ImagePickerUtils;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 import com.example.myapplication.databinding.FragmentProfileBinding;
 import com.example.myapplication.model.User;
 import com.example.myapplication.repository.UserRepository;
+import com.example.myapplication.ui.home.AddAnnouncementActivity;
 import com.example.myapplication.ui.home.HomeViewModel;
 import com.example.myapplication.ui.subscribedFoodBanks.SubscribedFoodBanksActivity;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ProfileFragment extends Fragment {
 
@@ -38,11 +54,25 @@ public class ProfileFragment extends Fragment {
     private EditText editTextUserName;
     private EditText editTextContactNumber;
 
+    private Uri profileImgUri;
+    private ImageView profileImg;
+
+
     private TextView email;
     private boolean isUserNameChanged = false;
     private boolean isContactNumberChanged = false;
 
 
+
+    private final ActivityResultLauncher<String> getContent = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri -> {
+                if (uri != null) {
+                    UserRepository.getInstance().uploadImageToFirebase(uri, getContext());
+                    displayImageWithGlide(uri.toString());  // Immediately display the chosen image
+                }
+            }
+    );
 
 
     @SuppressLint("WrongViewCast")
@@ -50,10 +80,10 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         ProfileViewModel profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
-
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-
         View root = binding.getRoot();
+
+
 
 //        profileViewModel.getUserName().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override
@@ -66,9 +96,12 @@ public class ProfileFragment extends Fragment {
 //        });
         editTextUserName = root.findViewById(R.id.edit_text_name);
         editTextContactNumber = root.findViewById(R.id.edit_text_number);
+        profileImg = root.findViewById(R.id.profile_photo);
         email=root.findViewById(R.id.email_address);
 
         email.setText(UserRepository.getInstance().getUserEmail());
+        Glide.with(this).load(UserRepository.getInstance().getuserimg()).into(profileImg);
+
 
 
         String userName = UserRepository.getInstance().getUser().getUserName();
@@ -139,11 +172,18 @@ public class ProfileFragment extends Fragment {
         });
 
 
+        Button selectImageButton = root.findViewById(R.id.button_select_image);
+        selectImageButton.setOnClickListener(v -> getContent.launch("image/*"));
+
 
 
 //        final TextView textView = binding.textProfile;
 //        profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
+    }
+
+    private void displayImageWithGlide(String imageUrl) {
+        Glide.with(this).load(imageUrl).into(profileImg);
     }
 
 

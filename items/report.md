@@ -28,7 +28,7 @@ Note that you should have removed ALL TEMPLATE/INSTRUCTION textes in your submis
 10. [Conflict Resolution Protocol](#conflict-resolution-protocol)
 
 ## Administrative
-- Firebase Repository Link: <insert-link-to-firebase-repository>
+- Firebase Repository Link: <https://console.firebase.google.com/project/comp2100-6442-4f828/overview>
    - Confirm: I have already added comp21006442@gmail.com as a Developer to the Firebase project prior to due date.
 - Two user accounts for markers' access are usable on the app's APK (do not change the username and password unless there are exceptional circumstances. Note that they are not real e-mail addresses in use):
    - Username: comp2100@anu.edu.au	Password: comp2100
@@ -37,12 +37,12 @@ Note that you should have removed ALL TEMPLATE/INSTRUCTION textes in your submis
 ## Team Members and Roles
 The key area(s) of responsibilities for each member
 
-| UID   |  Name  |   Role |
-|:------|:------:|-------:|
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
+| UID      |  Name  |                 Role |
+|:---------|:------:|---------------------:|
+| u7640966 | Zhi Li |  Extension Developer |
+| [uid]    | [name] |               [role] |
+| [uid]    | [name] |               [role] |
+| [uid]    | [name] |               [role] |
 
 
 ## Summary of Individual Contributions
@@ -62,23 +62,34 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 *Here is an example: (Note that you should remove the entire section (e.g. "others") if it is not applicable)*
 
-1. **UID1, Name1**  I have 30% contribution, as follows: <br>
+1. **u7640966, Name1**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+    - Feature Announcement Show and Post(FB-Persist-extension) - class Dummy: [Announcement.java] & [AnnouncementRepository.java] & [ALl classes in folder 'home']
+    - Feature data graphical - class Dummy: [foodBankProfileAActivity.java, method setupBarChart]()
+    - Feature basic FB-auth - class Dummy: [LoginActivity.java] & [SignupACtivity.java]
+    - Repository Design Pattern -  class: [AnnouncementRepository.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43)
+    - Adapter Design Pattern -  class: [AnnouncementAdapter](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43)
+    - MVVM Design Pattern -  class: [Announcement.java] ,[HomeFragment.java], [HomeViewModel]
+    - Singleton Design pattern - class:[AnnouncementRepository.java]
+    - UI for announcement[activity_add_announcement][fragment_home][fragment_announcement][announcement_item], login an signup [activity_login][activity_signup]  
     - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
 
   - **Code and App Design** 
     - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+    - NVVM, repository
+    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]
+    - 
+    - *<br><br>
 
   - **Others**: (only if significant and significantly different from an "average contribution") 
     - [Report Writing?] [Slides preparation?]*
     - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
 
-2. **UID2, Name2**  I have xx% contribution, as follows: <br>
-  - ...
-
+2**UID2, Name2**  I have 30% contribution, as follows: <br>
+- **Code Contribution in the final App**
+    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
 
 
 ## Application Description

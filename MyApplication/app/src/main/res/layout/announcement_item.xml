@@ -19,8 +19,7 @@
             android:id="@+id/imageViewAnnouncement"
             android:layout_width="125dp"
             android:layout_height="86dp"
-            android:scaleType="centerCrop"
-            tools:ignore="MissingConstraints" />
+            android:scaleType="centerCrop" />
 
 
         <LinearLayout
