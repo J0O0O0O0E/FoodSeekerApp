@@ -4,24 +4,40 @@ import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
 
+import static java.security.AccessController.getContext;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.model.User;
 import com.example.myapplication.repository.UserRepository;
 import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
+import com.example.myapplication.ui.home.HomeViewModel;
+import com.example.myapplication.ui.home.announcement.AnnouncementAdapter;
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class SubscribedFoodBanksActivity extends AppCompatActivity implements FoodBankRecyclerViewInterface {
 
+    private SubscribedFoodBanksViewModel viewModel;
+    private RecyclerView recyclerView;
+    private SubscribedFoodBanksAdaptor adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +45,8 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_subscribed_food_banks_page);
 
-
+        viewModel = new ViewModelProvider(this).get(SubscribedFoodBanksViewModel.class);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         try {
             EdgeToEdge.enable(this);
@@ -42,17 +59,25 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
             List<String> subscribedFoodBanks = UserRepository.getInstance().getUser().getSubscribedFoodBanks();
-            if (subscribedFoodBanks == null) {
-                throw new NullPointerException("Subscribed food banks list is null.");
-            }
 
-            SubscribedFoodBanksAdaptor adaptor = new SubscribedFoodBanksAdaptor(this.getApplicationContext(), subscribedFoodBanks, this);
-            if(adaptor.getFoodBanks().isEmpty() || adaptor.getFoodBanks() == null){
+
+            adapter = new SubscribedFoodBanksAdaptor(this.getApplicationContext(), subscribedFoodBanks, this);
+            if (adapter.getFoodBanks().isEmpty() || adapter.getFoodBanks() == null) {
                 Log.e(TAG, "Error initializing subscribed food banks");
 
             }
 
-            recyclerView.setAdapter(adaptor);
+            recyclerView.setAdapter(adapter);
+
+            viewModel.getLiveUser().observe(this, new Observer<User>() {
+                @Override
+                public void onChanged(User user) {
+                    if(user != null){
+                        adapter.updateSubscribedFoodBanks(user.getSubscribedFoodBanks());
+                    }
+
+                }
+            });
 
         } catch (Exception e) {
 
@@ -60,9 +85,14 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
         }
 
 
-
-
     }
+
+
+//
+//
+
+
+//    }
 
     @Override
     public void onItemClick(FoodBank clickedFoodBank) {
@@ -94,6 +124,14 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
 
         detailIntent.putExtras(bundle);
         startActivity(detailIntent);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
