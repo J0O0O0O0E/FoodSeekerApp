@@ -2,12 +2,12 @@ package com.example.myapplication.repository;
 
 import static android.content.ContentValues.TAG;
 
-import android.util.Log;
+import static com.google.firebase.firestore.model.mutation.Precondition.updateTime;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.myapplication.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,13 +17,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 
 public class UserRepository {
 
@@ -33,7 +38,14 @@ public class UserRepository {
     public FirebaseUser currentUser;
     public MutableLiveData<User> liveUser;
 
-//    public User user;
+
+    private MutableLiveData<LocalDateTime> timeLiveData;
+
+    private ScheduledExecutorService executorService;
+
+
+
+
 
     private final Lock lock = new ReentrantLock();
 
@@ -42,6 +54,9 @@ public class UserRepository {
         this.fStore = FirebaseFirestore.getInstance();
         this.currentUser = mAuth.getCurrentUser();
         this.liveUser = new MutableLiveData<>();
+        this.executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(this::updateTime, 0, 1,
+                TimeUnit.MINUTES);
     }
 
     public static UserRepository getInstance() {
@@ -54,6 +69,7 @@ public class UserRepository {
         }
         return instance;
     }
+
 
     public void loadUser(){
         if(currentUser != null){
@@ -131,6 +147,17 @@ public class UserRepository {
             lock.unlock();
         }
     }
+
+    public MutableLiveData<LocalDateTime> getTimeLiveData(){
+        return timeLiveData;
+    }
+
+    public void updateTime(){
+        lock.lock();
+        this.timeLiveData.setValue(LocalDateTime.now());
+        lock.unlock();
+    }
+
 
     public void updateUserName(String name){
         lock.lock();
@@ -221,11 +248,12 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedFoodBanks", "Error updating food banks", e);
                     });
-//            liveUser.setValue(user);
+
         } finally {
             lock.unlock();
         }
     }
+
 
 
 
