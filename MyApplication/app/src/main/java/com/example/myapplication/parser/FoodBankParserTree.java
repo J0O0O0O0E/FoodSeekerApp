@@ -20,7 +20,7 @@ public class FoodBankParserTree {
         int ratingIndex = NOTASSIGN;
         int capacityValue = 0;
         int ratingValue = 0;
-        //Todo  捕获超过两次的赋值或者重复赋值
+
 
 
         for (int i = 0; i < tokens.size(); i += 3) {
@@ -30,7 +30,12 @@ public class FoodBankParserTree {
 
             String keyword = keywordToken.getToken();
             String comparison = comparisonToken.getToken();
+
+            long userInput = Long.parseLong(intToken.getToken());
+
+
             int value = Integer.parseInt(intToken.getToken());
+
 
             if (keyword.equals("rating")) {
                 ratingValue = value;

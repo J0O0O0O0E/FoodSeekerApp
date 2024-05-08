@@ -173,7 +173,10 @@ public class FoodbankFragment extends Fragment {
             public void onClick(View v) {
 
                 String input = ed_input.getText().toString();
-
+                if(input.trim().length()>26){
+                    Snackbar.make(getView(), "Exceeds input length limit!", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
 
 
                 if(input==null||input.trim().isEmpty()){

@@ -171,6 +171,15 @@ public class FoodbankViewModel extends ViewModel {
         }
 
 
+        for (int i = 3; i < tokens.size(); i += 3) {
+            if(tokens.get(0).equals(tokens.get(i))){
+                return false;
+            }
+        }
+
+
+
+
         return true;
     }
 
