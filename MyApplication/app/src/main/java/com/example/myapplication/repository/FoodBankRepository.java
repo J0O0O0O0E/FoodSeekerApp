@@ -1,5 +1,7 @@
 package com.example.myapplication.repository;
 
+import com.example.myapplication.datastructure.AVLTree;
+import com.example.myapplication.datastructure.DoubleAVLTree;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -43,6 +45,11 @@ public class FoodBankRepository {
     private ArrayList<FoodBank> foodBanks;
     // Interface for data status callbacks
     private DataStatus dataStatus;
+    //AVLTree by capacity
+    private AVLTree avlTree;
+    private DoubleAVLTree doubleAVLTree;
+
+
 
     private final Lock lock = new ReentrantLock();
 
@@ -82,11 +89,13 @@ public class FoodBankRepository {
      * Constructor initializes a new instance of FoodBankRepository.
      * It sets up the Firebase database connection and initializes the list for storing FoodBank objects.
      */
-    private FoodBankRepository() {
+    public FoodBankRepository() {
         // Get the Firebase database instance
         database = FirebaseDatabase.getInstance("https://comp2100-6442-4f828-default-rtdb.asia-southeast1.firebasedatabase.app");
         // Initialize the list to hold FoodBanks
         foodBanks = new ArrayList<>();
+        avlTree = new AVLTree();
+        doubleAVLTree = new DoubleAVLTree();
         foodBanksLiveData = new MutableLiveData<>();
         loadFoodBanks();
     }
@@ -105,17 +114,7 @@ public class FoodBankRepository {
 
 
 
-    public FoodBank getFoodBankById(int id) {
-        if (foodBanks.isEmpty()) {
-            return null;
-        }
 
-        Optional<FoodBank> result = foodBanks.stream()
-                .filter(foodBank -> foodBank.getId() == id)
-                .findFirst();
-
-        return result.orElse(null);
-    }
 
     public List<FoodBank> getFoodBankListByIdList(List<String> idList){
         if (foodBanks.isEmpty()) {
@@ -137,42 +136,50 @@ public class FoodBankRepository {
      * @param dataStatus The callback interface through which data load results or errors are communicated.
      */
     public void readFoodBanks(final DataStatus dataStatus) {
-        lock.lock();
-        try {
-            DatabaseReference ref = database.getReference();
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    try {
-                        lock.lock();
-                        foodBanks.clear();
-                        ArrayList<String> keys = new ArrayList<>();
-                        for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                            keys.add(keyNode.getKey());
-                            FoodBank foodBank = keyNode.getValue(FoodBank.class);
-                            foodBank.setLocation(new Location(foodBank.getLat(), foodBank.getLon()));
-                            foodBanks.add(foodBank);
-                        }
-                        dataStatus.DataIsLoaded(foodBanks, keys);
-                    } finally {
-                        lock.unlock();
-                    }
+        // Reference to the root in the database, root dir has no parameter for getReference method
+        DatabaseReference ref = database.getReference();
+        // Add value event listener to fetch data
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clear the existing list
+                foodBanks.clear();
+                avlTree = new AVLTree();
+                // List to hold the keys of the nodes
+                ArrayList<String> keys = new ArrayList<>();
+                // Loop through the snapshot children
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    // Store the key
+                    keys.add(keyNode.getKey());
+                    // Get the FoodBank object from the snapshot
+                    FoodBank foodBank = keyNode.getValue(FoodBank.class);
+                    // Set the Location for instance via Location class and latitude and longitude
+                    foodBank.setLocation(new Location(foodBank.getLat(), foodBank.getLon()));
+                    // Add it to the food banks list
+                    foodBanks.add(foodBank);
+                    avlTree = avlTree.insert(avlTree, foodBank);
+                    doubleAVLTree.insert(foodBank);
                 }
+                //TODO log out the tree
+
+                //avlTree.printInOrder();
+                avlTree.countNodes();
+                doubleAVLTree.printAllNodes();
+                doubleAVLTree.countNodes();
+
+                // Notify that data is loaded along with the keys of the nodes
+                dataStatus.DataIsLoaded(foodBanks, keys);
+            }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    try {
-                        lock.lock();
+
                         dataStatus.Error(databaseError.toException());
-                    } finally {
-                        lock.unlock();
-                    }
+
                 }
             });
-        } finally {
-            lock.unlock();
         }
-    }
+
 
     private void loadFoodBanks() {
         readFoodBanks(new FoodBankRepository.DataStatus() {
@@ -199,33 +206,24 @@ public class FoodBankRepository {
             }
         });
     }
-
-    public void setUserLocationAndUpdateDistances(double latitude, double longitude) {
-        Location userLocation = new Location(latitude, longitude);
-        ArrayList<FoodBank> foodBanks = foodBanksLiveData.getValue();
-
-        if (foodBanks != null) {
-            for (FoodBank foodBank : foodBanks) {
-                double distance = foodBank.getLocation().calculateDistance(userLocation);
-                Log.d("UpdateDistances", "ID:" + foodBank.getId() + " distance:" + distance);
-                foodBank.setDistanceToUser(distance);
-            }
-
-            // Sort the list based on distance to user
-            Collections.sort(foodBanks, new Comparator<FoodBank>() {
-                @Override
-                public int compare(FoodBank fb1, FoodBank fb2) {
-                    return Double.compare(fb1.getDistanceToUser(), fb2.getDistanceToUser());
+    public FoodBank getFoodBankById(int id){
+        if (foodBanks.size()==0){
+            System.out.println("Please load foodbanks from database before u use this method.");
+            return null;
+        }
+        else {
+            for (FoodBank foodBank:
+                 foodBanks) {
+                if (foodBank.getId()==id){
+                    return foodBank;
                 }
-            });
-
-            // Update the LiveData with the sorted list
-            foodBanksLiveData.setValue(foodBanks);
+            }
+            System.out.println("No such id");
+            return null;
         }
     }
-
-    public LiveData<ArrayList<FoodBank>> getFoodBanksLiveData() {
-        return foodBanksLiveData;
+    public DoubleAVLTree getDoubleAVLTree(){
+        return doubleAVLTree;
     }
 
 }

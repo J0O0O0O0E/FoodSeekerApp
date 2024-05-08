@@ -2,84 +2,179 @@ package com.example.myapplication.datastructure;
 
 import com.example.myapplication.model.FoodBank;
 
-public class AVLTree extends Tree{
-    public static class EmptyAVL extends EmptyTree {
-        @Override
-        public Tree insert(FoodBank element) {
-            return new AVLTree(element);
+import java.util.ArrayList;
+import java.util.List;
+
+public class AVLTree {
+    private FoodBank value;
+    private AVLTree leftNode;
+    private AVLTree rightNode;
+    private int height;
+
+    public AVLTree() {
+        this.value = null;
+        this.height = 0;
+    }
+
+    public AVLTree(FoodBank value) {
+        this.value = value;
+        this.height = 1;
+    }
+
+    private int getHeight(AVLTree node) {
+        if (node == null) return 0;
+        return node.height;
+    }
+
+    private int getBalanceFactor(AVLTree node) {
+        if (node == null) return 0;
+        return getHeight(node.leftNode) - getHeight(node.rightNode);
+    }
+
+    public AVLTree insert(AVLTree node, FoodBank key) {
+        if (key == null) {
+            throw new IllegalArgumentException("Cannot insert a null FoodBank into AVLTree.");
         }
-    }
-    public AVLTree(FoodBank value){
-        super(value);
-        this.leftNode=new EmptyAVL();
-    }
-
-    public AVLTree(FoodBank value, Tree leftNode, Tree rightNode){
-        super(value,leftNode,rightNode);
-    }
-
-    public int getBalanceFactor(){
-        return leftNode.getHeight()-rightNode.getHeight();
-    }
-
-    @Override
-    public AVLTree insert(FoodBank element) {
-        AVLTree newTree ;
-        if (element == null)
-            throw new IllegalArgumentException("Input cannot be null");
-
-        if (value!=null && element.getId()>value.getId()) {
-            newTree = new AVLTree(value, leftNode, rightNode.insert(element));
-        } else if (value!=null && element.getId()<value.getId()) {
-            newTree = new AVLTree(value, leftNode.insert(element), rightNode);
+        if (node == null) {
+            return new AVLTree(key);
+        }
+        if (node.value == null) {
+            node.value = key;
+            node.height = 1;
+            return node;
+        }
+        if (key.getId() < node.value.getId()) {
+            node.leftNode = insert(node.leftNode, key);
+        } else if (key.getId() > node.value.getId()) {
+            node.rightNode = insert(node.rightNode, key);
         } else {
-            newTree = new AVLTree(value, leftNode, rightNode);
+            return node;
         }
-        if (newTree.getBalanceFactor() < -1) {
-            if(newTree.rightNode.value!=null && element.getId()>value.getId()){
-                newTree=newTree.leftRotate();
-            } else{
-                newTree.rightNode=((AVLTree)newTree.rightNode).rightRotate();
-                newTree=newTree.leftRotate();
+
+        node.height = 1 + Math.max(getHeight(node.leftNode), getHeight(node.rightNode));
+        return balanceTree(node);
+    }
+
+    private AVLTree balanceTree(AVLTree node) {
+        int balance = getBalanceFactor(node);
+
+        // Left Left Case
+        if (balance > 1 && getBalanceFactor(node.leftNode) >= 0) {
+            return rightRotate(node);
+        }
+
+        // Left Right Case
+        if (balance > 1 && getBalanceFactor(node.leftNode) < 0) {
+            node.leftNode = leftRotate(node.leftNode);
+            return rightRotate(node);
+        }
+
+        // Right Right Case
+        if (balance < -1 && getBalanceFactor(node.rightNode) <= 0) {
+            return leftRotate(node);
+        }
+
+        // Right Left Case
+        if (balance < -1 && getBalanceFactor(node.rightNode) > 0) {
+            node.rightNode = rightRotate(node.rightNode);
+            return leftRotate(node);
+        }
+
+        return node;
+    }
+
+    private AVLTree rightRotate(AVLTree y) {
+        AVLTree x = y.leftNode;
+        AVLTree T2 = x.rightNode;
+        x.rightNode = y;
+        y.leftNode = T2;
+        y.height = Math.max(getHeight(y.leftNode), getHeight(y.rightNode)) + 1;
+        x.height = Math.max(getHeight(x.leftNode), getHeight(x.rightNode)) + 1;
+        return x;
+    }
+
+    private AVLTree leftRotate(AVLTree x) {
+        AVLTree y = x.rightNode;
+        AVLTree T2 = y.leftNode;
+        y.leftNode = x;
+        x.rightNode = T2;
+        x.height = Math.max(getHeight(x.leftNode), getHeight(x.rightNode)) + 1;
+        y.height = Math.max(getHeight(y.leftNode), getHeight(y.rightNode)) + 1;
+        return y;
+    }
+
+    public FoodBank findNodeById(AVLTree node, int id) {
+        if (node == null) return null;
+        if (id < node.value.getId()) return findNodeById(node.leftNode, id);
+        else if (id > node.value.getId()) return findNodeById(node.rightNode, id);
+        else return node.value;
+    }
+
+    public List<FoodBank> findNodesByCapacity(AVLTree node, int capacity, String comparison) {
+        List<FoodBank> result = new ArrayList<>();
+        switch (comparison) {
+            case ">":
+                findGreater(node, capacity, result, (a, b) -> a > b);
+                break;
+            case "<":
+                findLess(node, capacity, result, (a, b) -> a < b);
+                break;
+            case "=":
+                findEqual(node, capacity, result, (a, b) -> a == b);
+                break;
+        }
+        return result;
+    }
+
+    private void findGreater(AVLTree node, int capacity, List<FoodBank> result, CompareFunc func) {
+        if (node == null) return;
+        if (func.compare(node.value.getCapacity(), capacity)) {
+            result.add(node.value);
+            findGreater(node.rightNode, capacity, result, func);
+        }
+        findGreater(node.leftNode, capacity, result, func);
+    }
+
+    private void findLess(AVLTree node, int capacity, List<FoodBank> result, CompareFunc func) {
+        if (node == null) return;
+        if (func.compare(node.value.getCapacity(), capacity)) {
+            result.add(node.value);
+            findLess(node.leftNode, capacity, result, func);
+        }
+        findLess(node.rightNode, capacity, result, func);
+    }
+
+    private void findEqual(AVLTree node, int capacity, List<FoodBank> result, CompareFunc func) {
+        if (node == null) return;
+        if (func.compare(node.value.getCapacity(), capacity)) {
+            result.add(node.value);
+        }
+        findEqual(node.leftNode, capacity, result, func);
+        findEqual(node.rightNode, capacity, result, func);
+    }
+
+    interface CompareFunc {
+        boolean compare(int a, int b);
+    }
+    public void printInOrder() {
+        printInOrder(this);
+    }
+    private void printInOrder(AVLTree node) {
+        if (node != null) {
+            printInOrder(node.leftNode);
+            if (node.value != null) {
+                System.out.println("🐍🐍🐍🐍Node Capacity: " + node.value.getCapacity());
             }
+            printInOrder(node.rightNode);
         }
-        if (newTree.getBalanceFactor() > 1){
-            if(newTree.leftNode.value!=null &&element.getId()<value.getId())
-                newTree= newTree.rightRotate();
-            else {
-                newTree.leftNode=((AVLTree)newTree.leftNode).leftRotate();
-                newTree=newTree.rightRotate();
-            }
+    }
+    public void countNodes(){
+        System.out.println(countNodes(this));
+    }
+    public int countNodes(AVLTree node) {
+        if (node == null) {
+            return 0;
         }
-        return newTree;
-    }
-
-    // leftRotate according to balance Factor
-    public AVLTree leftRotate() {
-        Tree newParent = this.rightNode;
-        this.rightNode = newParent.leftNode;
-        newParent.leftNode = this;
-        return (AVLTree) newParent;
-    }
-
-    // rightRotate according to balance Factor
-    public AVLTree rightRotate() {
-        Tree newParent = this.leftNode;
-        this.leftNode = newParent.rightNode;
-        newParent.rightNode = this;
-        return (AVLTree) newParent;
-    }
-
-    @Override
-    public FoodBank find(String Id) {
-        if (Id == null)
-            throw new IllegalArgumentException("Input cant be null");
-        if (value!=null && Integer.parseInt(Id)==value.getId()) {
-            return this.value;
-        } else if (value!=null && Integer.parseInt(Id)<value.getId()){
-            return leftNode.find(Id);
-        } else {
-            return rightNode.find(Id);
-        }
+        return 1 + countNodes(node.leftNode) + countNodes(node.rightNode);
     }
 }

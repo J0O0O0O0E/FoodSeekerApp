@@ -63,6 +63,8 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: "+String.valueOf(bundle.getDouble("fb_distance")));
             ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Fundation Date: " + bundle.getString("fb_foundDate"));
             ((TextView) findViewById(R.id.food_bank_postcode)).setText("Post code: " + bundle.getString( "fb_postCode"));
+            ((TextView) findViewById(R.id.food_bank_rate)).setText("Rate: " + String.valueOf(bundle.getDouble( "fb_rate")));
+
 
             //creat the chart
             setupBarChart(bundle);
@@ -71,7 +73,7 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_share = findViewById(R.id.iv_share);
             ImageView iv_subscribe = findViewById(R.id.iv_subscribe);
-            TextView tvZ_test = findViewById(R.id.tv_test);
+
 
 
 //            {test for gps}
