@@ -171,6 +171,41 @@ public class UserRepository {
         }
     }
 
+
+    public void uploadImageToFirebase(Uri uri, Context context) {
+        lock.lock();
+        try{
+            if (uri != null) {
+                StorageReference fileRef = storageReference.child("users/" + System.currentTimeMillis() + "-profile.jpg");
+                fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                    fileRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                        String imageUrl = downloadUri.toString();
+                        saveImageUrlToFirestore(imageUrl);
+                        User currentUser = liveUser.getValue();
+                        assert currentUser != null;
+                        currentUser.setImgUrl(imageUrl);
+                        liveUser.postValue(currentUser);
+
+                        Toast.makeText(context, "Upload successful", Toast.LENGTH_SHORT).show();
+                    });
+                }).addOnFailureListener(e -> Toast.makeText(context, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+
+
+            }
+        }finally {
+            lock.unlock();
+        }
+
+    }
+    private void saveImageUrlToFirestore(String imageUrl) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("imgUrl", imageUrl);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = UserRepository.getInstance().getUser().getEmail(); // Assuming email as unique identifier
+        db.collection("User").document(userId).update(updates);
+    }
+
     public void updateContactNumber(String number){
         lock.lock();
         try {
