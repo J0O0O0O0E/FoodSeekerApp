@@ -2,14 +2,15 @@ package com.example.myapplication.repository;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.model.User;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +18,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,16 +35,17 @@ public class UserRepository {
     public FirebaseFirestore fStore;
     public FirebaseUser currentUser;
     public MutableLiveData<User> liveUser;
-
-//    public User user;
-
     private final Lock lock = new ReentrantLock();
+    private StorageReference storageReference;
+
 
     private UserRepository(){
         this.mAuth = FirebaseAuth.getInstance();
         this.fStore = FirebaseFirestore.getInstance();
         this.currentUser = mAuth.getCurrentUser();
         this.liveUser = new MutableLiveData<>();
+        this.storageReference = FirebaseStorage.getInstance().getReference();
+
     }
 
     public static UserRepository getInstance() {
@@ -83,8 +87,10 @@ public class UserRepository {
     public void createUserProfile(FirebaseUser user) {
         String emailAddress = user.getEmail();
         Map<String, Object> userMap = new HashMap<>();
+        userMap.put("author", false);
         userMap.put("contactNumber", "");
         userMap.put("email", emailAddress);
+        userMap.put("imgUrl","");
         userMap.put("subscribedFoodBanks", new ArrayList<>());
         userMap.put("userName", "");
 
@@ -127,6 +133,15 @@ public class UserRepository {
         lock.lock();
         try {
             return Objects.requireNonNull(liveUser.getValue()).getEmail();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public String getuserimg(){
+        lock.lock();
+        try {
+            return Objects.requireNonNull(liveUser.getValue()).getimgUrl();
         } finally {
             lock.unlock();
         }

@@ -1,11 +1,13 @@
+package com.example.myapplication;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 import com.example.myapplication.tokenizer.Tokenizer;
 
 
-public class TokenizerTest {
+public class TestTokenizer {
     String text1 = "";
-    String tetx2 = "";
+    String text2 = "";
     String text3 = "";
     String text4 = "";
 

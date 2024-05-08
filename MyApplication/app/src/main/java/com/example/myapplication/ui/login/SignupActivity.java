@@ -71,8 +71,23 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         btnSignup.setOnClickListener(this);
 
     }
+    public boolean isValidEmail(String email){
+        return !((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
+    }
 
-
+    public boolean isLengthLessThan6(String psw){
+        return(psw.length() < 6);
+    }
+    public boolean containUpper(String str){
+        boolean flag = false;
+        for(int i = 0;i<str.length();i++){
+            if(Character.isUpperCase(str.charAt(i))){
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
     //https://stackoverflow.com/questions/12947620/email-address-validation-in-android-on-edittext
     public void onClick(View view) {
         String email = username.getText().toString().trim();
@@ -80,14 +95,20 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         UserRepository userRepository = UserRepository.getInstance();
 
         //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (isValidEmail(email)){
             username.setError("invalid email address");
             username.requestFocus();
             return;
         }
         // password length required by firebase
-        if (password.length()<6){
+        if (isLengthLessThan6(password)){
             pw.setError("Length of password should be at least 6");
+            pw.requestFocus();
+            return;
+        }
+        // password must contain capital letters
+        if (!containUpper(password)){
+            pw.setError("Password must contain capital letters!");
             pw.requestFocus();
             return;
         }
