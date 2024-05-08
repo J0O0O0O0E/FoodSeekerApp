@@ -197,7 +197,7 @@ public class FoodbankFragment extends Fragment {
 
                     MainTokenizer tokenizer = new MainTokenizer(input);
                     List<Token> tokens = tokenizer.getAllTokens();
-                    if(tokens == null||tokens.size()==0){
+                    if(tokens == null||tokens.size()==0||!FoodbankViewModel.checkTokens(tokens)){
                         Snackbar.make(getView(),"Synax error!",Snackbar.LENGTH_SHORT).show();
                         return;
                     }

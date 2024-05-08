@@ -10,6 +10,7 @@ import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
 import com.example.myapplication.repository.FoodBankRepository;
+import com.example.myapplication.tokenizer.Token;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -163,6 +164,15 @@ public class FoodbankViewModel extends ViewModel {
         return output.toString();
     }
 
+    //check and return true if tokens is allowed : 1. must contain less than 6 tokens 2. must not have repeated key
+    public static boolean checkTokens (List<Token> tokens){
+        if(tokens.size() > 6){
+            return false;
+        }
+
+
+        return true;
+    }
 
 }
 
