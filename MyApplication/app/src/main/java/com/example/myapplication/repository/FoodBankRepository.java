@@ -89,7 +89,7 @@ public class FoodBankRepository {
      * Constructor initializes a new instance of FoodBankRepository.
      * It sets up the Firebase database connection and initializes the list for storing FoodBank objects.
      */
-    public FoodBankRepository() {
+    private FoodBankRepository() {
         // Get the Firebase database instance
         database = FirebaseDatabase.getInstance("https://comp2100-6442-4f828-default-rtdb.asia-southeast1.firebasedatabase.app");
         // Initialize the list to hold FoodBanks
@@ -127,6 +127,19 @@ public class FoodBankRepository {
                 .collect(Collectors.toList());
     }
 
+    public FoodBank getFoodBankById(int id) {
+        if (foodBanks.isEmpty()) {
+            return null;
+        }
+
+        Optional<FoodBank> result = foodBanks.stream()
+                .filter(foodBank -> foodBank.getId() == id)
+                .findFirst();
+
+        return result.orElse(null);
+    }
+
+
 
     /**
      * Reads the list of FoodBanks from Firebase and notifies the DataStatus callback interface upon completion
@@ -136,8 +149,9 @@ public class FoodBankRepository {
      * @param dataStatus The callback interface through which data load results or errors are communicated.
      */
     public void readFoodBanks(final DataStatus dataStatus) {
+        lock.lock();
         // Reference to the root in the database, root dir has no parameter for getReference method
-        DatabaseReference ref = database.getReference();
+        try{DatabaseReference ref = database.getReference();
         // Add value event listener to fetch data
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -179,6 +193,10 @@ public class FoodBankRepository {
                 }
             });
         }
+        finally{
+            lock.unlock();
+        }
+        }
 
 
     private void loadFoodBanks() {
@@ -206,22 +224,7 @@ public class FoodBankRepository {
             }
         });
     }
-    public FoodBank getFoodBankById(int id){
-        if (foodBanks.size()==0){
-            System.out.println("Please load foodbanks from database before u use this method.");
-            return null;
-        }
-        else {
-            for (FoodBank foodBank:
-                 foodBanks) {
-                if (foodBank.getId()==id){
-                    return foodBank;
-                }
-            }
-            System.out.println("No such id");
-            return null;
-        }
-    }
+
     public DoubleAVLTree getDoubleAVLTree(){
         return doubleAVLTree;
     }
