@@ -13,6 +13,8 @@ public class User {
 
     public String email;
 
+    private String imgUrl;
+
     public List<String> subscribedFoodBanks;
 
 
@@ -47,6 +49,16 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+
+    @PropertyName("imgUrl")
+    public String getimgUrl() {
+        return imgUrl;
     }
 
     public void setSubscribedFoodBanks(List<String> subscribedFoodBanks) {

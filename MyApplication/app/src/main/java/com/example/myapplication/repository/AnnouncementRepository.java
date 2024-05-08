@@ -69,7 +69,8 @@ public class  AnnouncementRepository {
      * Loads announcements from the "Announcement" collection in Firestore in real-time.
      * If any changes occur in the Firestore collection,
      * the LiveData is updated using addSnapshotListener.
-     */    private void loadAnnouncements() {
+     */
+    private void loadAnnouncements() {
         // Access the "Announcement" collection in the fb and add a real-time update listener
         db.collection("Announcement")
                 .addSnapshotListener((snapshots, e) -> {
@@ -81,6 +82,7 @@ public class  AnnouncementRepository {
                     }
                     // list of Announcement to store the data
                     List<Announcement> newAnnouncements = new ArrayList<>();
+
                     // Iterate over each document in the query snapshot
                     for (QueryDocumentSnapshot doc : snapshots) {
                         // Convert each document into an Announcement object and add it to the list

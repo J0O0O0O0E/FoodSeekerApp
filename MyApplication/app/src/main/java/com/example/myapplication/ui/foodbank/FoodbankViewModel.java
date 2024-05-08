@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class FoodbankViewModel extends ViewModel {
     // Live data object for FoodBanks
-    private MutableLiveData<ArrayList<FoodBank>> foodBanksLiveData;
+
     // Repository for FoodBank data operations
     private FoodBankRepository foodBankRepository;
     // Live data for display text
@@ -39,40 +39,14 @@ public class FoodbankViewModel extends ViewModel {
     public FoodbankViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is Foodbank fragment");
-        foodBankRepository = new FoodBankRepository();
-        foodBanksLiveData = new MutableLiveData<>();
-        loadFoodBanks();
+        foodBankRepository = FoodBankRepository.getInstance();
+
     }
 
     /**
      * Loads food banks from the repository and observes data changes. Upon data loading,
      * the food banks are set to the LiveData object for observation and UI updates.
      */
-    private void loadFoodBanks() {
-        foodBankRepository.readFoodBanks(new FoodBankRepository.DataStatus() {
-            @Override
-            public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
-                foodBanksLiveData.setValue(foodBanks);
-            }
-
-            @Override
-            public void DataIsInserted() {
-            }
-
-            @Override
-            public void DataIsUpdated() {
-            }
-
-            @Override
-            public void DataIsDeleted() {
-            }
-
-            @Override
-            public void Error(Exception e) {
-                // TODO Log or handle errors
-            }
-        });
-    }
 
     /**
      * Provides the LiveData object that contains the list of FoodBank objects.
@@ -80,7 +54,7 @@ public class FoodbankViewModel extends ViewModel {
      * @return A LiveData object containing an ArrayList of FoodBank.
      */
     public LiveData<ArrayList<FoodBank>> getFoodBanksLiveData() {
-        return foodBanksLiveData;
+        return FoodBankRepository.getInstance().getFoodBanksLiveData();
     }
 
     /**
@@ -91,29 +65,7 @@ public class FoodbankViewModel extends ViewModel {
      * @param latitude  The latitude of the user's location.
      * @param longitude The longitude of the user's location.
      */
-    public void setUserLocationAndUpdateDistances(double latitude, double longitude) {
-        Location userLocation = new Location(latitude, longitude);
-        ArrayList<FoodBank> foodBanks = foodBanksLiveData.getValue();
 
-        if (foodBanks != null) {
-            for (FoodBank foodBank : foodBanks) {
-                double distance = foodBank.getLocation().calculateDistance(userLocation);
-                Log.d("UpdateDistances", "ID:" + foodBank.getId() + " distance:" + distance);
-                foodBank.setDistanceToUser(distance);
-            }
-
-            // Sort the list based on distance to user
-            Collections.sort(foodBanks, new Comparator<FoodBank>() {
-                @Override
-                public int compare(FoodBank fb1, FoodBank fb2) {
-                    return Double.compare(fb1.getDistanceToUser(), fb2.getDistanceToUser());
-                }
-            });
-
-            // Update the LiveData with the sorted list
-            foodBanksLiveData.setValue(foodBanks);
-        }
-    }
 
     /**
      * Provides the LiveData object that contains the text for the UI.
