@@ -146,5 +146,8 @@ public class FoodBankRepository {
             return null;
         }
     }
+    public DoubleAVLTree getDoubleAVLTree(){
+        return doubleAVLTree;
+    }
 }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
 import com.example.myapplication.repository.FoodBankRepository;
@@ -29,6 +30,8 @@ public class FoodbankViewModel extends ViewModel {
     private MutableLiveData<ArrayList<FoodBank>> foodBanksLiveData;
     // Repository for FoodBank data operations
     private FoodBankRepository foodBankRepository;
+    private MutableLiveData<DoubleAVLTree> doubleAVLTreeLiveData = new MutableLiveData<>();
+
     // Live data for display text
     private final MutableLiveData<String> mText;
 
@@ -53,6 +56,7 @@ public class FoodbankViewModel extends ViewModel {
             @Override
             public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
                 foodBanksLiveData.setValue(foodBanks);
+                doubleAVLTreeLiveData.setValue(foodBankRepository.getDoubleAVLTree());
             }
 
             @Override
@@ -69,7 +73,6 @@ public class FoodbankViewModel extends ViewModel {
 
             @Override
             public void Error(Exception e) {
-                // TODO Log or handle errors
             }
         });
     }
@@ -81,6 +84,9 @@ public class FoodbankViewModel extends ViewModel {
      */
     public LiveData<ArrayList<FoodBank>> getFoodBanksLiveData() {
         return foodBanksLiveData;
+    }
+    public LiveData<DoubleAVLTree> getDoubleAVLTreeLiveData() {
+        return doubleAVLTreeLiveData;
     }
 
     /**

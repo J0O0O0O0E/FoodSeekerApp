@@ -31,6 +31,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.FoodBankAdapterNew;
 import com.example.myapplication.databinding.FragmentFoodbankBinding;
+import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.parser.FoodBankParser;
 import com.example.myapplication.tokenizer.MainTokenizer;
@@ -145,6 +146,12 @@ public class FoodbankFragment extends Fragment {
                     });
                 }
 
+                foodbankViewModel.getDoubleAVLTreeLiveData().observe(getViewLifecycleOwner(), new Observer<DoubleAVLTree>() {
+                    @Override
+                    public void onChanged(DoubleAVLTree doubleAVLTree) {
+
+                    }
+                });
                 //{test}
 //                DevelopFoodbank.foodbanks = fbList;
 //                Log.d("test",DevelopFoodbank.searchId(204).getName());
