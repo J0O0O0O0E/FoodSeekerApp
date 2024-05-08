@@ -17,6 +17,7 @@ import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.ui.home.announcement.RecyclerViewInterface;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedFoodBanksAdaptor.SubscribedFoodBanksViewHolder> {
@@ -34,6 +35,7 @@ public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedF
         this.context = context;
         this.foodBanksId = foodBanksId;
         this.foodBanks = FoodBankRepository.getInstance().getFoodBankListByIdList(foodBanksId);
+        sortFoodBanks();
 
     }
 
@@ -58,6 +60,20 @@ public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedF
     public int getItemCount() {
         return foodBanks.size();
     }
+
+    public void updateSubscribedFoodBanks(List<String> newFoodBanksId){
+        List<FoodBank> newFoodBanks = FoodBankRepository.getInstance().
+                getFoodBankListByIdList(newFoodBanksId);
+        newFoodBanks.sort(Comparator.comparingDouble(FoodBank::getDistanceToUser));
+        foodBanks = newFoodBanks;
+        notifyDataSetChanged();
+    }
+
+
+    public void sortFoodBanks(){
+        foodBanks.sort(Comparator.comparingDouble(FoodBank::getDistanceToUser));
+    }
+
 
     public static class SubscribedFoodBanksViewHolder extends RecyclerView.ViewHolder {
         TextView name;
