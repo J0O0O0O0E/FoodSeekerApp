@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainTokenizerTree {
+public class TokenizerTree {
     private String textBuffer;
     private Token currentToken;
 
     private static final ArrayList<String> validKeywords = new ArrayList<>(Arrays.asList("rating", "capacity")) ;
 
-    public MainTokenizerTree(String text) {
+    public TokenizerTree(String text) {
         textBuffer = text;
         next();
     }

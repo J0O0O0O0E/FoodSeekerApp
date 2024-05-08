@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainTokenizer {
+public class Tokenizer {
     private String textBuffer;
     private Token currentToken;
 
     private static final ArrayList<String> validKeywords = new ArrayList<>(Arrays.asList("rating", "capacity", "distance")) ;
 
-    public MainTokenizer(String text) {
+    public Tokenizer(String text) {
         textBuffer = text;
         next();
     }

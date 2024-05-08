@@ -176,10 +176,6 @@ public class FoodbankViewModel extends ViewModel {
                 return false;
             }
         }
-
-
-
-
         return true;
     }
 
