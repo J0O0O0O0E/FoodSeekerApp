@@ -1,6 +1,7 @@
 package com.example.myapplication.repository;
 
 import com.example.myapplication.datastructure.AVLTree;
+import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +31,7 @@ public class FoodBankRepository {
     private DataStatus dataStatus;
     //AVLTree by capacity
     private AVLTree avlTree;
+    private DoubleAVLTree doubleAVLTree;
 
 
 
@@ -75,6 +77,7 @@ public class FoodBankRepository {
         // Initialize the list to hold FoodBanks
         foodBanks = new ArrayList<>();
         avlTree = new AVLTree();
+        doubleAVLTree = new DoubleAVLTree();
     }
 
     /**
@@ -107,11 +110,15 @@ public class FoodBankRepository {
                     // Add it to the food banks list
                     foodBanks.add(foodBank);
                     avlTree = avlTree.insert(avlTree, foodBank);
+                    doubleAVLTree.insert(foodBank);
                 }
                 //TODO log out the tree
 
-                avlTree.printInOrder();
+                //avlTree.printInOrder();
                 avlTree.countNodes();
+                doubleAVLTree.printAllNodes();
+                doubleAVLTree.countNodes();
+
                 // Notify that data is loaded along with the keys of the nodes
                 dataStatus.DataIsLoaded(foodBanks, keys);
             }
