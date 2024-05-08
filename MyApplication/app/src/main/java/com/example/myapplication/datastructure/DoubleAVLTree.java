@@ -1,6 +1,9 @@
 package com.example.myapplication.datastructure;
 
+import android.util.Log;
+
 import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.model.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -210,6 +213,24 @@ public class DoubleAVLTree {
                     ", Rating: " + node.data.getRating());
 
             printAllNodes(node.right);
+        }
+    }
+
+    public void setDistancesForAll(Location userLocation) {
+        setDistancesForAll(root, userLocation);
+    }
+
+    private void setDistancesForAll(AVLNode node, Location userLocation) {
+        if (node != null) {
+            if (node.data.getLocation() != null) {
+                //double distance = calculateDistance(userLocation, node.data.getLocation());
+                double distance = Math.round(node.data.getLocation().calculateDistance(userLocation));
+                node.data.setDistanceToUser(distance);
+            } else {
+                Log.d("UpdateDistances", "Location is null for FoodBank ID:" + node.data.getId());
+            }
+            setDistancesForAll(node.left, userLocation);
+            setDistancesForAll(node.right, userLocation);
         }
     }
 }
