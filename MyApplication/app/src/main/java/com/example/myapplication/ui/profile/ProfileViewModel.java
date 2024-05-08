@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.profile;
 
+import android.content.Context;
+import android.net.Uri;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -37,11 +40,18 @@ public class ProfileViewModel extends ViewModel {
         user.setUserName(name);
     }
 
+    public User getUser() {
+        return user;
+    }
 
     public void updateUserNameToRepository(String name){
         userRepository.updateUserName(name);
     }
 
+
+    public void updateUserprofileImg(Uri uri, Context context){
+        userRepository.uploadImageToFirebase(uri, context);
+    }
     public void updateContactNumberToRepository(String number){
         userRepository.updateContactNumber(number);
     }
