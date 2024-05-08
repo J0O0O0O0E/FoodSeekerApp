@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -111,6 +112,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         UserRepository.getInstance().setUser(user);
 //
                         UserRepository.getInstance().loadUser();
+
+                        FoodBankRepository.getInstance();
 
                         updateUI(user);
                     } else {
