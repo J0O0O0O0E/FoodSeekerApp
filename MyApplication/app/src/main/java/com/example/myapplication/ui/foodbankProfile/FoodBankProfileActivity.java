@@ -52,7 +52,7 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_share = findViewById(R.id.iv_share);
             ImageView iv_subscribe = findViewById(R.id.iv_subscribe);
-            TextView tvZ_test = findViewById(R.id.tv_test);
+
 
 
 //            {test for gps}
