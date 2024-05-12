@@ -4,16 +4,13 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.net.Uri;
-import static com.google.firebase.firestore.model.mutation.Precondition.updateTime;
-
 import android.util.Log;
-import androidx.annotation.NonNull;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.example.myapplication.model.User;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +18,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import java.time.LocalDateTime;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -29,13 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
 
 public class UserRepository {
 
@@ -44,16 +35,6 @@ public class UserRepository {
     public FirebaseFirestore fStore;
     public FirebaseUser currentUser;
     public MutableLiveData<User> liveUser;
-
-
-    private MutableLiveData<LocalDateTime> timeLiveData;
-
-    private ScheduledExecutorService executorService;
-
-
-
-
-
     private final Lock lock = new ReentrantLock();
     private StorageReference storageReference;
 
@@ -63,9 +44,6 @@ public class UserRepository {
         this.fStore = FirebaseFirestore.getInstance();
         this.currentUser = mAuth.getCurrentUser();
         this.liveUser = new MutableLiveData<>();
-        this.executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(this::updateTime, 0, 1,
-                TimeUnit.MINUTES);
         this.storageReference = FirebaseStorage.getInstance().getReference();
 
     }
@@ -160,17 +138,6 @@ public class UserRepository {
         }
     }
 
-    public MutableLiveData<LocalDateTime> getTimeLiveData(){
-        return timeLiveData;
-    }
-
-    public void updateTime(){
-        lock.lock();
-        this.timeLiveData.setValue(LocalDateTime.now());
-        lock.unlock();
-    }
-
-
     public String getuserimg(){
         lock.lock();
         try {
@@ -202,6 +169,41 @@ public class UserRepository {
         } finally {
             lock.unlock();
         }
+    }
+
+
+    public void uploadImageToFirebase(Uri uri, Context context) {
+        lock.lock();
+        try{
+            if (uri != null) {
+                StorageReference fileRef = storageReference.child("users/" + System.currentTimeMillis() + "-profile.jpg");
+                fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                    fileRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                        String imageUrl = downloadUri.toString();
+                        saveImageUrlToFirestore(imageUrl);
+                        User currentUser = liveUser.getValue();
+                        assert currentUser != null;
+                        currentUser.setImgUrl(imageUrl);
+                        liveUser.postValue(currentUser);
+
+                        Toast.makeText(context, "Upload successful", Toast.LENGTH_SHORT).show();
+                    });
+                }).addOnFailureListener(e -> Toast.makeText(context, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+
+
+            }
+        }finally {
+            lock.unlock();
+        }
+
+    }
+    private void saveImageUrlToFirestore(String imageUrl) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("imgUrl", imageUrl);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = UserRepository.getInstance().getUser().getEmail(); // Assuming email as unique identifier
+        db.collection("User").document(userId).update(updates);
     }
 
     public void updateContactNumber(String number){

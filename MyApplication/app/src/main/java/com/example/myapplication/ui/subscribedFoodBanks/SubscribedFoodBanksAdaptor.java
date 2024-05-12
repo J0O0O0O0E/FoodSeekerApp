@@ -15,7 +15,6 @@ import com.example.myapplication.R;
 import com.example.myapplication.model.Announcement;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.repository.FoodBankRepository;
-import com.example.myapplication.ui.home.announcement.RecyclerViewInterface;
 
 import java.util.Comparator;
 import java.util.List;

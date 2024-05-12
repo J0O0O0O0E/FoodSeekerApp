@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainTokenizer {
+public class TokenizerTree {
     private String textBuffer;
     private Token currentToken;
 
-    private static final ArrayList<String> validKeywords = new ArrayList<>(Arrays.asList("rating", "capacity", "distance")) ;
+    private static final ArrayList<String> validKeywords = new ArrayList<>(Arrays.asList("rating", "capacity")) ;
 
-    public MainTokenizer(String text) {
+    public TokenizerTree(String text) {
         textBuffer = text;
         next();
     }
@@ -61,19 +61,19 @@ public class MainTokenizer {
         while (hasNext()) {
             Token token = current();
             if (token.getType() == Token.Type.KEYWORD && !validKeywords.contains(token.getToken())) {
-                return new ArrayList<>(); // 不是有效关键字，返回空列表
+                return new ArrayList<>();
             }
             tokens.add(token);
             next();
         }
 
-        // 检查是否按正确的顺序：KEYWORD, COMPARISON, INT
+
         for (int i = 0; i < tokens.size(); i += 3) {
             if (i + 2 >= tokens.size() ||
                     tokens.get(i).getType() != Token.Type.KEYWORD ||
                     tokens.get(i + 1).getType() != Token.Type.COMPARISON ||
                     tokens.get(i + 2).getType() != Token.Type.INT) {
-                return new ArrayList<>(); // 格式不正确，返回空列表
+                return new ArrayList<>();
             }
         }
 
