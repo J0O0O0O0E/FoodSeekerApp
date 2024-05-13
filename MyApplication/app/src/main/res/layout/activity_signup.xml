@@ -78,5 +78,30 @@
             android:text="Sign Up"
             app:backgroundTint="@null" />
 
+        <TextView
+            android:id="@+id/back_to_sign_in_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginHorizontal="38dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="sans-serif"
+            android:text="Already have a account?"
+            android:textColor="#426F42"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/back_to_log_in_btn"
+            android:layout_width="171dp"
+            android:layout_height="38dp"
+            android:layout_gravity="left"
+            android:layout_marginHorizontal="34dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/login_btnpress"
+            android:fontFamily="sans-serif"
+            android:text="BACK TO LOG IN"
+            app:backgroundTint="@null" />
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
