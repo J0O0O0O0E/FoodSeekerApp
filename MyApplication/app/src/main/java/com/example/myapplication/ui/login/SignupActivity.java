@@ -72,7 +72,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
     public boolean isValidEmail(String email){
-        return ((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
+        return !((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
     }
 
     public boolean isLengthLessThan6(String psw){

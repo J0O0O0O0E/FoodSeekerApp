@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
     public boolean isValidEmail(String email){
-        return ((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
+        return !((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
     }
 
     public boolean isLengthLessThan6(String psw){
