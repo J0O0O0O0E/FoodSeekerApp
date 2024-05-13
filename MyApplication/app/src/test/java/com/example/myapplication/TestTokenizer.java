@@ -22,9 +22,6 @@ public class TestTokenizer {
     Token token8 =  new Token("<", Token.Type.COMPARISON);
     Token token9 = new Token("10", Token.Type.INT);
 
-
-
-
     @Test
     public void testValidInput() {
         String input = "distance>100 rating=5 capacity<10";
@@ -50,9 +47,6 @@ public class TestTokenizer {
         assertEquals(token8.getToken(), tokens.get(7).getToken());//8
         assertEquals(token9.getToken(), tokens.get(8).getToken());
         assertEquals(token9.getToken(), tokens.get(8).getToken());//9
-
-
-
     }
 
     @Test
