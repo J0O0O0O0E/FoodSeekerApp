@@ -90,37 +90,6 @@ public class FoodbankViewModel extends ViewModel {
         return doubleAVLTreeLiveData;
     }
 
-    /**
-     * Updates the distances of all food banks in the LiveData to a new user location and sorts them.
-     * This method calculates the distance to each food bank from a given user location,
-     * updates the food banks with the new distance, and then sorts the list by distance.
-     *
-     * @param latitude  The latitude of the user's location.
-     * @param longitude The longitude of the user's location.
-     */
-    public void setUserLocationAndUpdateDistances(double latitude, double longitude) {
-        Location userLocation = new Location(latitude, longitude);
-        ArrayList<FoodBank> foodBanks = foodBanksLiveData.getValue();
-
-        if (foodBanks != null) {
-            for (FoodBank foodBank : foodBanks) {
-                double distance = foodBank.getLocation().calculateDistance(userLocation);
-                Log.d("UpdateDistances", "ID:" + foodBank.getId() + " distance:" + distance);
-                foodBank.setDistanceToUser(distance);
-            }
-
-            // Sort the list based on distance to user
-            Collections.sort(foodBanks, new Comparator<FoodBank>() {
-                @Override
-                public int compare(FoodBank fb1, FoodBank fb2) {
-                    return Double.compare(fb1.getDistanceToUser(), fb2.getDistanceToUser());
-                }
-            });
-
-            // Update the LiveData with the sorted list
-            foodBanksLiveData.setValue(foodBanks);
-        }
-    }
 
     /**
      * Provides the LiveData object that contains the text for the UI.

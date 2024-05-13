@@ -146,6 +146,7 @@ public class FoodbankFragment extends Fragment {
                 foodbankViewModel.getDoubleAVLTreeLiveData().observe(getViewLifecycleOwner(), new Observer<DoubleAVLTree>() {
                     @Override
                     public void onChanged(DoubleAVLTree doubleAVLTree) {
+                        doubleAVLTree.setDistancesForAll(userLocation);
 
                     }
                 });
@@ -200,6 +201,13 @@ public class FoodbankFragment extends Fragment {
                     for (FoodBank foodBank : FoodBankParserTree.filterFoodBanks(tokens, foodbankViewModel.getDoubleAVLTreeLiveData().getValue())) {
                         localFoodBankList.add(foodBank);
                     }
+                    // sort by distance zijian yang
+                    Collections.sort(localFoodBankList, new Comparator<FoodBank>() {
+                        @Override
+                        public int compare(FoodBank fb1, FoodBank fb2) {
+                            return Double.compare(fb1.getDistanceToUser(), fb2.getDistanceToUser());
+                        }
+                    });
 
                 }
                 // load current state filter and add search result to the adapter
