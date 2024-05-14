@@ -59,20 +59,17 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
-// directly jump to main method when clicked
-//        // Set up a click listener for the signup button
-//        btnSignup.setOnClickListener(v -> {
-//            // Here, we assume the signup logic is handled, and the user has authenticated successfully
-//            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-//            startActivity(intent);
-//            finish(); // Finish signup Activity so the user cannot navigate back to it
-//        });
+        // Back to login
         btnSignup.setOnClickListener(this);
-
+        Button btnBackToLogin = findViewById(R.id.back_to_log_in_btn);
+        btnBackToLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
     public boolean isValidEmail(String email){
-        return ((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
+        return !((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
     }
 
     public boolean isLengthLessThan6(String psw){
@@ -95,7 +92,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         UserRepository userRepository = UserRepository.getInstance();
 
         //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
-        if (isValidEmail(email)){
+        if (!isValidEmail(email)){
             username.setError("invalid email address");
             username.requestFocus();
             return;
