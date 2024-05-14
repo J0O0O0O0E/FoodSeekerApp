@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if(destination.getId() == R.id.navigation_foodbank){
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, getResources().getInteger(R.integer.LOCATION_PERMISSION_REQUEST_CODE));
                     controller.navigate(R.id.navigation_home);
                 }else{
                     navView.setVisibility(View.VISIBLE);
