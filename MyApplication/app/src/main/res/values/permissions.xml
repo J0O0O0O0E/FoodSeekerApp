@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="LOCATION_PERMISSION_REQUEST_CODE">100</integer>
-
+    <integer name="MAX_INPUT_LENGTH">26</integer>
 
 </resources>
