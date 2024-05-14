@@ -35,6 +35,7 @@ import com.example.myapplication.parser.FoodBankParserTree;
 import com.example.myapplication.tokenizer.Token;
 import com.example.myapplication.tokenizer.Tokenizer;
 import com.example.myapplication.ui.foodbankProfile.FoodBankProfileActivity;
+import com.example.myapplication.utils.FoodBankBundle;
 import com.example.myapplication.utils.LocationChecker;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -240,48 +241,52 @@ public class FoodbankFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FoodBank clickedFoodBank = (FoodBank) parent.getItemAtPosition(position);
                 Intent detailIntent = new Intent(getActivity(), FoodBankProfileActivity.class);
+
+                Bundle bundle = FoodBankBundle.createFoodBankBundle(clickedFoodBank);
                 //send foodbank Information
-                Bundle bundle = new Bundle();
-                bundle.putString("fb_name", clickedFoodBank.getName());
-                bundle.putString("fb_number", clickedFoodBank.getTel());
-                bundle.putString("fb_email", clickedFoodBank.getEmail());
-
-                if (clickedFoodBank.isStatus()) {
-                    bundle.putString("fb_sate", "open");
-                } else {
-                    bundle.putString("fb_sate", "close");
-                }
-
-                bundle.putString("fb_street", clickedFoodBank.getStreet());
-                bundle.putString("fb_city", clickedFoodBank.getSuburb());
-                bundle.putString("fb_postCode", clickedFoodBank.getPostcode());
-                bundle.putString("fb_country", clickedFoodBank.getCountry());
-                bundle.putString("fb_openHours", clickedFoodBank.getOpen_hours());
-                bundle.putInt("fb_capacity", clickedFoodBank.getCapacity());
-                bundle.putDouble("fb_distance", clickedFoodBank.getDistanceToUser());
-                bundle.putString("fb_foundDate", clickedFoodBank.getDoe());
-                bundle.putDouble("fb_latitude", clickedFoodBank.getLat());
-                bundle.putDouble("fb_longitude", clickedFoodBank.getLon());
-                bundle.putInt("fb_foodBankId", clickedFoodBank.getId());
-                bundle.putDouble("fb_rate", clickedFoodBank.getRating());
-
-
-                // Add food quantities
-                bundle.putInt("Pasta", clickedFoodBank.getFood1_pasta());
-                bundle.putInt("Bread", clickedFoodBank.getFood2_bread());
-                bundle.putInt("Milk", clickedFoodBank.getFood3_milk());
-                bundle.putInt("Pie", clickedFoodBank.getFood4_pie());
-                bundle.putInt("Vegetable", clickedFoodBank.getFood5_vet());
-
-                bundle.putDouble("fb_latitude",clickedFoodBank.getLat());
-                bundle.putDouble("fb_longitude",clickedFoodBank.getLon());
-                bundle.putInt("fb_foodBankId",clickedFoodBank.getId());
+//                Bundle bundle = new Bundle();
+//                bundle.putString("fb_name", clickedFoodBank.getName());
+//                bundle.putString("fb_number", clickedFoodBank.getTel());
+//                bundle.putString("fb_email", clickedFoodBank.getEmail());
+//
+//                if (clickedFoodBank.isStatus()) {
+//                    bundle.putString("fb_sate", "open");
+//                } else {
+//                    bundle.putString("fb_sate", "close");
+//                }
+//
+//                bundle.putString("fb_street", clickedFoodBank.getStreet());
+//                bundle.putString("fb_city", clickedFoodBank.getSuburb());
+//                bundle.putString("fb_postCode", clickedFoodBank.getPostcode());
+//                bundle.putString("fb_country", clickedFoodBank.getCountry());
+//                bundle.putString("fb_openHours", clickedFoodBank.getOpen_hours());
+//                bundle.putInt("fb_capacity", clickedFoodBank.getCapacity());
+//                bundle.putDouble("fb_distance", clickedFoodBank.getDistanceToUser());
+//                bundle.putString("fb_foundDate", clickedFoodBank.getDoe());
+//                bundle.putDouble("fb_latitude", clickedFoodBank.getLat());
+//                bundle.putDouble("fb_longitude", clickedFoodBank.getLon());
+//                bundle.putInt("fb_foodBankId", clickedFoodBank.getId());
+//                bundle.putDouble("fb_rate", clickedFoodBank.getRating());
+//
+//
+//                // Add food quantities
+//                bundle.putInt("Pasta", clickedFoodBank.getFood1_pasta());
+//                bundle.putInt("Bread", clickedFoodBank.getFood2_bread());
+//                bundle.putInt("Milk", clickedFoodBank.getFood3_milk());
+//                bundle.putInt("Pie", clickedFoodBank.getFood4_pie());
+//                bundle.putInt("Vegetable", clickedFoodBank.getFood5_vet());
+//
+//                bundle.putDouble("fb_latitude",clickedFoodBank.getLat());
+//                bundle.putDouble("fb_longitude",clickedFoodBank.getLon());
+//                bundle.putInt("fb_foodBankId",clickedFoodBank.getId());
 
 
                 detailIntent.putExtras(bundle);
                 startActivity(detailIntent);
             }
         });
+
+
         return root;
     }
 
