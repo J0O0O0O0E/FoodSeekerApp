@@ -1,4 +1,4 @@
-package com.example.myapplication.ui;
+package com.example.myapplication.ui.login;
 
 import android.os.Bundle;
 import android.os.Handler;
