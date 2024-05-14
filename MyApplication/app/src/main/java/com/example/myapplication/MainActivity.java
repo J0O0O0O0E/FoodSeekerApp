@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //Ask for location permission when try to visit foodbank_fragment
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
