@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
  * This class provides functionality to read, insert, update, and delete FoodBank data asynchronously.
  * It uses Firebase's real-time database capabilities to manage data flow and inform observers
  * or activities through a callback interface once data operations are completed or if an error occurs.
+ *
+ * @author Zijian Yang
+ * @package com.example.myapplication.repository
  */
 public class FoodBankRepository {
 
@@ -73,7 +76,7 @@ public class FoodBankRepository {
      * Constructor initializes a new instance of FoodBankRepository.
      * It sets up the Firebase database connection and initializes the list for storing FoodBank objects.
      */
-    public FoodBankRepository() {
+    private FoodBankRepository() {
         // Get the Firebase database instance
         database = FirebaseDatabase.getInstance("https://comp2100-6442-4f828-default-rtdb.asia-southeast1.firebasedatabase.app");
         // Initialize the list to hold FoodBanks
@@ -117,6 +120,20 @@ public class FoodBankRepository {
                 .collect(Collectors.toList());
     }
 
+    public FoodBank getFoodBankById(int id) {
+        if (foodBanks.isEmpty()) {
+            return null;
+        }
+
+        Optional<FoodBank> result = foodBanks.stream()
+                .filter(foodBank -> foodBank.getId() == id)
+                .findFirst();
+
+        return result.orElse(null);
+    }
+
+
+
     /**
      * Reads the list of FoodBanks from Firebase and notifies the DataStatus callback interface upon completion
      * or if an error occurs.
@@ -124,8 +141,9 @@ public class FoodBankRepository {
      * @param dataStatus The callback interface through which data load results or errors are communicated.
      */
     public void readFoodBanks(final DataStatus dataStatus) {
+        lock.lock();
         // Reference to the root in the database, root dir has no parameter for getReference method
-        DatabaseReference ref = database.getReference();
+        try{DatabaseReference ref = database.getReference();
         // Add value event listener to fetch data
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -159,13 +177,18 @@ public class FoodBankRepository {
                 dataStatus.DataIsLoaded(foodBanks, keys);
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Notify that an error occurred
-                dataStatus.Error(databaseError.toException());
-            }
-        });
-    }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                        dataStatus.Error(databaseError.toException());
+
+                }
+            });
+        }
+        finally{
+            lock.unlock();
+        }
+        }
 
     /**
      * Loads the list of FoodBanks from Firebase.
@@ -191,33 +214,7 @@ public class FoodBankRepository {
         });
     }
 
-    /**
-     * Gets a FoodBank object by its ID.
-     *
-     * @param id The ID of the FoodBank.
-     * @return The FoodBank object if found, null otherwise.
-     */
-    public FoodBank getFoodBankById(int id) {
-        if (foodBanks.isEmpty()) {
-            System.out.println("Please load foodbanks from database before you use this method.");
-            return null;
-        } else {
-            for (FoodBank foodBank : foodBanks) {
-                if (foodBank.getId() == id) {
-                    return foodBank;
-                }
-            }
-            System.out.println("No such id");
-            return null;
-        }
-    }
-
-    /**
-     * Gets the DoubleAVLTree containing FoodBank objects.
-     *
-     * @return The DoubleAVLTree.
-     */
-    public DoubleAVLTree getDoubleAVLTree() {
+    public DoubleAVLTree getDoubleAVLTree(){
         return doubleAVLTree;
     }
 }
