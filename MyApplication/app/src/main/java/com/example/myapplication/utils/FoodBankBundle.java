@@ -67,26 +67,26 @@ public class FoodBankBundle {
             bundle.putString(KEY_FOODBANKBUNDLE_STATE, "close");
         }
 
-        bundle.putString(KEY_FOODBANKBUNDLE_NAME, foodBank.getName());
+        bundle.putString(KEY_FOODBANKBUNDLE_NAME, foodBank.getName());//
         bundle.putString(KEY_FOODBANKBUNDLE_NUMBER, foodBank.getTel());
-        bundle.putString(KEY_FOODBANKBUNDLE_EMAIL, foodBank.getEmail());
-        bundle.putString(KEY_FOODBANKBUNDLE_STREET, foodBank.getStreet());
-        bundle.putString(KEY_FOODBANKBUNDLE_CITY, foodBank.getSuburb());
-        bundle.putString(KEY_FOODBANKBUNDLE_POSTCODE, foodBank.getPostcode());
-        bundle.putString(KEY_FOODBANKBUNDLE_COUNTRY, foodBank.getCountry());
-        bundle.putString(KEY_FOODBANKBUNDLE_OPEN_HOURS, foodBank.getOpen_hours());
-        bundle.putInt(KEY_FOODBANKBUNDLE_CAPACITY, foodBank.getCapacity());
-        bundle.putDouble(KEY_FOODBANKBUNDLE_DISTANCE, foodBank.getDistanceToUser());
-        bundle.putString(KEY_FOODBANKBUNDLE_FOUND_DATE, foodBank.getDoe());
-        bundle.putDouble(KEY_FOODBANKBUNDLE_LATITUDE, foodBank.getLat());
-        bundle.putDouble(KEY_FOODBANKBUNDLE_LONGITUDE, foodBank.getLon());
-        bundle.putInt(KEY_FOODBANKBUNDLE_FOOD_BANK_ID, foodBank.getId());
-        bundle.putDouble(KEY_FOODBANKBUNDLE_RATE, foodBank.getRating());
-        bundle.putInt(KEY_PASTA, foodBank.getFood1_pasta());
-        bundle.putInt(KEY_BREAD, foodBank.getFood2_bread());
-        bundle.putInt(KEY_MILK, foodBank.getFood3_milk());
-        bundle.putInt(KEY_PIE, foodBank.getFood4_pie());
-        bundle.putInt(KEY_VEGETABLE, foodBank.getFood5_vet());
+        bundle.putString(KEY_FOODBANKBUNDLE_EMAIL, foodBank.getEmail());//
+        bundle.putString(KEY_FOODBANKBUNDLE_STREET, foodBank.getStreet());//
+        bundle.putString(KEY_FOODBANKBUNDLE_CITY, foodBank.getSuburb());//
+        bundle.putString(KEY_FOODBANKBUNDLE_POSTCODE, foodBank.getPostcode());//
+        bundle.putString(KEY_FOODBANKBUNDLE_COUNTRY, foodBank.getCountry());//
+        bundle.putString(KEY_FOODBANKBUNDLE_OPEN_HOURS, foodBank.getOpen_hours());//
+        bundle.putInt(KEY_FOODBANKBUNDLE_CAPACITY, foodBank.getCapacity());//
+        bundle.putDouble(KEY_FOODBANKBUNDLE_DISTANCE, foodBank.getDistanceToUser());//
+        bundle.putString(KEY_FOODBANKBUNDLE_FOUND_DATE, foodBank.getDoe());//
+        bundle.putDouble(KEY_FOODBANKBUNDLE_LATITUDE, foodBank.getLat());//
+        bundle.putDouble(KEY_FOODBANKBUNDLE_LONGITUDE, foodBank.getLon());//
+        bundle.putInt(KEY_FOODBANKBUNDLE_FOOD_BANK_ID, foodBank.getId());//
+        bundle.putDouble(KEY_FOODBANKBUNDLE_RATE, foodBank.getRating());//
+        bundle.putInt(KEY_PASTA, foodBank.getFood1_pasta());//
+        bundle.putInt(KEY_BREAD, foodBank.getFood2_bread());//
+        bundle.putInt(KEY_MILK, foodBank.getFood3_milk());//
+        bundle.putInt(KEY_PIE, foodBank.getFood4_pie());//
+        bundle.putInt(KEY_VEGETABLE, foodBank.getFood5_vet());//
         return bundle;
     }
 
