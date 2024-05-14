@@ -7,36 +7,56 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
+import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.model.TimeServer;
 import com.example.myapplication.model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class UserRepository {
 
     private static UserRepository instance;
-    public FirebaseAuth mAuth;
-    public FirebaseFirestore fStore;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
     public FirebaseUser currentUser;
     public MutableLiveData<User> liveUser;
     private final Lock lock = new ReentrantLock();
     private StorageReference storageReference;
+
+    private List<FoodBank> subscribedFoodBanks;
+
+
+
+    private TimeServer timeServer;
+
+
 
 
     private UserRepository(){
@@ -45,7 +65,7 @@ public class UserRepository {
         this.currentUser = mAuth.getCurrentUser();
         this.liveUser = new MutableLiveData<>();
         this.storageReference = FirebaseStorage.getInstance().getReference();
-
+        this.subscribedFoodBanks = new ArrayList<>();
     }
 
     public static UserRepository getInstance() {
@@ -130,11 +150,9 @@ public class UserRepository {
     }
 
     public String getUserEmail(){
-        lock.lock();
         try {
             return Objects.requireNonNull(liveUser.getValue()).getEmail();
         } finally {
-            lock.unlock();
         }
     }
 
@@ -146,6 +164,7 @@ public class UserRepository {
             lock.unlock();
         }
     }
+
 
     public void updateUserName(String name){
         lock.lock();
@@ -238,6 +257,9 @@ public class UserRepository {
             assert currentUser != null;
             currentUser.addSubscribedFoodBank(id);
             liveUser.postValue(currentUser);
+            FoodBank addedFoodBank = FoodBankRepository.getInstance().getFoodBankById(Integer.parseInt(id));
+            subscribedFoodBanks.add(addedFoodBank);
+
 
             fStore.collection("User").document(this.getUserEmail())
                     .update("subscribedFoodBanks", FieldValue.arrayUnion(id))
@@ -262,6 +284,8 @@ public class UserRepository {
             assert currentUser != null;
             currentUser.removeSubscribedFoodBank(id);
             liveUser.postValue(currentUser);
+            FoodBank removedFoodBank = FoodBankRepository.getInstance().getFoodBankById(Integer.parseInt(id));
+            subscribedFoodBanks.remove(removedFoodBank);
 
             fStore.collection("User").document(getUserEmail())
                     .update("subscribedFoodBanks", FieldValue.arrayRemove(id))
@@ -277,14 +301,61 @@ public class UserRepository {
         }
     }
 
+    public void updateFoodBanks(){
+        DocumentReference docRef = fStore.
+                collection("User").document(
+                        getUserEmail());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.e(TAG, "Listen failed.", e);
+                    return;
+                }
 
+                if (snapshot != null && snapshot.exists()) {Map<String, Object> data = snapshot.getData();
+                    if (data != null) {
+                        List<String> foodBankIds = (List<String>) data.get("subscribedFoodBanks");
+                        if (foodBankIds != null) {
+                            updateLiveUserFoodBanks(foodBankIds);
+                        } else {
+                            Log.d(TAG, "No subscribed food banks found or field is missing.");
+                        }
 
+                    } else {
+                        Log.d(TAG, "No subscribed food banks found or field is missing.");
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
 
+        });
+    }
 
+    private void updateLiveUserFoodBanks(List<String> foodBankIds) {
+        lock.lock();
+        try {
+            User currentUser = liveUser.getValue();
+            if (currentUser != null) {
+                currentUser.setSubscribedFoodBanks(foodBankIds);
+                liveUser.postValue(currentUser);
+                subscribedFoodBanks = FoodBankRepository.getInstance().
+                        getFoodBankListByIdList(foodBankIds);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
 
+    public FirebaseFirestore getfStore() {
+        lock.lock();
 
+        return fStore;
 
+    }
 
-
-
+    public List<FoodBank> getSubscribedFoodBanks() {
+        return subscribedFoodBanks;
+    }
 }
