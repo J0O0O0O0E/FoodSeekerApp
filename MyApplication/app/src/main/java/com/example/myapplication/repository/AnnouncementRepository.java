@@ -39,7 +39,7 @@ public class  AnnouncementRepository {
     private MutableLiveData<List<Announcement>> announcementsLiveData;
 
     // Singleton instance of the AnnouncementRepository
-    private static AnnouncementRepository instance;
+    private static volatile AnnouncementRepository instance;
 
     /**
      * Private constructor to initialize the Firestore instance and LiveData.
@@ -60,7 +60,11 @@ public class  AnnouncementRepository {
      */
     public static AnnouncementRepository getInstance() {
         if (instance == null) {
-            instance = new AnnouncementRepository();
+            synchronized (AnnouncementRepository.class) {
+                if (instance == null) {
+                    instance = new AnnouncementRepository();
+                }
+            }
         }
         return instance;
     }
@@ -76,8 +80,8 @@ public class  AnnouncementRepository {
                 .addSnapshotListener((snapshots, e) -> {
                     // check if error
                     if (e != null) {
-                        Log.e("AnnouncementRepo", "Error loading announcements, null", e);
-                        announcementsLiveData.setValue(null);// Handle error by setting LiveData to null
+                        Log.e("AnnouncementRepo", "Error loading announcements, empty", e);
+                        announcementsLiveData.setValue(new ArrayList<>());// Handle error by setting LiveData to null
                         return;
                     }
                     // list of Announcement to store the data
