@@ -127,6 +127,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                                 if (user != null) {
                                     userRepository.createUserProfile(user);
+                                    userRepository.loadUser();
                                     FoodBankRepository.getInstance();
                                     updateUI(user);
                                 }
