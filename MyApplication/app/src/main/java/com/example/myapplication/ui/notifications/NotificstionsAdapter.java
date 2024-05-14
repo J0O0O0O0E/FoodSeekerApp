@@ -15,17 +15,26 @@ import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Notification;
 import com.example.myapplication.repository.FoodBankRepository;
+import com.example.myapplication.repository.UserRepository;
 import com.example.myapplication.ui.subscribedFoodBanks.FoodBankRecyclerViewInterface;
 import com.example.myapplication.ui.subscribedFoodBanks.SubscribedFoodBanksAdaptor;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdapter.NotificationViewHolder>{
 
     private Context context;
 
     public List<Notification> notifications;
+
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
 
     public NotificstionsAdapter(Context context, List<Notification> notifications) {
         this.context = context;
@@ -57,6 +66,27 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
     }
 
 
+    private void scheduleCheck() {
+        Runnable checkNotifications = new Runnable() {
+            public void run() {
+                LocalDateTime currentTime = LocalDateTime.now();
+                List<FoodBank> foodBanks = UserRepository.getInstance().getSubscribedFoodBanks();
+                for (FoodBank foodBank:foodBanks) {
+                    if(foodBank.getBusinessHours().ifNotifyNeeded(currentTime)){
+                        notifications.add(new Notification(foodBank,currentTime));
+                    }
+                }
+
+            }
+        };
+
+        scheduler.scheduleAtFixedRate(checkNotifications, 0, 1, TimeUnit.MINUTES);
+    }
+
+
+
+
+
     public void updateNotifications(Notification notification){
         notifications.add(notification);
         sortNotifications();
@@ -72,13 +102,13 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
     public static class NotificationViewHolder extends RecyclerView.ViewHolder {
         TextView foodBankName;
 
-        TextView status;
+//        TextView status;
 
         public NotificationViewHolder(View itemView) {
             super(itemView);
-
-            foodBankName= itemView.findViewById(R.id.foodBankName);
-            status = itemView.findViewById(R.id.foodBankAddress);
+//
+//            foodBankName= itemView.findViewById(R.id.foodBankName);
+//            status = itemView.findViewById(R.id.foodBankAddress);
 
 //
 //            itemView.setOnClickListener(v -> {
