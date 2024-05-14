@@ -103,12 +103,7 @@ public class AVLTree {
         return y;
     }
 
-    public FoodBank findNodeById(AVLTree node, int id) {
-        if (node == null) return null;
-        if (id < node.value.getId()) return findNodeById(node.leftNode, id);
-        else if (id > node.value.getId()) return findNodeById(node.rightNode, id);
-        else return node.value;
-    }
+
 
     public List<FoodBank> findNodesByCapacity(AVLTree node, int capacity, String comparison) {
         List<FoodBank> result = new ArrayList<>();
@@ -155,9 +150,6 @@ public class AVLTree {
 
     interface CompareFunc {
         boolean compare(int a, int b);
-    }
-    public void printInOrder() {
-        printInOrder(this);
     }
     private void printInOrder(AVLTree node) {
         if (node != null) {

@@ -48,6 +48,7 @@ public class FoodBank {
     public FoodBank() {
     }
 
+    // Getters and setters
     public int getCapacity() {
         return capacity;
     }
