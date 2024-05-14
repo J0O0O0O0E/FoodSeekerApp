@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity {
                 //check if user try enter foodbank fragment
             }
             else if(destination.getId() == R.id.navigation_foodbank){
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, getResources().getInteger(R.integer.LOCATION_PERMISSION_REQUEST_CODE));
-                    controller.navigate(R.id.navigation_home);
-                }else{
-                    navView.setVisibility(View.VISIBLE);
-                }
-
+//                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, getResources().getInteger(R.integer.LOCATION_PERMISSION_REQUEST_CODE));
+//                    controller.navigate(R.id.navigation_home);
+//                }else{
+//                    navView.setVisibility(View.VISIBLE);
+//                }
+                navView.setVisibility(View.VISIBLE);
 
             }
             else{
@@ -77,15 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Ask for location permission when try to visit foodbank_fragment
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 101 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.d("NavigationActivity", "Location permission granted");
-        } else {
-            Log.d("NavigationActivity", "Location permission denied");
-            View contextView = findViewById(android.R.id.content);
-            Snackbar.make(contextView, "Location permission is required to access the foodbank.", Snackbar.LENGTH_LONG).show(); //
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == 101 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            Log.d("NavigationActivity", "Location permission granted");
+//        } else {
+//            Log.d("NavigationActivity", "Location permission denied");
+//            View contextView = findViewById(android.R.id.content);
+//            Snackbar.make(contextView, "Location permission is required to access the foodbank.", Snackbar.LENGTH_LONG).show(); //
+//        }
+//    }
 }
