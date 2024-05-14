@@ -68,7 +68,7 @@ public class UserRepository {
         this.subscribedFoodBanks = new ArrayList<>();
     }
 
-    public static UserRepository getInstance() {
+    public static synchronized UserRepository getInstance() {
         if (instance == null) {
             synchronized (UserRepository.class) {
                 if (instance == null) {
@@ -120,6 +120,7 @@ public class UserRepository {
         }).addOnFailureListener(e -> {
             Log.w(TAG, "createUserWithEmail:failure", e);
         });
+        loadUser();
     }
 
     public void setUser(FirebaseUser firebaseUser){

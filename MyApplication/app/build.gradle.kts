@@ -61,6 +61,8 @@ dependencies {
     //testImplementation("'org.robolectric:robolectric:4.7.3'")
     testImplementation("org.mockito:mockito-core:4.7.0")
     androidTestImplementation("org.mockito:mockito-android:4.7.0")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 
 
 

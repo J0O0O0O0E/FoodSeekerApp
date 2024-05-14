@@ -43,7 +43,7 @@ public class FoodbankViewModel extends ViewModel {
     public FoodbankViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is Foodbank fragment");
-        foodBankRepository = new FoodBankRepository();
+        foodBankRepository = FoodBankRepository.getInstance();
         foodBanksLiveData = new MutableLiveData<>();
         loadFoodBanks();
     }

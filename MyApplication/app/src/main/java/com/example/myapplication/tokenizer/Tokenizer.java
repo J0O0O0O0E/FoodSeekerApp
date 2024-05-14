@@ -8,7 +8,7 @@ public class Tokenizer {
     private String textBuffer;
     private Token currentToken;
 
-    private static final ArrayList<String> validKeywords = new ArrayList<>(Arrays.asList("rating", "capacity", "distance")) ;
+    private static final ArrayList<String> validKeywords = new ArrayList<>(Arrays.asList("rating", "capacity")) ;
 
     public Tokenizer(String text) {
         textBuffer = text;
