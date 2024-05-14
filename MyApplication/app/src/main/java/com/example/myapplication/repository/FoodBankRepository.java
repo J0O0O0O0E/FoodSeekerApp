@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
+import com.example.myapplication.model.TimeServer;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +49,8 @@ public class FoodBankRepository {
     //AVLTree by capacity
     private AVLTree avlTree;
     private DoubleAVLTree doubleAVLTree;
+
+    private TimeServer timeServer;
 
 
 
@@ -98,6 +101,7 @@ public class FoodBankRepository {
         doubleAVLTree = new DoubleAVLTree();
         foodBanksLiveData = new MutableLiveData<>();
         loadFoodBanks();
+        timeServer = TimeServer.getInstance();
     }
 
     public static FoodBankRepository getInstance() {
@@ -226,5 +230,8 @@ public class FoodBankRepository {
         return doubleAVLTree;
     }
 
+    public TimeServer getTimeServer() {
+        return timeServer;
+    }
 }
 
