@@ -2,148 +2,151 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/text_Profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
-    <ImageView
-        android:id="@+id/profile_photo"
-        android:layout_width="106dp"
-        android:layout_height="101dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="13dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/contact_number"
-        app:layout_constraintEnd_toStartOf="@+id/edit_text_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/pen1"
-        android:layout_width="25dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="643dp"
-        android:contentDescription="@string/pen"
-        android:src="@android:drawable/ic_menu_edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_text_name"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/edit_text_name"
-        android:layout_width="229dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="37dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/enter_your_name"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/email_address"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_photo"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+            <!-- Background Image -->
+            <ImageView
+                android:id="@+id/header_background"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/loginp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/email_address"
-        android:layout_width="212dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="53dp"
-        android:layout_marginBottom="41dp"
-        app:layout_constraintBottom_toTopOf="@+id/contact_number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_photo"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
-        tools:ignore="MissingConstraints" />
+            <!-- Profile Photo -->
+            <ImageView
+                android:id="@+id/profile_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_profile_circle_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/edit_text_name"
+                tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/pen2"
-        android:layout_width="25dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="544dp"
-        android:contentDescription="@string/pen"
-        android:src="@android:drawable/ic_menu_edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_text_number"
-        app:layout_constraintTop_toBottomOf="@+id/pen1"
-        tools:ignore="MissingConstraints" />
+            <!-- Edit Name Icon -->
+            <ImageView
+                android:id="@+id/pen1"
+                android:layout_width="25dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="167dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:layout_constraintStart_toEndOf="@+id/edit_text_name"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/contact_number"
-        android:layout_width="118dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="19dp"
-        android:singleLine="true"
-        android:text="Contact Number:"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toStartOf="@+id/edit_text_number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_photo"
-        tools:ignore="MissingConstraints" />
+            <!-- Name EditText -->
+            <EditText
+                android:id="@+id/edit_text_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:hint="@string/enter_your_name"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_photo"
+                app:layout_constraintTop_toBottomOf="@+id/header_background"
+                tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/edit_text_number"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="36dp"
-        android:ems="8"
-        android:hint="Enter your number"
-        android:inputType="text"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/contact_number"
-        app:layout_constraintTop_toBottomOf="@+id/email_address"
-        app:layout_constraintVertical_bias="0.666"
-        tools:ignore="MissingConstraints,TextFields" />
+            <!-- Email TextView -->
+            <TextView
+                android:id="@+id/email_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/profile_photo"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+                tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="337dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="460dp"
-        android:text="@string/view_subscribed_food_banks"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact_number"
-        tools:ignore="MissingConstraints" />
+            <!-- Edit Contact Number Icon -->
+            <ImageView
+                android:id="@+id/pen2"
+                android:layout_width="25dp"
+                android:layout_height="21dp"
+                android:layout_marginTop="10dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:layout_constraintStart_toEndOf="@+id/edit_text_number"
+                app:layout_constraintTop_toBottomOf="@+id/email_address"
+                tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/button_select_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_marginBottom="365dp"
-        android:text="Change Profile Image "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+            <!-- Contact Number Label -->
+            <TextView
+                android:id="@+id/contact_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="28dp"
+                android:text="Contact Number:"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_photo"
+                tools:ignore="MissingConstraints" />
 
+            <!-- Contact Number EditText -->
+            <EditText
+                android:id="@+id/edit_text_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:hint="Enter your number"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_name"
+                app:layout_constraintStart_toStartOf="@+id/edit_text_name"
+                app:layout_constraintTop_toBottomOf="@+id/email_address"
+                tools:ignore="MissingConstraints" />
+
+            <!-- View Subscribed Food Banks Button -->
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="15dp"
+                android:text="@string/view_subscribed_food_banks"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_number"
+                tools:ignore="MissingConstraints" />
+
+            <!-- Change Profile Image Button -->
+            <Button
+                android:id="@+id/button_select_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Change Profile Image"
+                app:layout_constraintTop_toBottomOf="@+id/button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
