@@ -44,7 +44,8 @@ public class UserRepository {
     private final Lock lock = new ReentrantLock();
     private StorageReference storageReference;
 
-    private List<FoodBank> subscribedFoodBanks;
+    private List<FoodBank> subscribedFoodBanks = new ArrayList<>();
+
 
     //private List<FoodBank> allFoodBanks = new ArrayList<>();
 //    FoodBankRepository foodBankRepository=FoodBankRepository.getInstance();
@@ -111,6 +112,7 @@ public class UserRepository {
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             User userLoaded = documentSnapshot.toObject(User.class);
                             if (userLoaded != null) {
+                                liveUser.postValue(userLoaded);
                                 CompletableFuture.runAsync(() -> {
                                     try {
                                         // Ensure data is loaded
@@ -118,8 +120,6 @@ public class UserRepository {
 
                                         lock.lock();
                                         try {
-                                            liveUser.postValue(userLoaded);
-
                                             subscribedFoodBanks = FoodBankRepository.getInstance()
                                                     .getFoodBankListByIdList(userLoaded.getSubscribedFoodBanks());
                                         } finally {
