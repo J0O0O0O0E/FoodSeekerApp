@@ -8,13 +8,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.example.myapplication.model.FoodBank;
-import com.example.myapplication.model.TimeServer;
 import com.example.myapplication.model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,21 +24,19 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class UserRepository {
 
-    private static UserRepository instance;
+    private static volatile UserRepository instance;
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
     public FirebaseUser currentUser;
@@ -52,11 +46,38 @@ public class UserRepository {
 
     private List<FoodBank> subscribedFoodBanks;
 
+    //private List<FoodBank> allFoodBanks = new ArrayList<>();
+//    FoodBankRepository foodBankRepository=FoodBankRepository.getInstance();
 
-
-    private TimeServer timeServer;
-
-
+//    private void loadFoodBanks() {
+//        foodBankRepository.readFoodBanks(new FoodBankRepository.DataStatus() {
+//            @Override
+//            public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
+//
+//                subscribedFoodBanks = foodBankRepository.
+//                        getFoodBankListByIdList(liveUser.getValue().getSubscribedFoodBanks());
+//                Log.d("shabidaima","666");
+//                //allFoodBanks=foodBankRepository.getFoodBanks();
+//
+//            }
+//
+//            @Override
+//            public void DataIsInserted() {
+//            }
+//
+//            @Override
+//            public void DataIsUpdated() {
+//            }
+//
+//            @Override
+//            public void DataIsDeleted() {
+//            }
+//
+//            @Override
+//            public void Error(Exception e) {
+//            }
+//        });
+//    }
 
 
     private UserRepository(){
@@ -65,10 +86,11 @@ public class UserRepository {
         this.currentUser = mAuth.getCurrentUser();
         this.liveUser = new MutableLiveData<>();
         this.storageReference = FirebaseStorage.getInstance().getReference();
-        this.subscribedFoodBanks = new ArrayList<>();
+
+        //Log.d("userDaipai", String.valueOf(allFoodBanks.isEmpty()));
     }
 
-    public static synchronized UserRepository getInstance() {
+    public static UserRepository getInstance() {
         if (instance == null) {
             synchronized (UserRepository.class) {
                 if (instance == null) {
@@ -79,8 +101,8 @@ public class UserRepository {
         return instance;
     }
 
-    public void loadUser(){
-        if(currentUser != null){
+    public void loadUser() {
+        if (currentUser != null) {
             String email = currentUser.getEmail();
             assert email != null;
             fStore.collection("User").document(email).get()
@@ -88,14 +110,27 @@ public class UserRepository {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             User userLoaded = documentSnapshot.toObject(User.class);
-                            if(userLoaded != null){
-                                lock.lock();
-                                try {
-                                    liveUser.setValue(userLoaded);
-//                                    user = userLoaded;
-                                } finally {
-                                    lock.unlock();
-                                }
+                            if (userLoaded != null) {
+                                CompletableFuture.runAsync(() -> {
+                                    try {
+                                        // Ensure data is loaded
+                                        FoodBankRepository.getInstance().awaitDataLoaded();
+
+                                        lock.lock();
+                                        try {
+                                            liveUser.postValue(userLoaded);
+
+                                            subscribedFoodBanks = FoodBankRepository.getInstance()
+                                                    .getFoodBankListByIdList(userLoaded.getSubscribedFoodBanks());
+                                        } finally {
+                                            lock.unlock();
+                                        }
+                                    } catch (InterruptedException | ExecutionException e) {
+                                        Log.e(TAG, "Error while waiting for FoodBanks to load", e);
+                                    } catch (Exception e) {
+                                        Log.e(TAG, "Error while loading subscribed FoodBanks", e);
+                                    }
+                                });
                             } else {
                                 Log.d(TAG, "No user data found in FireStore for ID: " + currentUser.getEmail());
                             }
