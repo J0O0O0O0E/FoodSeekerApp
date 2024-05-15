@@ -69,9 +69,9 @@ public class TestAVLTree {
         tree = tree.insert(tree, fb5);
 
         List<FoodBank> result = tree.findNodesByCapacity(tree, 100, ">");
-        assertEquals(1, result.size());
+        assertEquals(2, result.size());
         assertTrue(result.contains(fb2));
-        //assertTrue(result.contains(fb5));
+        assertTrue(result.contains(fb5));
     }
 
     @Test
