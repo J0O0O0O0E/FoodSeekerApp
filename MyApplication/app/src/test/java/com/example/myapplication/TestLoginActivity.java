@@ -6,8 +6,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
+/**
+ * This class contains unit tests for the {@link LoginActivity} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
+
 public class TestLoginActivity {
-    // example email
+    // Example emails
     private final String false_email1 = "bob123";
     private final String false_email2 = "bob123@";
     private final String false_email3 = "bob123.com";
@@ -21,7 +28,7 @@ public class TestLoginActivity {
     private final String correct_email5 = "bob@123gmail.com";
     private final String correct_email6 = "b1o2b3@qq.com";
 
-    // example password(length)
+    // Example passwords(length)
     private final String short_psw1 = "";
     private final String short_psw2 = " ";
     private final String short_psw3 = "1";
@@ -32,7 +39,7 @@ public class TestLoginActivity {
     private final String long_psw2 = "000000";
     private final String long_psw3 = "asdasd";
 
-    //example password(capital)
+    //Example passwords(capital)
     private final String wrong_psw1 = "asdasd";
     private final String wrong_psw2 = "123456";
     private final String wrong_psw3 = "qwerty";

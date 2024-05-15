@@ -1,8 +1,12 @@
 
 package com.example.myapplication.ui.login;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -11,7 +15,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -19,6 +26,7 @@ import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,6 +65,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, getResources().getInteger(R.integer.LOCATION_PERMISSION_REQUEST_CODE));
+        }
+
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -86,9 +98,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
 
 
+
     }
     public boolean isValidEmail(String email){
-        return ((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
+        return !((email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()));
     }
 
     public boolean isLengthLessThan6(String psw){
@@ -112,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = pw.getText().toString().trim();
 
         //https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0
-        if (isValidEmail(email)) {
+        if (!isValidEmail(email)) {
             username.setError("Invalid email address");
             username.requestFocus();
             return;
@@ -169,6 +182,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == getResources().getInteger(R.integer.LOCATION_PERMISSION_REQUEST_CODE) && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+        } else if(requestCode == getResources().getInteger(R.integer.LOCATION_PERMISSION_REQUEST_CODE) && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+            Log.d("NavigationActivity", "Location permission denied");
+            View contextView = findViewById(android.R.id.content);
+            Snackbar.make(contextView, "Location permission is required to access the foodbank.", Snackbar.LENGTH_LONG).show();
+
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 3000);
+        }
     }
 
 }

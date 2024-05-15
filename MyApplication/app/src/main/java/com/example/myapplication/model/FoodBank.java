@@ -1,4 +1,8 @@
 package com.example.myapplication.model;
+
+import com.example.myapplication.parser.BusinessHours;
+import com.example.myapplication.parser.BusinessHoursParser;
+
 /**
  * Represents a food bank entity with detailed attributes relating to its operation, location,
  * and food inventory. This class manages a food bank's data, including storage capacities,
@@ -44,10 +48,13 @@ public class FoodBank {
     // Distance to user (meter)
     private double distanceToUser;
 
+    private BusinessHours businessHours;
+
     // Constructor
     public FoodBank() {
     }
 
+    // Getters and setters
     public int getCapacity() {
         return capacity;
     }
@@ -263,5 +270,13 @@ public class FoodBank {
     public void setDistanceToUser(double distanceToUser) {
         this.distanceToUser = distanceToUser;
     }
+
+    public BusinessHours getBusinessHours(){
+        if(businessHours == null){
+            this.businessHours = BusinessHoursParser.parseHours(open_hours);
+        }
+        return businessHours;
+    }
+
 }
 

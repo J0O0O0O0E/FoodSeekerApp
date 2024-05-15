@@ -3,6 +3,14 @@ import com.example.myapplication.model.Location;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+/**
+ * This class contains unit tests for the {@link Location} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
+
 public class TestLocation {
     private final double latitude1 = -31.946;
     private final double longitude1 = 115.812;

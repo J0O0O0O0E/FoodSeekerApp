@@ -3,11 +3,17 @@ import com.example.myapplication.model.Announcement;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-//import static org.mockito.Mockito.mock;
-//import static org.mockito.Mockito.when;
 import com.google.firebase.Timestamp;
 import java.lang.reflect.Field;
 import java.time.Instant;
+
+/**
+ * This class contains unit tests for the {@link Announcement} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
+
 public class TestAnnouncement {
     private Announcement announcement1;
     private Announcement announcement2;
@@ -83,8 +89,4 @@ public class TestAnnouncement {
         // Assert
         assertEquals(nowTimestamp, announcement.getTimestamp());
     }
-
-
-
-
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Food Seeker</string>
     <string name="title_home">Home</string>
     <string name="title_foodbank">Foodbank</string>
     <string name="title_search">Search</string>
@@ -103,4 +103,9 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <string name="SYNAX_ERROR">Exceeds input length limit!</string>
+    <string name="ERROR_EMPTY_INPUT">Input is empty!</string>
+    <string name="ERROR_EXCEED_LENGTH_lIMIT">Synax error!</string>
+    
 </resources>

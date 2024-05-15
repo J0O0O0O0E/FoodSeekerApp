@@ -1,6 +1,8 @@
 package com.example.myapplication.repository;
 import androidx.lifecycle.MutableLiveData;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.myapplication.datastructure.AVLTree;
 import com.example.myapplication.datastructure.DoubleAVLTree;
 import android.util.Log;
@@ -174,8 +176,7 @@ public class FoodBankRepository {
 
     /**
      * Reads the list of FoodBanks from Firebase and notifies the DataStatus callback interface upon completion
-     * or if an error occurs. Each FoodBank object is parsed from the Firebase snapshot, and the geographic
-     * coordinates are converted to a Location object before adding the FoodBank to the list.
+     * or if an error occurs.
      *
      * @param dataStatus The callback interface through which data load results or errors are communicated.
      */
@@ -236,20 +237,18 @@ public class FoodBankRepository {
         readFoodBanks(new DataStatus() {
             @Override
             public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
-                foodBanksLiveData.setValue(foodBanks);
+                foodBanksLiveData.postValue(foodBanks);
+                dataLoadedFuture.complete(null);
             }
 
             @Override
-            public void DataIsInserted() {
-            }
+            public void DataIsInserted() {}
 
             @Override
-            public void DataIsUpdated() {
-            }
+            public void DataIsUpdated() {}
 
             @Override
-            public void DataIsDeleted() {
-            }
+            public void DataIsDeleted() {}
 
             @Override
             public void Error(Exception e) {

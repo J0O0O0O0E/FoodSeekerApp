@@ -208,9 +208,9 @@ public class DoubleAVLTree {
         if (node != null) {
             printAllNodes(node.left);
 
-            System.out.println("❤️❤️ID: " + node.data.getId() +
+            /*System.out.println("❤️❤️ID: " + node.data.getId() +
                     ", Capacity: " + node.data.getCapacity() +
-                    ", Rating: " + node.data.getRating());
+                    ", Rating: " + node.data.getRating());*/
 
             printAllNodes(node.right);
         }

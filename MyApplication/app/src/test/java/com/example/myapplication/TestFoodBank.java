@@ -5,6 +5,14 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
+
+/**
+ * This class contains unit tests for the {@link FoodBank} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
+
 public class TestFoodBank {
 
     private FoodBank foodBank;

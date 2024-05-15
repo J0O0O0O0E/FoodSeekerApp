@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.utils.FoodBankBundle;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -34,7 +35,6 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
 
     private BarChart barChart;
 
-    private static int BOOKMARK_INDEX = 0;
     private static String shareMessage = "";
     private static int foodBankId;
 
@@ -47,64 +47,58 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
         //initialize chart
         barChart = findViewById(R.id.barChart);
 
-        //get data in bundle
+        //Load foodbank data in bundle and display
         Bundle bundle = getIntent().getExtras();
-        foodBankId = bundle.getInt("fb_foodBankId");
-
+        foodBankId = bundle.getInt(FoodBankBundle.KEY_FOODBANKBUNDLE_FOOD_BANK_ID);
 
         if (bundle != null) {
-            // set data to textview
-            ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString("fb_name"));
-            ((TextView) findViewById(R.id.food_bank_phone)).setText("Number: " + bundle.getString("fb_number"));
-            ((TextView) findViewById(R.id.food_bank_email)).setText("Email : "+bundle.getString("fb_email"));
-            ((TextView) findViewById(R.id.food_bank_state)).setText("State: "+bundle.getString("fb_sate"));
-            ((TextView) findViewById(R.id.food_bank_open_hours)).setText("Open hours: "+bundle.getString("fb_openHours"));
-            ((TextView) findViewById(R.id.food_bank_capacity)).setText("Capacity: "+String.valueOf(bundle.getInt("fb_capacity")));
-            ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: "+String.valueOf(bundle.getDouble("fb_distance")));
-            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Fundation Date: " + bundle.getString("fb_foundDate"));
-            ((TextView) findViewById(R.id.food_bank_postcode)).setText("Post code: " + bundle.getString( "fb_postCode"));
-            ((TextView) findViewById(R.id.food_bank_rate)).setText("Rate: " + String.valueOf(bundle.getDouble( "fb_rate")));
+            ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NAME));
+            ((TextView) findViewById(R.id.food_bank_phone)).setText("Number: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NUMBER));
+            ((TextView) findViewById(R.id.food_bank_email)).setText("Email : "+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_EMAIL));
+            ((TextView) findViewById(R.id.food_bank_state)).setText("State: "+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STATE));
+            ((TextView) findViewById(R.id.food_bank_open_hours)).setText("Open hours: "+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_OPEN_HOURS));
+            ((TextView) findViewById(R.id.food_bank_capacity)).setText("Capacity: "+String.valueOf(bundle.getInt(FoodBankBundle.KEY_FOODBANKBUNDLE_CAPACITY)));
+            ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: "+String.valueOf(bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_DISTANCE)));
+            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Fundation Date: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_FOUND_DATE));
+            ((TextView) findViewById(R.id.food_bank_postcode)).setText("Post code: " + bundle.getString( FoodBankBundle.KEY_FOODBANKBUNDLE_POSTCODE));
+            ((TextView) findViewById(R.id.food_bank_rate)).setText("Rate: " + String.valueOf(bundle.getDouble( FoodBankBundle.KEY_FOODBANKBUNDLE_RATE)));
+            String location = "Location: " + String.format("%s , %s , %s ",
+                    bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_COUNTRY),
+                    bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_CITY),
+                    bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STREET)
+            );
+            ((TextView) findViewById(R.id.food_bank_location)).setText(location);
+            shareMessage = bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NAME)+"\n"+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STREET)+ "\n"+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NUMBER);
 
 
             //creat the chart
             setupBarChart(bundle);
 
-
+            //initial the navigation bar
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_share = findViewById(R.id.iv_share);
             ImageView iv_subscribe = findViewById(R.id.iv_subscribe);
+            iv_back.setOnClickListener(this);
+            iv_share.setOnClickListener(this);
+            iv_subscribe.setOnClickListener(this);
+//            if (!user.subscribedFoodBanks.contains(Integer.toString(foodBankId))) {
+//                iv_subscribe.setImageResource(R.drawable.baseline_bookmark_add_24);
+//            } else {
+//                iv_subscribe.setImageResource(R.drawable.baseline_bookmark_added_24);
+//            }
 
 
 
-//            {test for gps}
+            //Load the google Map Webview
             WebView wv_map = findViewById(R.id.wv_map);
             WebSettings webSettings = wv_map.getSettings();
             webSettings.setJavaScriptEnabled(true); // Active JavaScript
             wv_map.setWebViewClient(new WebViewClient()); // Prevent external browsers from opening links
-            double latitude = bundle.getDouble("fb_latitude");
-            double longitude = bundle.getDouble("fb_longitude");
+            double latitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LATITUDE);
+            double longitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LONGITUDE);
             String mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude;
             wv_map.loadUrl(mapUrl);
 
-
-            iv_back.setOnClickListener(this);
-            iv_share.setOnClickListener(this);
-            iv_subscribe.setOnClickListener(this);
-
-
-
-            // city street country
-            String location = "Location: " + String.format("%s , %s , %s ",
-                    bundle.getString("fb_country"),
-                    bundle.getString("fb_city"),
-                    bundle.getString("fb_street")
-            );
-
-            // 将拼接后的地址设置到TextView
-            ((TextView) findViewById(R.id.food_bank_location)).setText(location);
-
-            //{}
-            shareMessage = bundle.getString("fb_name")+" "+bundle.getString("fb_street")+ "\n"+bundle.getString("fb_number");
         }
 
     }
@@ -120,10 +114,13 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(intent, "Share via"));
         } else if (v.getId() == R.id.iv_subscribe) {
+            ImageView iv = findViewById(R.id.iv_subscribe);
             if (!user.subscribedFoodBanks.contains(Integer.toString(foodBankId))) {
                 UserRepository.getInstance().addSubscribedFoodBanks(Integer.toString(foodBankId));
+                iv.setImageResource(R.drawable.baseline_bookmark_added_24);
             } else {
                 UserRepository.getInstance().removeSubscribedFoodBanks(Integer.toString(foodBankId));
+                iv.setImageResource(R.drawable.baseline_bookmark_add_24);
             }
         }
     }

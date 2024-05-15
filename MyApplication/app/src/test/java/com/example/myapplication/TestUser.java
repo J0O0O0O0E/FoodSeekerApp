@@ -5,6 +5,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import static org.junit.Assert.*;
 
+/**
+ * This class contains unit tests for the {@link User} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
+
 public class TestUser {
     private User user;
 
