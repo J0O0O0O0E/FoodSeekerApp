@@ -81,11 +81,11 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             iv_back.setOnClickListener(this);
             iv_share.setOnClickListener(this);
             iv_subscribe.setOnClickListener(this);
-//            if (!user.subscribedFoodBanks.contains(Integer.toString(foodBankId))) {
-//                iv_subscribe.setImageResource(R.drawable.baseline_bookmark_add_24);
-//            } else {
-//                iv_subscribe.setImageResource(R.drawable.baseline_bookmark_added_24);
-//            }
+            if (!user.subscribedFoodBanks.contains(Integer.toString(foodBankId))) {
+                iv_subscribe.setImageResource(R.drawable.baseline_bookmark_add_24);
+            } else {
+                iv_subscribe.setImageResource(R.drawable.baseline_bookmark_added_24);
+            }
 
 
 
