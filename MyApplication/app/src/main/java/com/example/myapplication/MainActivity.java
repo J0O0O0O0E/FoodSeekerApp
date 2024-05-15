@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 navView.setVisibility(View.VISIBLE);
             }
         });
+
+//        // Start the announcement simulation
+////        AnnouncementSimulator simulator = new AnnouncementSimulator(this);
+////        simulator.startSimulation();
     }
 
     // method that handle the navigation when the user presses the back button in the ActionBar in announcement fragment
