@@ -77,12 +77,6 @@ public class FoodbankFragment extends Fragment {
         // Get the system LocationManager to retrieve GPS location
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Consider calling ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return null;
         }
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -90,13 +84,7 @@ public class FoodbankFragment extends Fragment {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         // Display the location coordinates if available, otherwise show error message
-        if (location == null) {
-            // tv_gps.setText("location is empty");
-        } else {
-            //tv_gps.setText(Double.toString(location.getLatitude()) + "\n" + Double.toString(location.getLongitude()));
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
+
         // Create a new Location object for user based on retrieved coordinates
         com.example.myapplication.model.Location userLocation = new com.example.myapplication.model.Location(latitude, longitude);
         // Initialize input field and search button in the layout
@@ -166,15 +154,14 @@ public class FoodbankFragment extends Fragment {
             public void onClick(View v) {
 
                 String input = ed_input.getText().toString();
-                if (input.trim().length() > 26) {
-                    Snackbar.make(getView(), "Exceeds input length limit!", Snackbar.LENGTH_SHORT).show();
+                if (input.trim().length() > getResources().getInteger(R.integer.MAX_INPUT_LENGTH)) {
+                    Snackbar.make(getView(), getResources().getString(R.string.ERROR_EXCEED_LENGTH_lIMIT), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-
                 if (input == null || input.trim().isEmpty()) {
                     //if input is null, reset the search result
-                    Snackbar.make(getView(), "Input is empty!", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), getResources().getString(R.string.ERROR_EMPTY_INPUT), Snackbar.LENGTH_SHORT).show();
                     localFoodBankList.clear();
                     for (FoodBank foodBank : fbList) {
                         localFoodBankList.add(foodBank);
@@ -191,7 +178,7 @@ public class FoodbankFragment extends Fragment {
                     Tokenizer tokenizer = new Tokenizer(input);
                     List<Token> tokens = tokenizer.getAllTokens();
                     if (tokens == null || tokens.size() == 0 || !FoodbankViewModel.checkTokens(tokens)) {
-                        Snackbar.make(getView(), "Synax error!", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(getView(), getResources().getString(R.string.SYNAX_ERROR), Snackbar.LENGTH_SHORT).show();
                         return;
                     }
                     //If input is valid , use parser to get the result

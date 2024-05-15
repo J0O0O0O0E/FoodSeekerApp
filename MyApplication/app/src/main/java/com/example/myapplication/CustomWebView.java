@@ -24,12 +24,10 @@ public class CustomWebView extends WebView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                // 通知父View不要拦截触摸事件
                 getParent().requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                // 通知父View可以拦截触摸事件
                 getParent().requestDisallowInterceptTouchEvent(false);
                 break;
         }
