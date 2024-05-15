@@ -1,15 +1,18 @@
 package com.example.myapplication;
-
 import com.example.myapplication.datastructure.AVLTree;
-
 import com.example.myapplication.model.FoodBank;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.lang.reflect.Field;
 import java.util.List;
-
 import static org.junit.Assert.*;
+
+/**
+ * This class contains unit tests for the {@link AVLTree} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu
+ */
 
 public class TestAVLTree {
     private AVLTree tree;

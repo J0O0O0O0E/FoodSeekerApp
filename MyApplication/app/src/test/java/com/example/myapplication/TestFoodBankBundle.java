@@ -1,17 +1,20 @@
 package com.example.myapplication;
-
 import android.os.Bundle;
-
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.utils.FoodBankBundle;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
+/**
+ * This class contains unit tests for the {@link FoodBankBundle} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu
+ */
 
 public class TestFoodBankBundle {
     @Mock

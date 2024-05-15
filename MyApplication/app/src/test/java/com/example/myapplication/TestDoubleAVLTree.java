@@ -2,15 +2,18 @@ package com.example.myapplication;
 import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
-
-
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.*;
-
 import java.util.List;
+
+/**
+ * This class contains unit tests for the {@link DoubleAVLTree} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu
+ */
 
 public class TestDoubleAVLTree {
     private DoubleAVLTree tree;
