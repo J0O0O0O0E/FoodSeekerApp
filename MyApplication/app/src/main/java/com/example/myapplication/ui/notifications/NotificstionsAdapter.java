@@ -2,6 +2,8 @@ package com.example.myapplication.ui.notifications;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
@@ -32,6 +35,8 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
 
     public List<Notification> notifications;
 
+    public MutableLiveData<List<Notification>> notificationLiveData;
+
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -39,6 +44,8 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
     public NotificstionsAdapter(Context context, List<Notification> notifications) {
         this.context = context;
         this.notifications = notifications;
+        notificationLiveData = new MutableLiveData<>();
+        notificationLiveData.setValue(notifications);
 
     }
 
@@ -53,10 +60,8 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         Notification notification = notifications.get(position);
-        holder.foodBankName.setText(notification.getFoodBankName());
-//        holder.status.setText(
-//                if()
-//        );
+        holder.notificationMessage.setText(notification.getNotifyMessage());
+        holder.time.setText(notification.getNotificationTime().toString());
 
     }
 
@@ -66,21 +71,33 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
     }
 
 
-    private void scheduleCheck() {
+    public void scheduleCheck() {
         Runnable checkNotifications = new Runnable() {
             public void run() {
-                LocalDateTime currentTime = LocalDateTime.now();
-                List<FoodBank> foodBanks = UserRepository.getInstance().getSubscribedFoodBanks();
-                for (FoodBank foodBank:foodBanks) {
-                    if(foodBank.getBusinessHours().ifNotifyNeeded(currentTime)){
-                        notifications.add(new Notification(foodBank,currentTime));
+                try {
+                    LocalDateTime currentTime = LocalDateTime.now();
+                    Log.d("NotificationCheck", "Checking notifications at " + currentTime);
+                    List<FoodBank> foodBanks = UserRepository.getInstance().getSubscribedFoodBanks();
+                    if(!foodBanks.isEmpty()){
+                        for (FoodBank foodBank : foodBanks) {
+                            Log.d("NotificationCheck", "Checking notifications for " + foodBank.getOpen_hours());
+                            if (foodBank.getBusinessHours().ifNotifyNeeded(currentTime)) {
+                                Log.d("NotificationCheck", "Notification needed for " + foodBank.getName());
+                                updateNotifications(new Notification(foodBank, currentTime));
+                            }
+                        }
+
                     }
+                    else{
+                        Log.d("NotificationCheck", "Empty foodBank list");
+                    }
+                } catch (Exception e) {
+                    Log.e("NotificationCheck", "Error during checkNotifications", e);
                 }
-
             }
-        };
 
-        scheduler.scheduleAtFixedRate(checkNotifications, 0, 1, TimeUnit.MINUTES);
+        };
+        scheduler.scheduleAtFixedRate(checkNotifications, 0, 60, TimeUnit.SECONDS);
     }
 
 
@@ -90,8 +107,15 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
     public void updateNotifications(Notification notification){
         notifications.add(notification);
         sortNotifications();
-        notifyDataSetChanged();
+        notificationLiveData.postValue(notifications);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
     }
+
 
 
     public void sortNotifications(){
@@ -100,12 +124,16 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
 
 
     public static class NotificationViewHolder extends RecyclerView.ViewHolder {
-        TextView foodBankName;
+        TextView notificationMessage;
 
-//        TextView status;
+        TextView time;
+
 
         public NotificationViewHolder(View itemView) {
             super(itemView);
+
+            notificationMessage = itemView.findViewById(R.id.noti_message);
+            time = itemView.findViewById(R.id.time);
 //
 //            foodBankName= itemView.findViewById(R.id.foodBankName);
 //            status = itemView.findViewById(R.id.foodBankAddress);
@@ -128,8 +156,11 @@ public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdap
         }
 
 
+
+
     }
 
-
-
+    public MutableLiveData<List<Notification>> getNotificationLiveData() {
+        return notificationLiveData;
+    }
 }

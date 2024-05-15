@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.notifications;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentNotificationsBinding;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Notification;
@@ -32,7 +36,6 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         NotificationsViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
-        BusinessHours hours = new BusinessHours();
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -40,6 +43,32 @@ public class NotificationsFragment extends Fragment {
         List<FoodBank> subscribedFoodBanks = UserRepository.getInstance().getSubscribedFoodBanks();
         List<Notification> notifications = new ArrayList<>();
         NotificstionsAdapter adapter = new NotificstionsAdapter(getContext(),notifications);
+
+        RecyclerView notificationViews = root.findViewById(R.id.notification_list);
+        notificationViews.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        TextView emptyMessage = root.findViewById(R.id.text_notifications);
+
+        notificationViews.setAdapter(adapter);
+        adapter.scheduleCheck();
+
+        adapter.getNotificationLiveData().observe(getViewLifecycleOwner(), new Observer<List<Notification>>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onChanged(List<Notification> notifications) {
+                if(notifications.isEmpty()){
+                    emptyMessage.setText("There is no notification");
+                    notificationViews.setVisibility(View.INVISIBLE);
+                    emptyMessage.setVisibility(View.VISIBLE);
+                }
+                else{
+                    notificationViews.setVisibility(View.VISIBLE);
+                    emptyMessage.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
 
 
 
