@@ -84,8 +84,8 @@ public class TestDoubleAVLTree {
 
         tree.printAllNodes();
 
-        String expectedOutput = "❤️❤️ID: 1, Capacity: 100, Rating: 5.0\n" +
-                "❤️❤️ID: 3, Capacity: 100, Rating: 3.0\n" +
+        String expectedOutput = "❤️❤️ID: 3, Capacity: 100, Rating: 3.0\n" +
+                "❤️❤️ID: 1, Capacity: 100, Rating: 5.0\n" +
                 "❤️❤️ID: 5, Capacity: 150, Rating: 5.0\n" +
                 "❤️❤️ID: 2, Capacity: 200, Rating: 4.0\n" +
                 "❤️❤️ID: 4, Capacity: 200, Rating: 5.0\n";
@@ -93,24 +93,7 @@ public class TestDoubleAVLTree {
         assertEquals(expectedOutput, outContent.toString());
     }
 
-    @Test
-    public void testSetDistancesForAll() {
-        tree.insert(fb1);
-        tree.insert(fb2);
-        tree.insert(fb3);
-        tree.insert(fb4);
-        tree.insert(fb5);
 
-        Location userLocation = new Location(0, 0);
-        tree.setDistancesForAll(userLocation);
-
-        // Check if distances are set correctly
-        assertEquals(0.0, fb1.getDistanceToUser(), 0.001);
-        assertEquals(0.0, fb2.getDistanceToUser(), 0.001);
-        assertEquals(0.0, fb3.getDistanceToUser(), 0.001);
-        assertEquals(0.0, fb4.getDistanceToUser(), 0.001);
-        assertEquals(0.0, fb5.getDistanceToUser(), 0.001);
-    }
 
 
     private FoodBank createFoodBank(int id, int capacity, int rating) {

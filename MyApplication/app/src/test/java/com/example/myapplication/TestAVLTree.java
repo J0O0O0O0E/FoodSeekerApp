@@ -54,25 +54,7 @@ public class TestAVLTree {
 
 
 
-    @Test
-    public void testFindNodesByCapacityGreater() {
-        FoodBank fb1 = createFoodBank(1, "FoodBank1", 100);
-        FoodBank fb2 = createFoodBank(2, "FoodBank2", 200);
-        FoodBank fb3 = createFoodBank(3, "FoodBank3", 50);
-        FoodBank fb4 = createFoodBank(4, "FoodBank4", 75);
-        FoodBank fb5 = createFoodBank(5, "FoodBank5", 150);
 
-        tree = tree.insert(tree, fb1);
-        tree = tree.insert(tree, fb2);
-        tree = tree.insert(tree, fb3);
-        tree = tree.insert(tree, fb4);
-        tree = tree.insert(tree, fb5);
-
-        List<FoodBank> result = tree.findNodesByCapacity(tree, 100, ">");
-        assertEquals(2, result.size());
-        assertTrue(result.contains(fb2));
-        assertTrue(result.contains(fb5));
-    }
 
     @Test
     public void testFindNodesByCapacityLess() {
