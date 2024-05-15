@@ -1,12 +1,16 @@
 package com.example.myapplication;
-
 import com.example.myapplication.tokenizer.Token;
 import com.example.myapplication.tokenizer.Tokenizer;
-
-import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
 import static org.junit.Assert.*;
+
+/**
+ * This class contains unit tests for the {@link Tokenizer} class.
+ * It tests various methods of the Tokenizer class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu
+ */
 
 public class TestTokenizer {
     String input = "rating=5 capacity<10";

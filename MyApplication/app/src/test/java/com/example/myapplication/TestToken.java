@@ -4,11 +4,16 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * This class contains unit tests for the {@link Token} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu
+ */
 
 public class TestToken {
 
     private Token token1, token2, token3, token4, token5, token6, token7;
-    private Token invalidToken1, invalidToken2, invalidToken3;
 
     @Before
     public void setUp(){
@@ -19,10 +24,6 @@ public class TestToken {
         token5 = new Token("<", Token.Type.COMPARISON);
         token6 = new Token("20", Token.Type.INT);
         token7 = new Token("5", Token.Type.INT);
-
-//        invalidToken1 = new Token("abcde", Token.Type.INVALID);
-//        invalidToken2 = new Token("123.456", Token.Type.INVALID);
-//        invalidToken3 = new Token("", Token.Type.INVALID);
     }
 
     @Test
@@ -51,16 +52,6 @@ public class TestToken {
         assertEquals(Token.Type.INT, token7.getType());
     }
 
-//    @Test
-//    public void testInvalid(){
-//        assertEquals("acbde", invalidToken1.getToken());
-//        assertEquals(Token.Type.INVALID, invalidToken1.getType());
-//        assertEquals("123.456", invalidToken2.getToken());
-//        assertEquals(Token.Type.INVALID, invalidToken2.getType());
-//        assertEquals("", invalidToken3.getToken());
-//        assertEquals(Token.Type.INVALID, invalidToken3.getType());
-//    }
-
     @Test
     public void testToString(){
         assertEquals("Token[capacity, KEYWORD]", token1.toString());
@@ -71,7 +62,4 @@ public class TestToken {
         assertEquals("Token[20, INT]", token6.toString());
         assertEquals("Token[5, INT]", token7.toString());
     }
-
-
-
 }

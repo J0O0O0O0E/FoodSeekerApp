@@ -3,6 +3,14 @@ import com.example.myapplication.utils.LocationChecker;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+/**
+ * This class contains unit tests for the {@link LocationChecker} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu
+ */
+
 public class TestLocationChecker {
 
     private int state1,state2, state3, state4, state5, state6, state7 = 0;
@@ -17,6 +25,7 @@ public class TestLocationChecker {
         state5 = LocationChecker.determineState(-27.566, 152.936);//QLD
         state6 = LocationChecker.determineState(-37.76, 144.964);//VIC
         state7 = LocationChecker.determineState(-12.442, 130.921);//NT
+        //The algorithm is a general one, cannot handle some border situations and ACT region.
     }
 
     @Test
