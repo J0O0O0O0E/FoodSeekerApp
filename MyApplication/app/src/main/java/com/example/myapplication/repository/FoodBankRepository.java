@@ -1,12 +1,15 @@
 package com.example.myapplication.repository;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.datastructure.AVLTree;
 import com.example.myapplication.datastructure.DoubleAVLTree;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import java.util.concurrent.CompletableFuture;
 
+import com.example.myapplication.datastructure.AVLTree;
+import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -38,6 +42,7 @@ public class FoodBankRepository {
 
     private static FoodBankRepository instance;
 
+    // LiveData for observing changes to the list of FoodBanks
     private MutableLiveData<ArrayList<FoodBank>> foodBanksLiveData;
     // Firebase database instance
     private FirebaseDatabase database;
@@ -47,10 +52,14 @@ public class FoodBankRepository {
     private DataStatus dataStatus;
     //AVLTree by capacity
     private AVLTree avlTree;
+    // DoubleAVLTree for FoodBank capacity and rating
     private DoubleAVLTree doubleAVLTree;
 
 
 
+    private CompletableFuture<Void> dataLoadedFuture;
+
+    // Lock for thread-safe operations
     private final Lock lock = new ReentrantLock();
 
     /**
@@ -97,12 +106,18 @@ public class FoodBankRepository {
         avlTree = new AVLTree();
         doubleAVLTree = new DoubleAVLTree();
         foodBanksLiveData = new MutableLiveData<>();
+        dataLoadedFuture = new CompletableFuture<>();
         loadFoodBanks();
     }
 
+    /**
+     * Gets the singleton instance of FoodBankRepository.
+     *
+     * @return The singleton instance of FoodBankRepository.
+     */
     public static FoodBankRepository getInstance() {
         if (instance == null) {
-            synchronized (UserRepository.class) {
+            synchronized (FoodBankRepository.class) {
                 if (instance == null) {
                     instance = new FoodBankRepository();
                 }
@@ -111,32 +126,48 @@ public class FoodBankRepository {
         return instance;
     }
 
-
-
-
-
-
+    /**
+     * Gets a list of FoodBank objects by their IDs.
+     *
+     * @param idList List of FoodBank IDs.
+     * @return List of FoodBank objects.
+     */
     public List<FoodBank> getFoodBankListByIdList(List<String> idList){
-        if (foodBanks.isEmpty()) {
+        try{
+            awaitDataLoaded();
+            if (foodBanks.isEmpty()) {
+            Log.d("FoodBankList","Empty food bank list");
             return Collections.emptyList();
         }
+            Log.d("daipai","taidaipaile");
+            return idList.stream()
+                    .map(id -> getFoodBankById(Integer.parseInt(id)))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
 
-        return idList.stream()
-                .map(id -> getFoodBankById(Integer.parseInt(id)))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     public FoodBank getFoodBankById(int id) {
-        if (foodBanks.isEmpty()) {
-            return null;
+        try{
+            awaitDataLoaded();
+            if (foodBanks.isEmpty()) {
+                return null;
+            }
+
+            Optional<FoodBank> result = foodBanks.stream()
+                    .filter(foodBank -> foodBank.getId() == id)
+                    .findFirst();
+
+            return result.orElse(null);
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+            throw new RuntimeException();
         }
 
-        Optional<FoodBank> result = foodBanks.stream()
-                .filter(foodBank -> foodBank.getId() == id)
-                .findFirst();
-
-        return result.orElse(null);
     }
 
 
@@ -174,9 +205,9 @@ public class FoodBankRepository {
                     avlTree = avlTree.insert(avlTree, foodBank);
                     doubleAVLTree.insert(foodBank);
                 }
-                //TODO log out the tree
 
-                //avlTree.printInOrder();
+                // Log out the tree for debugging purposes
+                // avlTree.printInOrder();
                 avlTree.countNodes();
                 doubleAVLTree.printAllNodes();
                 doubleAVLTree.countNodes();
@@ -198,9 +229,11 @@ public class FoodBankRepository {
         }
         }
 
-
+    /**
+     * Loads the list of FoodBanks from Firebase.
+     */
     private void loadFoodBanks() {
-        readFoodBanks(new FoodBankRepository.DataStatus() {
+        readFoodBanks(new DataStatus() {
             @Override
             public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
                 foodBanksLiveData.setValue(foodBanks);
@@ -220,7 +253,7 @@ public class FoodBankRepository {
 
             @Override
             public void Error(Exception e) {
-                // TODO Log or handle errors
+                dataLoadedFuture.completeExceptionally(e);
             }
         });
     }
@@ -229,5 +262,12 @@ public class FoodBankRepository {
         return doubleAVLTree;
     }
 
-}
 
+    public ArrayList<FoodBank> getFoodBanks() {
+        return foodBanks;
+    }
+
+    public void awaitDataLoaded() throws InterruptedException, ExecutionException {
+        dataLoadedFuture.get();
+    }
+}
