@@ -139,7 +139,7 @@ public class FoodBankRepository {
             awaitDataLoaded();
             if (foodBanks.isEmpty()) {
             Log.d("FoodBankList","Empty food bank list");
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
             Log.d("daipai","taidaipaile");
             return idList.stream()
