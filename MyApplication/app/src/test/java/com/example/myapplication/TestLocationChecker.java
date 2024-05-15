@@ -22,7 +22,7 @@ public class TestLocationChecker {
     @Test
     public void testDetermineState(){
         assertEquals(state1, 1);
-        assertEquals(state2, 2);//Error here
+        assertEquals(state2, 2);//No more error here
         assertEquals(state3, 3);
         assertEquals(state4, 4);
         assertEquals(state5, 5);
