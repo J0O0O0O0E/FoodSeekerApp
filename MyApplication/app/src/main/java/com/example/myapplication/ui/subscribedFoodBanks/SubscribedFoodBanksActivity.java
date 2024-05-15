@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,7 +28,11 @@ import com.example.myapplication.ui.home.HomeViewModel;
 import com.example.myapplication.ui.home.announcement.AnnouncementAdapter;
 import com.google.firebase.Firebase;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -68,6 +73,23 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
             }
 
             recyclerView.setAdapter(adapter);
+//
+//            DocumentReference docRef = viewModel.getFStore().
+//                    collection("User").document(
+//                            Objects.requireNonNull(viewModel.getLiveUser().getValue()).getEmail());
+
+
+//            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//                @Override
+//                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                    User user = viewModel.getLiveUser().getValue();
+//                    if (user != null && value != null) {
+//                        adapter.updateSubscribedFoodBanks(user.getSubscribedFoodBanks());
+//                    }
+//                }
+//            });
+
+            UserRepository.getInstance().updateFoodBanks();
 
             viewModel.getLiveUser().observe(this, new Observer<User>() {
                 @Override
@@ -86,9 +108,6 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
 
 
     }
-
-
-//
 //
 
 
@@ -103,20 +122,33 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
         bundle.putString("fb_number", clickedFoodBank.getTel());
         bundle.putString("fb_email", clickedFoodBank.getEmail());
 
-        if(clickedFoodBank.isStatus()){
+        if (clickedFoodBank.isStatus()) {
             bundle.putString("fb_sate", "open");
-        }else{
+        } else {
             bundle.putString("fb_sate", "close");
         }
 
         bundle.putString("fb_street", clickedFoodBank.getStreet());
         bundle.putString("fb_city", clickedFoodBank.getSuburb());
-        bundle.putString("fb_postalCode", clickedFoodBank.getPostcode());
+        bundle.putString("fb_postCode", clickedFoodBank.getPostcode());
         bundle.putString("fb_country", clickedFoodBank.getCountry());
         bundle.putString("fb_openHours", clickedFoodBank.getOpen_hours());
-        bundle.putInt("fb_capacity",clickedFoodBank.getCapacity());
+        bundle.putInt("fb_capacity", clickedFoodBank.getCapacity());
         bundle.putDouble("fb_distance", clickedFoodBank.getDistanceToUser());
         bundle.putString("fb_foundDate", clickedFoodBank.getDoe());
+        bundle.putDouble("fb_latitude", clickedFoodBank.getLat());
+        bundle.putDouble("fb_longitude", clickedFoodBank.getLon());
+        bundle.putInt("fb_foodBankId", clickedFoodBank.getId());
+        bundle.putDouble("fb_rate", clickedFoodBank.getRating());
+
+
+        // Add food quantities
+        bundle.putInt("Pasta", clickedFoodBank.getFood1_pasta());
+        bundle.putInt("Bread", clickedFoodBank.getFood2_bread());
+        bundle.putInt("Milk", clickedFoodBank.getFood3_milk());
+        bundle.putInt("Pie", clickedFoodBank.getFood4_pie());
+        bundle.putInt("Vegetable", clickedFoodBank.getFood5_vet());
+
         bundle.putDouble("fb_latitude",clickedFoodBank.getLat());
         bundle.putDouble("fb_longitude",clickedFoodBank.getLon());
         bundle.putInt("fb_foodBankId",clickedFoodBank.getId());
