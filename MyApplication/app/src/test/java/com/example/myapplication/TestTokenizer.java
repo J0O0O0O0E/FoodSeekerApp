@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  * This class contains unit tests for the {@link Tokenizer} class.
  * It tests various methods of the Tokenizer class to ensure they function correctly.
  *
- * @author Haoxuan Xu
+ * @author Haoxuan Xu, u7747847
  */
 
 public class TestTokenizer {
