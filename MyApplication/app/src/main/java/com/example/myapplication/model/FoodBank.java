@@ -1,6 +1,7 @@
 package com.example.myapplication.model;
 
 import com.example.myapplication.parser.BusinessHours;
+import com.example.myapplication.parser.BusinessHoursParser;
 
 /**
  * Represents a food bank entity with detailed attributes relating to its operation, location,
@@ -271,7 +272,7 @@ public class FoodBank {
 
     public BusinessHours getBusinessHours(){
         if(businessHours == null){
-            this.businessHours = new BusinessHours();
+            this.businessHours = BusinessHoursParser.parseHours(open_hours);
         }
         return businessHours;
     }
