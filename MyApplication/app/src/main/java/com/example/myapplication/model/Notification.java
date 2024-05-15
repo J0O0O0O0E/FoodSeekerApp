@@ -26,15 +26,15 @@ public class Notification {
         return foodBankName;
     }
 
-    public boolean ifNotify(){
-        return foodBank.getBusinessHours().ifNotifyNeeded(notificationTime);
-    }
+//    public boolean ifNotify(){
+//        return foodBank.getBusinessHours().ifNotifyNeeded(notificationTime);
+//    }
 
     public String getNotifyMessage(){
         if (foodBank.getBusinessHours().isFoodBankClosed(notificationTime)) {
-            return foodBank.getName() + " is now closed.";
+            return foodBank.getName() + " is now closed";
         } else {
-            return foodBank.getName() + " is now open.";
+            return foodBank.getName() + " is now open";
         }
     }
 

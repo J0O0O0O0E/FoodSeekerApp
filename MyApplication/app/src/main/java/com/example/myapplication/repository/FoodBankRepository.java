@@ -4,12 +4,11 @@ import com.example.myapplication.datastructure.AVLTree;
 import com.example.myapplication.datastructure.DoubleAVLTree;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import java.util.concurrent.CompletableFuture;
 
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
-import com.example.myapplication.model.TimeServer;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,10 +17,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -50,9 +49,9 @@ public class FoodBankRepository {
     private AVLTree avlTree;
     private DoubleAVLTree doubleAVLTree;
 
-    private TimeServer timeServer;
 
 
+    private CompletableFuture<Void> dataLoadedFuture;
 
     private final Lock lock = new ReentrantLock();
 
@@ -100,13 +99,13 @@ public class FoodBankRepository {
         avlTree = new AVLTree();
         doubleAVLTree = new DoubleAVLTree();
         foodBanksLiveData = new MutableLiveData<>();
+        dataLoadedFuture = new CompletableFuture<>();
         loadFoodBanks();
-        timeServer = TimeServer.getInstance();
     }
 
     public static FoodBankRepository getInstance() {
         if (instance == null) {
-            synchronized (UserRepository.class) {
+            synchronized (FoodBankRepository.class) {
                 if (instance == null) {
                     instance = new FoodBankRepository();
                 }
@@ -116,31 +115,42 @@ public class FoodBankRepository {
     }
 
 
-
-
-
-
     public List<FoodBank> getFoodBankListByIdList(List<String> idList){
-        if (foodBanks.isEmpty()) {
+        try{
+            awaitDataLoaded();
+            if (foodBanks.isEmpty()) {
+            Log.d("FoodBankList","Empty food bank list");
             return Collections.emptyList();
         }
+            Log.d("daipai","taidaipaile");
+            return idList.stream()
+                    .map(id -> getFoodBankById(Integer.parseInt(id)))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
 
-        return idList.stream()
-                .map(id -> getFoodBankById(Integer.parseInt(id)))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     public FoodBank getFoodBankById(int id) {
-        if (foodBanks.isEmpty()) {
-            return null;
+        try{
+            awaitDataLoaded();
+            if (foodBanks.isEmpty()) {
+                return null;
+            }
+
+            Optional<FoodBank> result = foodBanks.stream()
+                    .filter(foodBank -> foodBank.getId() == id)
+                    .findFirst();
+
+            return result.orElse(null);
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
+            throw new RuntimeException();
         }
 
-        Optional<FoodBank> result = foodBanks.stream()
-                .filter(foodBank -> foodBank.getId() == id)
-                .findFirst();
-
-        return result.orElse(null);
     }
 
 
@@ -207,7 +217,8 @@ public class FoodBankRepository {
         readFoodBanks(new FoodBankRepository.DataStatus() {
             @Override
             public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
-                foodBanksLiveData.setValue(foodBanks);
+                foodBanksLiveData.postValue(foodBanks);
+                dataLoadedFuture.complete(null);
             }
 
             @Override
@@ -224,7 +235,7 @@ public class FoodBankRepository {
 
             @Override
             public void Error(Exception e) {
-                // TODO Log or handle errors
+                dataLoadedFuture.completeExceptionally(e);
             }
         });
     }
@@ -233,8 +244,13 @@ public class FoodBankRepository {
         return doubleAVLTree;
     }
 
-    public TimeServer getTimeServer() {
-        return timeServer;
+
+    public ArrayList<FoodBank> getFoodBanks() {
+        return foodBanks;
+    }
+
+    public void awaitDataLoaded() throws InterruptedException, ExecutionException {
+        dataLoadedFuture.get();
     }
 }
 
