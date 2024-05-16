@@ -103,7 +103,7 @@ public class BusinessHours {
                 LocalTime endTime = timeRange.end.truncatedTo(ChronoUnit.MINUTES);
 
                 // Check if the time range is for 24 hours
-                if (startTime.equals(LocalTime.MIN) && endTime.equals(LocalTime.MAX)) {
+                if (startTime.equals(LocalTime.MIDNIGHT) && endTime.equals(LocalTime.MIDNIGHT)) {
                     continue; // Skip notification for 24-hour open businesses
                 }
 
