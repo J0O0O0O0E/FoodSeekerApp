@@ -12,46 +12,58 @@ import com.example.myapplication.repository.UserRepository;
 
 import java.util.Objects;
 
+
+/**
+ * ProfileViewModel is responsible for preparing and managing the data for ProfileFragment.
+ * It handles the interaction between the UI and the UserRepository.
+ * @author Shuhui Yang
+ */
 public class ProfileViewModel extends ViewModel {
-//    private final MutableLiveData<String> mText;
 
     public static UserRepository userRepository;
 
     public User user;
 
 
-
-
-
-
+    /**
+     * Constructor that initializes the UserRepository and retrieves the current user's data.
+     */
     public ProfileViewModel() {
-//        mText = new MutableLiveData<>();
         userRepository = UserRepository.getInstance();
-//        String profileName = userRepository.getUser().email;
-//        mText.setValue(profileName);
         user = userRepository.getUser();
     }
 
-//    public LiveData<String> getText() {
-//        return mText;
-//    }
 
-    public void updateUserName(String name){
-        user.setUserName(name);
-    }
 
+
+    /**
+     * Returns the current user.
+     *
+     * @return The current User object.
+     */
     public User getUser() {
         return user;
     }
 
+
+
+    /**
+     * Updates the user's name in the UserRepository.
+     *
+     * @param name The new name to be updated.
+     */
     public void updateUserNameToRepository(String name){
         userRepository.updateUserName(name);
     }
 
 
-    public void updateUserprofileImg(Uri uri, Context context){
-        userRepository.uploadImageToFirebase(uri, context);
-    }
+
+
+    /**
+     * Updates the user's contact number in the UserRepository.
+     *
+     * @param number The new contact number to be updated.
+     */
     public void updateContactNumberToRepository(String number){
         userRepository.updateContactNumber(number);
     }
@@ -62,7 +74,9 @@ public class ProfileViewModel extends ViewModel {
 
 
 
-    // Method to clear data
+    /**
+     * Clears the user data by setting the user object to null.
+     */
     public void clearData() {
         user = null; // Clear user object
     }

@@ -1,15 +1,6 @@
 package com.example.myapplication.repository;
-import androidx.lifecycle.MutableLiveData;
 
 import androidx.lifecycle.MutableLiveData;
-
-import com.example.myapplication.datastructure.AVLTree;
-import com.example.myapplication.datastructure.DoubleAVLTree;
-import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
-import java.util.concurrent.CompletableFuture;
-
 import com.example.myapplication.datastructure.AVLTree;
 import com.example.myapplication.datastructure.DoubleAVLTree;
 import com.example.myapplication.model.FoodBank;
@@ -21,15 +12,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Repository class for handling data interactions with FoodBank objects within a Firebase database.
@@ -37,30 +29,31 @@ import java.util.stream.Collectors;
  * It uses Firebase's real-time database capabilities to manage data flow and inform observers
  * or activities through a callback interface once data operations are completed or if an error occurs.
  *
- * @author Zijian Yang, Shuhui Yang
- * @package com.example.myapplication.repository
+ * This class implements a singleton pattern to ensure that only one instance of the repository exists.
+ * It also uses AVL and DoubleAVL trees to efficiently manage and query FoodBank data.
+ * @author Zijian Yang
  */
 public class FoodBankRepository {
 
+    // Singleton instance of the repository
     private static FoodBankRepository instance;
 
     // LiveData for observing changes to the list of FoodBanks
     private MutableLiveData<ArrayList<FoodBank>> foodBanksLiveData;
     // Firebase database instance
     private FirebaseDatabase database;
-    // List to hold food bank data fetched from database
+    // List to hold FoodBank data fetched from the database
     private ArrayList<FoodBank> foodBanks;
     // Interface for data status callbacks
     private DataStatus dataStatus;
-    //AVLTree by capacity
+    // AVLTree for managing FoodBank data based on capacity
     private AVLTree avlTree;
-    // DoubleAVLTree for FoodBank capacity and rating
+    // DoubleAVLTree for managing FoodBank data based on capacity and rating
     private DoubleAVLTree doubleAVLTree;
-
-
-
+    // Future to track data loading completion
     private CompletableFuture<Void> dataLoadedFuture;
-
+    // Executor service for asynchronous operations
+    private ExecutorService executorService;
     // Lock for thread-safe operations
     private final Lock lock = new ReentrantLock();
 
@@ -71,19 +64,10 @@ public class FoodBankRepository {
      */
     public interface DataStatus {
         /**
-         * Called when data has been successfully loaded from the Firebase database. This method is invoked after
-         * a successful read operation from the database, which asynchronously fetches all entries of FoodBanks and passes them along
-         * with their database keys to the calling context.
+         * Called when data has been successfully loaded from the Firebase database.
          *
-         * @param foodBanks An ArrayList of FoodBank objects that were loaded from the Firebase database. Each FoodBank object
-         *                  represents a record in the Firebase database, containing information about a specific food bank such as
-         *                  its capacity, location, and food inventory.
+         * @param foodBanks An ArrayList of FoodBank objects that were loaded from the Firebase database.
          * @param keys      A list of String objects representing the unique keys for each FoodBank record in the Firebase database.
-         *                  These keys are important for operations that require specific database entries to be updated or deleted,
-         *                  as they uniquely identify each record.
-         *                  <p>
-         *                  This method enables the application to update UI components or perform other actions in response to the data being
-         *                  loaded, such as displaying the food banks on a map or in a list.
          */
         void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys);
 
@@ -101,14 +85,13 @@ public class FoodBankRepository {
      * It sets up the Firebase database connection and initializes the list for storing FoodBank objects.
      */
     private FoodBankRepository() {
-        // Get the Firebase database instance
         database = FirebaseDatabase.getInstance("https://comp2100-6442-4f828-default-rtdb.asia-southeast1.firebasedatabase.app");
-        // Initialize the list to hold FoodBanks
         foodBanks = new ArrayList<>();
         avlTree = new AVLTree();
         doubleAVLTree = new DoubleAVLTree();
         foodBanksLiveData = new MutableLiveData<>();
         dataLoadedFuture = new CompletableFuture<>();
+        executorService = Executors.newSingleThreadExecutor();
         loadFoodBanks();
     }
 
@@ -129,142 +112,151 @@ public class FoodBankRepository {
     }
 
     /**
-     * Gets a list of FoodBank objects by their IDs.
+     * Retrieves a list of FoodBank objects matching the given list of IDs.
      *
-     * @param idList List of FoodBank IDs.
-     * @return List of FoodBank objects.
+     * @param idList The list of FoodBank IDs to search for.
+     * @return A list of FoodBank objects matching the given IDs.
      */
-    public List<FoodBank> getFoodBankListByIdList(List<String> idList){
-        try{
+    public List<FoodBank> getFoodBankListByIdList(List<String> idList) {
+        try {
             awaitDataLoaded();
             if (foodBanks.isEmpty()) {
-            Log.d("FoodBankList","Empty food bank list");
-            return new ArrayList<>();
-        }
-            Log.d("daipai","taidaipaile");
+                return new ArrayList<>();
+            }
             return idList.stream()
-                    .map(id -> avlTree.findById(    Integer.parseInt(id)))
+                    .map(id -> avlTree.findById(Integer.parseInt(id)))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-
-        }catch (InterruptedException | ExecutionException e){
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
+    /**
+     * Retrieves a FoodBank object by its ID.
+     *
+     * @param id The ID of the FoodBank to retrieve.
+     * @return The FoodBank object with the given ID, or null if not found.
+     */
     public FoodBank getFoodBankById(int id) {
-        try{
+        try {
             awaitDataLoaded();
             if (foodBanks.isEmpty()) {
                 return null;
             }
-
             Optional<FoodBank> result = foodBanks.stream()
                     .filter(foodBank -> foodBank.getId() == id)
                     .findFirst();
-
             return result.orElse(null);
-        }catch (InterruptedException | ExecutionException e){
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
-
     }
 
-
-
     /**
-     * Reads the list of FoodBanks from Firebase and notifies the DataStatus callback interface upon completion
-     * or if an error occurs.
+     * Reads the FoodBank data from the Firebase database.
      *
-     * @param dataStatus The callback interface through which data load results or errors are communicated.
+     * @param dataStatus The callback interface to handle data status.
      */
     public void readFoodBanks(final DataStatus dataStatus) {
         lock.lock();
-        // Reference to the root in the database, root dir has no parameter for getReference method
-        try{DatabaseReference ref = database.getReference();
-        // Add value event listener to fetch data
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Clear the existing list
-                foodBanks.clear();
-                avlTree = new AVLTree();
-                // List to hold the keys of the nodes
-                ArrayList<String> keys = new ArrayList<>();
-                // Loop through the snapshot children
-                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                    // Store the key
-                    keys.add(keyNode.getKey());
-                    // Get the FoodBank object from the snapshot
-                    FoodBank foodBank = keyNode.getValue(FoodBank.class);
-                    // Set the Location for instance via Location class and latitude and longitude
-                    foodBank.setLocation(new Location(foodBank.getLat(), foodBank.getLon()));
-                    // Add it to the food banks list
-                    foodBanks.add(foodBank);
-                    avlTree = avlTree.insert(avlTree, foodBank);
-                    doubleAVLTree.insert(foodBank);
+        try {
+            DatabaseReference ref = database.getReference();
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    foodBanks.clear();
+                    avlTree = new AVLTree();
+                    ArrayList<String> keys = new ArrayList<>();
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                        keys.add(keyNode.getKey());
+                        FoodBank foodBank = keyNode.getValue(FoodBank.class);
+                        foodBank.setLocation(new Location(foodBank.getLat(), foodBank.getLon()));
+                        foodBanks.add(foodBank);
+                        avlTree = avlTree.insert(avlTree, foodBank);
+                        doubleAVLTree.insert(foodBank);
+                    }
+                    avlTree.countNodes();
+                    doubleAVLTree.printAllNodes();
+                    doubleAVLTree.countNodes();
+                    dataStatus.DataIsLoaded(foodBanks, keys);
                 }
-
-                // Log out the tree for debugging purposes
-                // avlTree.printInOrder();
-                avlTree.countNodes();
-                doubleAVLTree.printAllNodes();
-                doubleAVLTree.countNodes();
-
-                // Notify that data is loaded along with the keys of the nodes
-                dataStatus.DataIsLoaded(foodBanks, keys);
-            }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
-                        dataStatus.Error(databaseError.toException());
-
+                    dataStatus.Error(databaseError.toException());
                 }
             });
-        }
-        finally{
+        } finally {
             lock.unlock();
         }
-        }
+    }
 
     /**
-     * Loads the list of FoodBanks from Firebase.
+     * Loads the FoodBank data from the Firebase database asynchronously.
      */
     private void loadFoodBanks() {
-        readFoodBanks(new DataStatus() {
-            @Override
-            public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
-                foodBanksLiveData.postValue(foodBanks);
-                dataLoadedFuture.complete(null);
-            }
+        executorService.execute(() -> {
+            readFoodBanks(new DataStatus() {
+                @Override
+                public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
+                    foodBanksLiveData.postValue(foodBanks);
+                    dataLoadedFuture.complete(null);
+                }
 
-            @Override
-            public void DataIsInserted() {}
+                @Override
+                public void DataIsInserted() {}
 
-            @Override
-            public void DataIsUpdated() {}
+                @Override
+                public void DataIsUpdated() {}
 
-            @Override
-            public void DataIsDeleted() {}
+                @Override
+                public void DataIsDeleted() {}
 
-            @Override
-            public void Error(Exception e) {
-                dataLoadedFuture.completeExceptionally(e);
-            }
+                @Override
+                public void Error(Exception e) {
+                    dataLoadedFuture.completeExceptionally(e);
+                }
+            });
         });
     }
 
-    public DoubleAVLTree getDoubleAVLTree(){
+    /**
+     * Gets the DoubleAVLTree instance used for managing FoodBank data.
+     *
+     * @return The DoubleAVLTree instance.
+     */
+    public DoubleAVLTree getDoubleAVLTree() {
         return doubleAVLTree;
     }
 
-
-
+    /**
+     * Waits for the data to be loaded from the Firebase database.
+     *
+     * @throws InterruptedException if the current thread was interrupted while waiting.
+     * @throws ExecutionException if the computation threw an exception.
+     */
     public void awaitDataLoaded() throws InterruptedException, ExecutionException {
         dataLoadedFuture.get();
     }
 
+    /**
+     * Checks if the data has been loaded from the Firebase database.
+     *
+     * @return true if the data is loaded, false otherwise.
+     */
+    public boolean isDataLoaded() {
+        return dataLoadedFuture.isDone();
+    }
+
+    /**
+     * Gets the LiveData object for observing changes to the list of FoodBanks.
+     *
+     * @return The LiveData object for FoodBanks.
+     */
+    public MutableLiveData<ArrayList<FoodBank>> getFoodBanksLiveData() {
+        return foodBanksLiveData;
+    }
 }

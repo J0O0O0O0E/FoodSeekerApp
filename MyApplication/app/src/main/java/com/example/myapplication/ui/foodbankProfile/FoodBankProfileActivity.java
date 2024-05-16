@@ -9,11 +9,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
@@ -22,59 +18,69 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import com.example.myapplication.model.User;
 import com.example.myapplication.repository.UserRepository;
 
+/**
+ * Activity to display detailed information about a FoodBank.
+ * This activity includes a bar chart showing food quantities, a WebView for displaying the location on Google Maps,
+ * and buttons for sharing and subscribing to the FoodBank.
+ */
 public class FoodBankProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private BarChart barChart;
+    private BarChart barChart;  // Bar chart to display food quantities
+    private static String shareMessage = "";  // Message to be shared
+    private static int foodBankId;  // ID of the FoodBank
 
-    private static String shareMessage = "";
-    private static int foodBankId;
+    private User user = UserRepository.getInstance().getUser();  // Current user
 
-    private User user = UserRepository.getInstance().getUser();
+    /**
+     * Called when the activity is first created.
+     * Initializes the UI components and loads the FoodBank data.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in {@link #onSaveInstanceState}. <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_bank_profile);
 
-        //initialize chart
+        // Initialize chart
         barChart = findViewById(R.id.barChart);
 
-        //Load foodbank data in bundle and display
+        // Load FoodBank data from bundle and display
         Bundle bundle = getIntent().getExtras();
         foodBankId = bundle.getInt(FoodBankBundle.KEY_FOODBANKBUNDLE_FOOD_BANK_ID);
 
         if (bundle != null) {
             ((TextView) findViewById(R.id.food_bank_name)).setText(bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NAME));
             ((TextView) findViewById(R.id.food_bank_phone)).setText("Number: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NUMBER));
-            ((TextView) findViewById(R.id.food_bank_email)).setText("Email : "+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_EMAIL));
-            ((TextView) findViewById(R.id.food_bank_state)).setText("State: "+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STATE));
-            ((TextView) findViewById(R.id.food_bank_open_hours)).setText("Open hours: "+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_OPEN_HOURS));
-            ((TextView) findViewById(R.id.food_bank_capacity)).setText("Capacity: "+String.valueOf(bundle.getInt(FoodBankBundle.KEY_FOODBANKBUNDLE_CAPACITY)));
-            ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: "+String.valueOf(bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_DISTANCE)));
-            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Fundation Date: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_FOUND_DATE));
-            ((TextView) findViewById(R.id.food_bank_postcode)).setText("Post code: " + bundle.getString( FoodBankBundle.KEY_FOODBANKBUNDLE_POSTCODE));
-            ((TextView) findViewById(R.id.food_bank_rate)).setText("Rate: " + String.valueOf(bundle.getDouble( FoodBankBundle.KEY_FOODBANKBUNDLE_RATE)));
+            ((TextView) findViewById(R.id.food_bank_email)).setText("Email : " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_EMAIL));
+            ((TextView) findViewById(R.id.food_bank_state)).setText("State: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STATE));
+            ((TextView) findViewById(R.id.food_bank_open_hours)).setText("Open hours: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_OPEN_HOURS));
+            ((TextView) findViewById(R.id.food_bank_capacity)).setText("Capacity: " + String.valueOf(bundle.getInt(FoodBankBundle.KEY_FOODBANKBUNDLE_CAPACITY)));
+            ((TextView) findViewById(R.id.food_bank_distance)).setText("Distance: " + String.valueOf(bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_DISTANCE)));
+            ((TextView) findViewById(R.id.food_bank_foundation_date)).setText("Foundation Date: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_FOUND_DATE));
+            ((TextView) findViewById(R.id.food_bank_postcode)).setText("Post code: " + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_POSTCODE));
+            ((TextView) findViewById(R.id.food_bank_rate)).setText("Rate: " + String.valueOf(bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_RATE)));
+
             String location = "Location: " + String.format("%s , %s , %s ",
                     bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_COUNTRY),
                     bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_CITY),
-                    bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STREET)
-            );
+                    bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STREET));
             ((TextView) findViewById(R.id.food_bank_location)).setText(location);
-            shareMessage = bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NAME)+"\n"+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STREET)+ "\n"+bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NUMBER);
+            shareMessage = bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NAME) + "\n" + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_STREET) + "\n" + bundle.getString(FoodBankBundle.KEY_FOODBANKBUNDLE_NUMBER);
 
-
-            //creat the chart
+            // Create the chart
             setupBarChart(bundle);
 
-            //initial the navigation bar
+            // Initialize the navigation bar
             ImageView iv_back = findViewById(R.id.iv_back);
             ImageView iv_share = findViewById(R.id.iv_share);
             ImageView iv_subscribe = findViewById(R.id.iv_subscribe);
@@ -87,12 +93,15 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
                 iv_subscribe.setImageResource(R.drawable.baseline_bookmark_added_24);
             }
 
-
-
             initializeWebView(bundle);
         }
     }
 
+    /**
+     * Initializes the WebView to display the FoodBank location on Google Maps.
+     *
+     * @param bundle The Bundle containing the latitude and longitude of the FoodBank.
+     */
     private void initializeWebView(Bundle bundle) {
         WebView wv_map = findViewById(R.id.wv_map);
         WebSettings webSettings = wv_map.getSettings();
@@ -106,11 +115,16 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
         wv_map.post(() -> wv_map.loadUrl(mapUrl));
     }
 
+    /**
+     * Handles click events for the back, share, and subscribe buttons.
+     *
+     * @param v The view that was clicked.
+     */
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.iv_back){
+        if (v.getId() == R.id.iv_back) {
             finish();
-        } else if (v.getId()==R.id.iv_share) {
+        } else if (v.getId() == R.id.iv_share) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             intent.setType("text/plain");
@@ -153,7 +167,7 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
 
         barChart.setData(data);
         barChart.getDescription().setEnabled(false);
-        //refresh and display the data
+        // Refresh and display the data
         barChart.invalidate();
     }
 }

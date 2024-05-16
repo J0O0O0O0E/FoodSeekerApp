@@ -19,6 +19,11 @@ import com.example.myapplication.repository.FoodBankRepository;
 import java.util.Comparator;
 import java.util.List;
 
+
+/**
+ * A RecyclerView Adapter for displaying a list of subscribed food banks.
+ * @author Shuhui Yang
+ */
 public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedFoodBanksAdaptor.SubscribedFoodBanksViewHolder> {
 
     private Context context;
@@ -29,6 +34,14 @@ public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedF
 
     private static FoodBankRecyclerViewInterface recyclerViewInterface;
 
+
+    /**
+     * Constructor for the SubscribedFoodBanksAdaptor.
+     *
+     * @param context                The context in which the adapter is being used.
+     * @param foodBanksId            List of food bank IDs the user is subscribed to.
+     * @param recyclerViewInterface  Interface for handling item clicks.
+     */
     public SubscribedFoodBanksAdaptor(Context context, List<String> foodBanksId, FoodBankRecyclerViewInterface recyclerViewInterface) {
         this.recyclerViewInterface = recyclerViewInterface;
         this.context = context;
@@ -60,6 +73,14 @@ public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedF
         return foodBanks.size();
     }
 
+
+
+
+    /**
+     * Updates the list of subscribed food banks and notifies the adapter of the data change.
+     *
+     * @param newFoodBanksId List of new food bank IDs the user is subscribed to.
+     */
     public void updateSubscribedFoodBanks(List<String> newFoodBanksId){
         List<FoodBank> newFoodBanks = FoodBankRepository.getInstance().
                 getFoodBankListByIdList(newFoodBanksId);
@@ -69,22 +90,38 @@ public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedF
     }
 
 
+
+    /**
+     * Sorts the food banks by their distance to the user.
+     */
     public void sortFoodBanks(){
         foodBanks.sort(Comparator.comparingDouble(FoodBank::getDistanceToUser));
     }
 
 
+
+    /**
+     * ViewHolder class for the RecyclerView items.
+     */
     public static class SubscribedFoodBanksViewHolder extends RecyclerView.ViewHolder {
         TextView name;
 
         TextView address;
 
+
+
+        /**
+         * Constructor for the SubscribedFoodBanksViewHolder.
+         *
+         * @param itemView The view for the individual item in the RecyclerView.
+         */
         public SubscribedFoodBanksViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.foodBankName);
             address = itemView.findViewById(R.id.foodBankAddress);
 
 
+            // Set an OnClickListener for the itemView to handle item clicks
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 if(recyclerViewInterface != null){
@@ -104,7 +141,4 @@ public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedF
 
     }
 
-    public List<FoodBank> getFoodBanks(){
-        return foodBanks;
-        }
 }
