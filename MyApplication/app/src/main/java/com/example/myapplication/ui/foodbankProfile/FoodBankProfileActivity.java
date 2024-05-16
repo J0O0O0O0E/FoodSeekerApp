@@ -81,7 +81,7 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             iv_back.setOnClickListener(this);
             iv_share.setOnClickListener(this);
             iv_subscribe.setOnClickListener(this);
-            if (!user.subscribedFoodBanks.contains(Integer.toString(foodBankId))) {
+            if (!user.getSubscribedFoodBanks().contains(Integer.toString(foodBankId))) {
                 iv_subscribe.setImageResource(R.drawable.baseline_bookmark_add_24);
             } else {
                 iv_subscribe.setImageResource(R.drawable.baseline_bookmark_added_24);
@@ -115,7 +115,7 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             startActivity(Intent.createChooser(intent, "Share via"));
         } else if (v.getId() == R.id.iv_subscribe) {
             ImageView iv = findViewById(R.id.iv_subscribe);
-            if (!user.subscribedFoodBanks.contains(Integer.toString(foodBankId))) {
+            if (!user.getSubscribedFoodBanks().contains(Integer.toString(foodBankId))) {
                 UserRepository.getInstance().addSubscribedFoodBanks(Integer.toString(foodBankId));
                 iv.setImageResource(R.drawable.baseline_bookmark_added_24);
             } else {
