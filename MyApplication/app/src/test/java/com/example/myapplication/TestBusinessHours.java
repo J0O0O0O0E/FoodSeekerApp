@@ -5,8 +5,14 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import static org.junit.Assert.*;
-
 import com.example.myapplication.parser.BusinessHours;
+
+/**
+ * This class contains unit tests for the {@link BusinessHours} class.
+ * It tests various methods of the User class to ensure they function correctly.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
 
 public class TestBusinessHours {
 
@@ -39,7 +45,6 @@ public class TestBusinessHours {
         assertFalse(businessHours.isFoodBankClosed(LocalDateTime.of(2024, 5, 8, 15, 0))); // Wed, 15:00
         assertFalse(businessHours.isFoodBankClosed(LocalDateTime.of(2024, 5, 8, 7, 0))); // Wed, 07:00
         assertFalse(businessHours.isFoodBankClosed(LocalDateTime.of(2024, 5, 8, 23, 0))); // Wed, 23:00
-
     }
 
 //    PASS
@@ -51,5 +56,4 @@ public class TestBusinessHours {
         assertTrue(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 6, 9, 0))); // Mon, 9:00
         assertTrue(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 9, 18, 0))); // Thur, 18:00
     }
-
 }
