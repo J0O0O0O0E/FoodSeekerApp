@@ -47,7 +47,7 @@ public class TestBusinessHours {
     public void testIfNotifyNeeded() {
         assertFalse(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 8, 12, 0))); // Wed, 12:00
         assertFalse(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 8, 22, 0))); // Wed, 22:00
-        assertTrue(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 8, 0, 0))); // Wed, 24:00
+        assertTrue(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 8, 0, 0))); // Wed, 00:00
         assertTrue(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 6, 9, 0))); // Mon, 9:00
         assertTrue(businessHours.ifNotifyNeeded(LocalDateTime.of(2024, 5, 9, 18, 0))); // Thur, 18:00
     }
