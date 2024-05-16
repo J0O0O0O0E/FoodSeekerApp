@@ -35,7 +35,8 @@ import java.util.Objects;
  * This activity provides a user interface where users can log in to the app.
  * @author Zhi li, u7640966
  * @author Shuhui Yang u7662582
- * @author si chen
+ * @author Si Chen u7756543
+ * @author Haoxuan Xu u7747847
  *  <a href="https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0">...</a>
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -192,6 +193,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param requestCode  The request code passed in requestPermissions.
      * @param permissions  The requested permissions.
      * @param grantResults The grant results for the corresponding permissions.
+     * @author Si Chen u7756543
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
