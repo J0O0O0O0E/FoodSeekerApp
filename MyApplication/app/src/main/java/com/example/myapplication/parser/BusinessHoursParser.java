@@ -12,7 +12,19 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utility class for parsing business hours from a string.
+ * @author Shuhui Yang u7662582
+ */
 public class BusinessHoursParser {
+
+
+    /**
+     * Parses a string representing business hours and converts it into a BusinessHours object.
+     *
+     * @param hours the string representing the business hours, e.g., "Weekdays, 08:00-1900"
+     * @return a BusinessHours object containing the parsed hours and a hash map
+     */
     public static BusinessHours parseHours(String hours) {
         BusinessHours businessHours = new BusinessHours();
 
@@ -63,6 +75,13 @@ public class BusinessHoursParser {
         return businessHours;
     }
 
+
+    /**
+     * Parses a string representing days into a list of DayOfWeek.
+     *
+     * @param daysPart the string representing the days, e.g., "Weekdays" or "Weekends"
+     * @return a list of DayOfWeek corresponding to the parsed days
+     */
     private static List<DayOfWeek> parseDays(String daysPart) {
         List<DayOfWeek> days = new ArrayList<>();
 
