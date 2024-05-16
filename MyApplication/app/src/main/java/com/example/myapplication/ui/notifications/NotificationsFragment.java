@@ -24,6 +24,7 @@ import java.util.List;
  * NotificationsFragment is responsible for displaying the list of notifications.
  * It observes changes in the NotificationsViewModel and updates the UI accordingly.
  * @author : zhi li，u7640966
+ * @author : Shuhui Yang u7662582
  */
 public class NotificationsFragment extends Fragment {
 

@@ -8,7 +8,10 @@ import com.example.myapplication.R;
 import com.example.myapplication.model.FoodBank;
 
 import java.util.ArrayList;
-
+/**
+ * Utility class for checking locations and determining state indices based on geographical coordinates.
+ * @author Si Chen u7756543
+ */
 public class LocationChecker {
     private static final String[] stateArray =  {"All States","Tasmania","Western Australia","South Australia","New South Wales","Queensland","Victoria","Northern Territory"};
     public static String[] getStateArray() {

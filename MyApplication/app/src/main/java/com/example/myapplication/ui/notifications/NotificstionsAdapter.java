@@ -18,6 +18,7 @@ import java.util.List;
  * NotificstionsAdapter is a RecyclerView Adapter for displaying notifications.
  * It binds notification data to the views in the RecyclerView.
  * @author : zhili, u7640966
+ * @author : Shuhui Yang u7662582
  */
 public class NotificstionsAdapter extends RecyclerView.Adapter<NotificstionsAdapter.NotificationViewHolder> {
 
