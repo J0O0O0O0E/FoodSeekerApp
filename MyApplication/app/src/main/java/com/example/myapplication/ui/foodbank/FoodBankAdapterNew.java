@@ -1,4 +1,4 @@
-package com.example.myapplication.adapter;
+package com.example.myapplication.ui.foodbank;
 
 import android.content.Context;
 import android.graphics.Color;

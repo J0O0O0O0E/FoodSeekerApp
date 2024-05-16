@@ -151,15 +151,22 @@ public class AVLTree {
     interface CompareFunc {
         boolean compare(int a, int b);
     }
-    private void printInOrder(AVLTree node) {
-        if (node != null) {
-            printInOrder(node.leftNode);
-            if (node.value != null) {
-                System.out.println("🐍🐍🐍🐍Node Capacity: " + node.value.getCapacity());
-            }
-            printInOrder(node.rightNode);
+
+    public FoodBank findById(int id) {
+        return findById(this, id);
+    }
+
+    private FoodBank findById(AVLTree node, int id) {
+        if (node == null) return null;
+        if (id < node.value.getId()) {
+            return findById(node.leftNode, id);
+        } else if (id > node.value.getId()) {
+            return findById(node.rightNode, id);
+        } else {
+            return node.value;
         }
     }
+
     public void countNodes(){
         System.out.println(countNodes(this));
     }
