@@ -143,7 +143,7 @@ public class FoodBankRepository {
         }
             Log.d("daipai","taidaipaile");
             return idList.stream()
-                    .map(id -> getFoodBankById(Integer.parseInt(id)))
+                    .map(id -> avlTree.findById(    Integer.parseInt(id)))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
