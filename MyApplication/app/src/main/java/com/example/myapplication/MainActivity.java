@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * MainActivity is the entry point for the application. It sets up the navigation,
  * handles notification checks, and manages data binding and ViewModel interactions.
  *
- * @author Zhi li
+ * @author Zhi li, u7640966
  */
 public class MainActivity extends AppCompatActivity {
 

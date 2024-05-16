@@ -12,7 +12,7 @@ import android.webkit.WebView;
  * It was used in foodbank profile to ensure that the google map web view touch events
  * are not intercepted by parent scroll view
  *
- * @author Zhi Li
+ * @author Zhi Li, u7640966
  * <p>
  * Bibliography:
  * - <a href="https://stackoverflow.com/questions/20590236/scrollview-with-children-view-how-to-intercept-scroll-conditionally">...</a>

@@ -25,7 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * This Fragment implements RecyclerViewClickInterface to handle interactions with a list of announcements.
  * It uses LiveData to observe changes in the list of announcements and user authentication status.
  * <p>
- * @author Zhi LI
+ * @author Zhi LI, u7640966
  */
 public class HomeFragment extends Fragment implements RecyclerViewClickInterface {
     private FloatingActionButton fab;

@@ -6,7 +6,7 @@ import com.google.firebase.firestore.PropertyName;
 /**
  * Model class representing an announcement inside the home fragment.
  * <P>
- * @author Zhi LI
+ * @author Zhi LI, u7640966
  *
  */
 public class Announcement {

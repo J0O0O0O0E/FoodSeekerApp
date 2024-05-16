@@ -22,8 +22,7 @@ import java.util.List;
  * This adapter is responsible for inflating announcement item views, binding Announcement data to them,
  * and handling item click events through a provided RecyclerViewClickInterface.
  * <p>
- * @author Zhi LI
- * <p>
+ * @author Zhi LI, u7640966
  * Bibliography:
  * - <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter">...</a>
  * - <a href="https://www.youtube.com/watch?v=Mc0XT58A1Z4">...</a>

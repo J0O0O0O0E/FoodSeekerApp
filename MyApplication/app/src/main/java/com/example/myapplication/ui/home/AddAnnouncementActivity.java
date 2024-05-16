@@ -26,7 +26,7 @@ import java.util.Map;
  * This class provides UI for selecting an image, entering text, and uploading data. It interacts
  * with Firebase to store data and handle files.
  * <p>
- * @author Zhi LI
+ * @author Zhi LI, u7640966
  * <p>
  * Bibliography:
  * - <a href="https://firebase.google.com/docs/firestore/manage-data/add-data">...</a>
