@@ -94,7 +94,6 @@ public class BusinessHours {
         if (currentDayOfWeek != null) {
             List<TimeRange> timeRanges = weeklyHours.get(currentDayOfWeek);
             if (timeRanges == null) {
-                Log.d("NotificationCheck", "No time ranges for " + currentDayOfWeek + "; Notification needed: NO");
                 return false; // No time ranges defined, no notification needed
             }
 
@@ -107,16 +106,14 @@ public class BusinessHours {
                     continue; // Skip notification for 24-hour open businesses
                 }
 
-                Log.d("NotificationCheck", "Current Time: " + localTime + ", Start Time: " + startTime + ", End Time: " + endTime);
 
                 if (localTime.equals(startTime) || localTime.equals(endTime)) {
-                    Log.d("NotificationCheck", "Notification needed: YES");
+
                     return true; // Notification needed at the start or end of a non-24-hour period
                 }
             }
         }
 
-        Log.d("NotificationCheck", "Notification needed: NO");
         return false; // Default to no notification if none of the conditions are met
     }
 
@@ -132,11 +129,27 @@ public class BusinessHours {
         LocalTime start;
         LocalTime end;
 
+
+        /**
+         * Constructs a new TimeRange with the specified start and end times.
+         *
+         * @param start the start time of the range
+         * @param end   the end time of the range
+         */
         public TimeRange(LocalTime start, LocalTime end) {
             this.start = start;
             this.end = end;
         }
 
+
+
+        /**
+         * Checks if a given time is within the range.
+         * If both start and end times are 00:00 (midnight), this method returns true.
+         *
+         * @param time the time to check
+         * @return true if the time is within the range, false otherwise
+         */
         public boolean isTimeInRange(LocalTime time) {
             // Check if both start and end are 00:00
             if (start.equals(LocalTime.MIDNIGHT) && end.equals(LocalTime.MIDNIGHT)) {
