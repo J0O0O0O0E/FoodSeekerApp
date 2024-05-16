@@ -8,7 +8,7 @@ import java.util.List;
  * Represents the User entity in the application.
  * A User can have various attributes such as email, contact number, profile image URL,
  * subscribed FoodBanks, etc.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 
 public class User {

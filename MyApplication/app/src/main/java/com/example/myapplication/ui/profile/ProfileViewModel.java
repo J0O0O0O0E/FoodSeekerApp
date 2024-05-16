@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * ProfileViewModel is responsible for preparing and managing the data for ProfileFragment.
  * It handles the interaction between the UI and the UserRepository.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 public class ProfileViewModel extends ViewModel {
 
