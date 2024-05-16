@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Responsible for managing and preparing the data for the SubscribedFoodBanksFragment.
  * It interacts with the UserRepository to fetch and update user data.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 public class SubscribedFoodBanksViewModel extends ViewModel {
 

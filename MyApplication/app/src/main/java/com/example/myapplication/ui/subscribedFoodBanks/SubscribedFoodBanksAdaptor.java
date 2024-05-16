@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * A RecyclerView Adapter for displaying a list of subscribed food banks.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 public class SubscribedFoodBanksAdaptor extends RecyclerView.Adapter<SubscribedFoodBanksAdaptor.SubscribedFoodBanksViewHolder> {
 

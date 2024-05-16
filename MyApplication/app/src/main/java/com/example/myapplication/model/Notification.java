@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * a specified time.
  * This class is responsible for determining and formatting the message based on
  * the food bank's business hours.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 public class Notification {
     private FoodBank foodBank;

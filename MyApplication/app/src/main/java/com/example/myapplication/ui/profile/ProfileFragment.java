@@ -36,7 +36,7 @@ import com.bumptech.glide.Glide;
  * ProfileFragment is responsible for displaying and managing the user's profile information,
  * including username, contact number, email, and profile image.
  *
- * @author Shuhui Yang, Zhi Li
+ * @author Shuhui Yang u7662582, Zhi Li u7640966
  */
 
 public class ProfileFragment extends Fragment {

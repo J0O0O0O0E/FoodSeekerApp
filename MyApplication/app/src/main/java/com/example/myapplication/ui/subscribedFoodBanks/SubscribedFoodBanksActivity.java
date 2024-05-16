@@ -50,7 +50,7 @@ import java.util.concurrent.Executors;
 /**
  * SubscribedFoodBanksActivity displays a list of food banks the user is subscribed to.
  * It implements the FoodBankRecyclerViewInterface to handle item clicks.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 public class SubscribedFoodBanksActivity extends AppCompatActivity implements FoodBankRecyclerViewInterface {
 
