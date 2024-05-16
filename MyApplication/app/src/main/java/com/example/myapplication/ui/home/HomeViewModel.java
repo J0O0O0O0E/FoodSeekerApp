@@ -2,13 +2,10 @@ package com.example.myapplication.ui.home;
 
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.model.Announcement;
-import com.example.myapplication.model.User;
 import com.example.myapplication.repository.AnnouncementRepository;
-import com.example.myapplication.repository.UserRepository;
 
 import java.util.List;
 
