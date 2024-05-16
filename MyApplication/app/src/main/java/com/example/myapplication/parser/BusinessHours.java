@@ -128,9 +128,9 @@ public class BusinessHours {
     /**
      * Inner class to represent a range of time.
      */
-    static class TimeRange {
-        LocalTime start;
-        LocalTime end;
+    public static class TimeRange {
+        public LocalTime start;
+        public LocalTime end;
 
         public TimeRange(LocalTime start, LocalTime end) {
             this.start = start;
