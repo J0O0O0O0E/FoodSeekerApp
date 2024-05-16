@@ -1,3 +1,4 @@
+
 package com.example.myapplication.ui.login;
 
 import android.Manifest;
@@ -136,13 +137,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             pw.requestFocus();
             return;
         }
-
-        // Validate password contains uppercase letter
-        if (!containUpper(password)) {
-            pw.setError("Password must contain capital letters!");
-            pw.requestFocus();
-            return;
-        }
+        // password must contain capital letters
+//        if (!containUpper(password)){
+//            pw.setError("Password must contain capital letters!");
+//            pw.requestFocus();
+//            return;
+//        }
 
         // Authenticate user with Firebase Auth
         mAuth.signInWithEmailAndPassword(email, password)
