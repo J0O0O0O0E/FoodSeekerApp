@@ -90,11 +90,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
         // password must contain capital letters
-        if (!containUpper(password)){
-            pw.setError("Password must contain capital letters!");
-            pw.requestFocus();
-            return;
-        }
+//        if (!containUpper(password)){
+//            pw.setError("Password must contain capital letters!");
+//            pw.requestFocus();
+//            return;
+//        }
         // Sign up with Firebase Authentication
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {

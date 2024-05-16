@@ -119,11 +119,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
         // password must contain capital letters
-        if (!containUpper(password)){
-            pw.setError("Password must contain capital letters!");
-            pw.requestFocus();
-            return;
-        }
+//        if (!containUpper(password)){
+//            pw.setError("Password must contain capital letters!");
+//            pw.requestFocus();
+//            return;
+//        }
 
 
         mAuth.signInWithEmailAndPassword(email, password)

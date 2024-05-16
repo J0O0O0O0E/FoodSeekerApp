@@ -156,8 +156,4 @@ public class TestLoginActivity {
 //        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw5));
 //        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw6));
 //    }
-
-
-
-
 }
