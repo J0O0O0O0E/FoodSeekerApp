@@ -94,18 +94,10 @@ public class SubscribedFoodBanksActivity extends AppCompatActivity implements Fo
 
             // Load subscribed food banks if data is already loaded, otherwise show loading indicator
             if (FoodBankRepository.getInstance().isDataLoaded()) {
+                hideLoading();
                 loadSubscribedFoodBanks();
             } else {
                 showLoading();
-                FoodBankRepository.getInstance().getFoodBanksLiveData().observe(this, new Observer<ArrayList<FoodBank>>() {
-                    @Override
-                    public void onChanged(ArrayList<FoodBank> foodBanks) {
-                        if (FoodBankRepository.getInstance().isDataLoaded()) {
-                            hideLoading();
-                            loadSubscribedFoodBanks();
-                        }
-                    }
-                });
             }
         } catch (Exception e) {
             Log.e(TAG, "Error initializing recyclerView", e);
