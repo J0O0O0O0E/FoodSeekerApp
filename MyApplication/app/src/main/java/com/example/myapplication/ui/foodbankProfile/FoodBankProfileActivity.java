@@ -97,7 +97,8 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
             double latitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LATITUDE);
             double longitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LONGITUDE);
             String mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude;
-            wv_map.loadUrl(mapUrl);
+            wv_map.post(() -> wv_map.loadUrl(mapUrl));
+
 
         }
 

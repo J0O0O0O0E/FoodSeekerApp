@@ -35,7 +35,7 @@ public class AnnouncementSimulator extends AppCompatActivity {
         scheduler = Executors.newScheduledThreadPool(1);
 
         // Schedule the first task to run immediately, and then every 10 seconds
-        scheduler.scheduleAtFixedRate(this::uploadAnnouncement, 0, 10, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(this::uploadAnnouncement, 0, 10, TimeUnit.SECONDS);
     }
 
     private void uploadAnnouncement() {

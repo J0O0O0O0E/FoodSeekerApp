@@ -9,12 +9,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.myapplication.repository.FoodBankRepository;
+import com.example.myapplication.ui.foodbank.FoodbankViewModel;
+import com.example.myapplication.ui.profile.ProfileViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_foodbank, R.id.navigation_search, R.id.navigation_notifications, R.id.navigation_profile)
+                R.id.navigation_home, R.id.navigation_foodbank, R.id.navigation_notifications, R.id.navigation_profile)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -92,4 +96,25 @@ public class MainActivity extends AppCompatActivity {
 //            Snackbar.make(contextView, "Location permission is required to access the foodbank.", Snackbar.LENGTH_LONG).show(); //
 //        }
 //    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clearData(); // Clear data before the activity is destroyed
+        binding = null; // Clear binding to avoid memory leaks
+
+    }
+
+    private void clearData() {
+        // 清理 FoodbankViewModel 数据
+            FoodbankViewModel foodbankViewModel = new ViewModelProvider(this).get(FoodbankViewModel.class);
+        foodbankViewModel.clearData();
+
+        // 清理 ProfileViewModel 数据
+        ProfileViewModel profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        profileViewModel.clearData();
+
+
+    }
 }

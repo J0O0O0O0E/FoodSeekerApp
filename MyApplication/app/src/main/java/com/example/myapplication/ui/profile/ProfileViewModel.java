@@ -62,11 +62,11 @@ public class ProfileViewModel extends ViewModel {
 
 
 
+    // Method to clear data
+    public void clearData() {
+        user = null; // Clear user object
+    }
 
-
-//
-//    public LiveData<String> getUserName() {
-//    }
 }
 
 
