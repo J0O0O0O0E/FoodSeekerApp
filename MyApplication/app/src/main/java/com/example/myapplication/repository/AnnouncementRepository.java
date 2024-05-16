@@ -20,7 +20,7 @@ import java.util.List;
  * from Firebase Firestore. This class follows the Singleton pattern to ensure
  * only one instance of the repository is created throughout the application.
  * <p>
- * @author Zhi LI
+ * @author Zhi LI, u7640966
  * <p>
  * Bibliography:
  * - <a href="https://www.youtube.com/watch?v=YgjYVbg1oiA">...</a>

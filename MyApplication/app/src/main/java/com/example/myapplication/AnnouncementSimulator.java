@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * AnnouncementSimulator is a class that simulates uploading user announcements to Firebase Firestore
  * at regular intervals. Simulate data stream.
  *
- * @author Zhi Li
+ * @author Zhi Li, u7640966
  * <p>
  * Bibliography:
  * - <a href="https://stackoverflow.com/questions/7814089/how-to-schedule-a-periodic-task-in-java">...</a>

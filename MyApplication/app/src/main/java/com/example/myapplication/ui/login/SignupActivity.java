@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * SignupActivity is responsible for user registration.
  * It allows users to create a new account by providing an email and password.
- * @author zhi li
+ * @author zhi li, u7640966
  * @author penny
  *<a href="https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0">...</a>
  *<a href="https://stackoverflow.com/questions/12947620/email-address-validation-in-android-on-edittext">...</a>

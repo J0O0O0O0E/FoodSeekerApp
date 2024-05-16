@@ -16,7 +16,7 @@ import java.util.List;
  * It communicates between the repository and the UI, managing UI-related data that survives configuration changes like screen rotations.
  * The HomeViewModel is responsible for fetching announcements from the Repository and providing them to the UI through LiveData.
  * LiveData is used here to ensure that the data is observed and updated in a lifecycle-aware manner.
- * @author zhi LI
+ * @author zhi LI, u7640966
  */
 public class HomeViewModel extends ViewModel {
     private AnnouncementRepository repository;

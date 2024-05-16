@@ -8,7 +8,7 @@ import com.example.myapplication.model.Announcement;
  * This interface is used to facilitate communication between the RecyclerView adapter and the
  * view (Home Fragment) that handles the interaction logic.
  * <p>
- * @author Zhi LI
+ * @author Zhi LI, u7640966
  * <p>
  * Bibliography:
  * - <a href="https://www.youtube.com/watch?v=7GPUpvcU1FE">...</a>

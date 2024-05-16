@@ -19,7 +19,7 @@ import com.example.myapplication.R;
  * This fragment retrieves announcement data passed through a Bundle and
  * displays it, including handling images with Glide and formatting text.
  * <p>
- * @author Zhi LI
+ * @author Zhi LI, u7640966
  * <p>
  * Bibliography:
  * - <a href="https://www.techyourchance.com/android-fragment-lifecycle/">...</a>
