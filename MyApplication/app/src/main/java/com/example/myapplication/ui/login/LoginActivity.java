@@ -192,6 +192,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param requestCode  The request code passed in requestPermissions.
      * @param permissions  The requested permissions.
      * @param grantResults The grant results for the corresponding permissions.
+     * @author Si Chen u7756543
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

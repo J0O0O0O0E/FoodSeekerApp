@@ -3,6 +3,12 @@ package com.example.myapplication.utils;
 import android.os.Bundle;
 import com.example.myapplication.model.FoodBank;
 
+/**
+ * Utility class for handling FoodBank objects and converting them into Bundles.
+ * This class provides methods to create a Bundle containing details about a FoodBank.
+ * @author Si Chen u7756543
+ */
+
 public class FoodBankBundle {
     public static final String KEY_FOODBANKBUNDLE_NAME = "fb_name";
     public static final String KEY_FOODBANKBUNDLE_NUMBER = "fb_number";
