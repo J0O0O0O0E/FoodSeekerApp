@@ -55,7 +55,7 @@ public class AnnouncementSimulator extends AppCompatActivity {
 
     private void simulateUserAnnouncement() {
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-        String title = "Announcement Title " +announcementCount+""+currentTime;
+        String title = "simUserAnnouncement" +announcementCount+" "+currentTime;
         String details = "Details for announcement at " + currentTime;
 
         Map<String, Object> announcement = new HashMap<>();

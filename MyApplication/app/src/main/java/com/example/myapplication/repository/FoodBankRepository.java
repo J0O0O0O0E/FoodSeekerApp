@@ -262,11 +262,9 @@ public class FoodBankRepository {
     }
 
 
-    public ArrayList<FoodBank> getFoodBanks() {
-        return foodBanks;
-    }
 
     public void awaitDataLoaded() throws InterruptedException, ExecutionException {
         dataLoadedFuture.get();
     }
+
 }

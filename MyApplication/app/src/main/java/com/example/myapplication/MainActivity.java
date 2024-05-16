@@ -107,10 +107,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearData() {
-        // 清理 FoodbankViewModel 数据
-            FoodbankViewModel foodbankViewModel = new ViewModelProvider(this).get(FoodbankViewModel.class);
-        foodbankViewModel.clearData();
-
         // 清理 ProfileViewModel 数据
         ProfileViewModel profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         profileViewModel.clearData();

@@ -89,19 +89,21 @@ public class FoodBankProfileActivity extends AppCompatActivity implements View.O
 
 
 
-            //Load the google Map Webview
-            WebView wv_map = findViewById(R.id.wv_map);
-            WebSettings webSettings = wv_map.getSettings();
-            webSettings.setJavaScriptEnabled(true); // Active JavaScript
-            wv_map.setWebViewClient(new WebViewClient()); // Prevent external browsers from opening links
-            double latitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LATITUDE);
-            double longitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LONGITUDE);
-            String mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude;
-            wv_map.post(() -> wv_map.loadUrl(mapUrl));
-
-
+            initializeWebView(bundle);
         }
+    }
 
+    private void initializeWebView(Bundle bundle) {
+        WebView wv_map = findViewById(R.id.wv_map);
+        WebSettings webSettings = wv_map.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        wv_map.setWebViewClient(new WebViewClient());
+
+        double latitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LATITUDE);
+        double longitude = bundle.getDouble(FoodBankBundle.KEY_FOODBANKBUNDLE_LONGITUDE);
+        String mapUrl = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+
+        wv_map.post(() -> wv_map.loadUrl(mapUrl));
     }
 
     @Override
