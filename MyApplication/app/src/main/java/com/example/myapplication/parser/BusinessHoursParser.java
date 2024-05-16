@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 public class BusinessHoursParser {
     public static BusinessHours parseHours(String hours) {
         BusinessHours businessHours = new BusinessHours();
-        Log.d("BusinessHoursParser", "Parsing hours: " + hours);
 
         // Split into day/time groups by looking ahead to "Weekdays" or "Weekends"
         String[] dayTimePairs = hours.split("(?=(Weekdays|Weekends))");
@@ -26,7 +25,6 @@ public class BusinessHoursParser {
             // Split the pair into day part and hour part
             String[] parts = pair.split(",", 2);
             if (parts.length < 2) {
-                Log.e("BusinessHoursParser", "Skipping invalid entry: " + pair);
                 continue;  // Skip invalid entries
             }
             String daysPart = parts[0].trim();
@@ -55,7 +53,6 @@ public class BusinessHoursParser {
                 try {
                     for (DayOfWeek day : days) {
                         businessHours.addHours(day, startTime, endTime);
-                        Log.d("BusinessHoursParser", "Added hours for " + day + ": " + startTime + " to " + endTime);
                     }
                 } catch (DateTimeParseException e) {
                     Log.e("BusinessHoursParser", "Failed to parse times: " + startTime + " or " + endTime);
@@ -68,18 +65,17 @@ public class BusinessHoursParser {
 
     private static List<DayOfWeek> parseDays(String daysPart) {
         List<DayOfWeek> days = new ArrayList<>();
-        Log.d("BusinessHoursParser", "Parsing days: " + daysPart);
+
 
         if (daysPart.contains("Weekdays")) {
             days.addAll(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
-            Log.d("BusinessHoursParser", "Weekdays added");
+
         }
         if (daysPart.contains("Weekends")) {
             days.addAll(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY));
-            Log.d("BusinessHoursParser", "Weekends added");
+
         }
 
-        Log.d("BusinessHoursParser", "Parsed days: " + days.toString());
         return days;
     }
 
