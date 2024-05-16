@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.model.FoodBank;
+import com.example.myapplication.model.Notification;
 import com.example.myapplication.model.User;
 import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.repository.UserRepository;
@@ -14,19 +15,18 @@ import java.util.List;
 
 public class NotificationsViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<List<Notification>> notificationsLiveData = new MutableLiveData<>(new ArrayList<>());
 
-    public static UserRepository userRepository = UserRepository.getInstance();
-
-    private MutableLiveData<User> liveUser;
-
-    public NotificationsViewModel() {
-        mText = new MutableLiveData<>();
-        this.liveUser = UserRepository.getInstance().getLiveUser();
-
+    public LiveData<List<Notification>> getNotificationsLiveData() {
+        return notificationsLiveData;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void updateNotifications(List<Notification> newNotifications) {
+        List<Notification> currentNotifications = notificationsLiveData.getValue();
+        if (currentNotifications != null) {
+            currentNotifications.addAll(newNotifications);
+            currentNotifications.sort((a1, a2) -> a2.getNotificationTime().compareTo(a1.getNotificationTime()));
+            notificationsLiveData.postValue(currentNotifications);
+        }
     }
 }

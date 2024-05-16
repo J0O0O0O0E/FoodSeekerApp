@@ -31,70 +31,39 @@ import java.util.Objects;
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
+    private NotificationsViewModel notificationsViewModel;
+    private NotificstionsAdapter adapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        notificationsViewModel = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        List<FoodBank> subscribedFoodBanks = UserRepository.getInstance().getSubscribedFoodBanks();
-        List<Notification> notifications = new ArrayList<>();
-        NotificstionsAdapter adapter = new NotificstionsAdapter(getContext(),notifications);
+        List<Notification> notifications = notificationsViewModel.getNotificationsLiveData().getValue();
+        adapter = new NotificstionsAdapter(getContext(), notifications);
 
         RecyclerView notificationViews = root.findViewById(R.id.notification_list);
         notificationViews.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        notificationViews.setAdapter(adapter);
 
         TextView emptyMessage = root.findViewById(R.id.text_notifications);
 
-        notificationViews.setAdapter(adapter);
-        adapter.scheduleCheck();
-
-        adapter.getNotificationLiveData().observe(getViewLifecycleOwner(), new Observer<List<Notification>>() {
+        notificationsViewModel.getNotificationsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Notification>>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(List<Notification> notifications) {
-                if(notifications.isEmpty()){
+                if (notifications.isEmpty()) {
                     emptyMessage.setText("There is no notification");
                     notificationViews.setVisibility(View.INVISIBLE);
                     emptyMessage.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     notificationViews.setVisibility(View.VISIBLE);
                     emptyMessage.setVisibility(View.INVISIBLE);
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
-
-
-
-
-
-
-
-
-//
-//        final TextView textView = binding.textNotifications;
-//        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-//
-//        MutableLiveData<LocalDateTime> timeLiveData = UserRepository.getInstance().getTimeLiveData();
-//
-//        timeLiveData.observe(requireActivity(), new Observer<LocalDateTime>() {
-//            @Override
-//            public void onChanged(LocalDateTime time) {
-//                if(hours.ifNotifyNeeded(time)){
-//                    if(hours.isFoodBankClosed(time)){
-////                        Notification notification = new Notification()
-//                    }
-//                }
-//
-//
-//            }
-//        });
-
-
 
         return root;
     }
