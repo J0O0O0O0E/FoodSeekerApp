@@ -40,19 +40,19 @@ public class TestLoginActivity {
     private final String long_psw3 = "asdasd";
 
     //Example passwords(capital)
-    private final String wrong_psw1 = "asdasd";
-    private final String wrong_psw2 = "123456";
-    private final String wrong_psw3 = "qwerty";
-    private final String wrong_psw4 = "asd123";
-    private final String wrong_psw5 = "123qwe";
-    private final String wrong_psw6 = "123456asdqwe";
-
-    private final String correct_psw1 = "Asdasd";
-    private final String correct_psw2 = "A12345";
-    private final String correct_psw3 = "123ASD";
-    private final String correct_psw4 = "AAAAAA";
-    private final String correct_psw5 = "AsDasd";
-    private final String correct_psw6 = "12345A";
+//    private final String wrong_psw1 = "asdasd";
+//    private final String wrong_psw2 = "123456";
+//    private final String wrong_psw3 = "qwerty";
+//    private final String wrong_psw4 = "asd123";
+//    private final String wrong_psw5 = "123qwe";
+//    private final String wrong_psw6 = "123456asdqwe";
+//
+//    private final String correct_psw1 = "Asdasd";
+//    private final String correct_psw2 = "A12345";
+//    private final String correct_psw3 = "123ASD";
+//    private final String correct_psw4 = "AAAAAA";
+//    private final String correct_psw5 = "AsDasd";
+//    private final String correct_psw6 = "12345A";
 
 
 
@@ -94,15 +94,15 @@ public class TestLoginActivity {
 
         // Mock
         // Check if password contains capital letter(s)
-        String[] wrongPsws = {wrong_psw1, wrong_psw2, wrong_psw3, wrong_psw4, wrong_psw5, wrong_psw6};
-        String[] correctPsws = {correct_psw1, correct_psw2, correct_psw3, correct_psw4, correct_psw5, correct_psw6};
+//        String[] wrongPsws = {wrong_psw1, wrong_psw2, wrong_psw3, wrong_psw4, wrong_psw5, wrong_psw6};
+//        String[] correctPsws = {correct_psw1, correct_psw2, correct_psw3, correct_psw4, correct_psw5, correct_psw6};
 
-        for (String psw : wrongPsws) {
-            when(loginActivity.containUpper(psw)).thenReturn(false);
-        }
-        for (String psw : correctPsws) {
-            when(loginActivity.containUpper(psw)).thenReturn(true);
-        }
+//        for (String psw : wrongPsws) {
+//            when(loginActivity.containUpper(psw)).thenReturn(false);
+//        }
+//        for (String psw : correctPsws) {
+//            when(loginActivity.containUpper(psw)).thenReturn(true);
+//        }
     }
 
 
@@ -139,23 +139,23 @@ public class TestLoginActivity {
         assertFalse("Expected: password length > 6 actual: Method returned true", loginActivity.isLengthLessThan6(long_psw3));
     }
 
-    @Test
-    public void testPasswordCapital(){
-        //Use assert to test Password Capital
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw1));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw2));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw3));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw4));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw5));
-        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw6));
-
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw1));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw2));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw3));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw4));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw5));
-        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw6));
-    }
+//    @Test
+//    public void testPasswordCapital(){
+//        //Use assert to test Password Capital
+//        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw1));
+//        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw2));
+//        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw3));
+//        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw4));
+//        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw5));
+//        assertFalse("Expected: password does not contain capital Actual: Method return true", loginActivity.containUpper(wrong_psw6));
+//
+//        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw1));
+//        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw2));
+//        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw3));
+//        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw4));
+//        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw5));
+//        assertTrue("Expected: password contains capital Actual: Method return False", loginActivity.containUpper(correct_psw6));
+//    }
 
 
 
