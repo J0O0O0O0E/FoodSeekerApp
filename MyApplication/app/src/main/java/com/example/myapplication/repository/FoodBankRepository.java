@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * It uses Firebase's real-time database capabilities to manage data flow and inform observers
  * or activities through a callback interface once data operations are completed or if an error occurs.
  *
- * @author Zijian Yang
+ * @author Zijian Yang, Shuhui Yang
  * @package com.example.myapplication.repository
  */
 public class FoodBankRepository {
