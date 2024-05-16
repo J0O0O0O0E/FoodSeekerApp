@@ -6,7 +6,7 @@ import com.example.myapplication.model.FoodBank;
 /**
  * FoodBankRecyclerViewInterface defines a single method to handle item clicks in a RecyclerView
  * that displays a list of FoodBank objects.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 public interface FoodBankRecyclerViewInterface {
 

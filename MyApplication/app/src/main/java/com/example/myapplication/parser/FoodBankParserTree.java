@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * The FoodBankParserTree class provides functionality to parse and filter FoodBank objects
  * based on specific criteria provided in the form of tokens and searches within a DoubleAVLTree.
- * @author Si Chen, Zijian Yang
+ * @author Si Chen u7756543, Zijian Yang u7724610
  */
 public class FoodBankParserTree {
 

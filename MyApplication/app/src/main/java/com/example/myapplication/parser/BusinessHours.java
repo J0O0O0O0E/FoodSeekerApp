@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * Class storing business hours for a food bank in different days of the week.
  * This class supports handling multiple time ranges per day, including special cases like 24-hour operations.
- * @author Shuhui Yang
+ * @author Shuhui Yang u7662582
  */
 public class BusinessHours {
     // Map storing business hours by day of the week with multiple time ranges.

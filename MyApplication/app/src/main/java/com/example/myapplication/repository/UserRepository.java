@@ -45,7 +45,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * This class provides methods to load, update, and manage user data in Firestore,
  * including user profile information, subscribed food banks, and profile images.
  *
- * @autor Shuhui Yang
+ * @autor Shuhui Yang u7662582, Zhi Li u7640966
  */
 public class UserRepository {
 
