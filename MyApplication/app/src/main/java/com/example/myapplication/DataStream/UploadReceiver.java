@@ -1,5 +1,4 @@
 package com.example.myapplication.DataStream;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -13,8 +12,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This BroadcastReceiver is responsible for receiving upload requests and uploading data to Firebase Firestore.
+ * It is triggered periodically by an AlarmManager through the UploadReceiver class.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
+
 public class UploadReceiver extends BroadcastReceiver {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -1,5 +1,4 @@
 package com.example.myapplication.DataStream;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,11 +14,19 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is responsible for uploading data from a CSV file in a periodic manner.
+ * It reads data from the CSV file and uploads it using an AlarmManager.
+ * The uploading process is limited by a maximum number of uploads and a time interval.
+ *
+ * @author Haoxuan Xu, u7747847
+ */
+
 public class Uploader extends AppCompatActivity {
     private static final int UPLOAD_INTERVAL_MS = 30000; // 30 seconds
     private static final int MAX_UPLOADS = 10; // Set the maximum number of uploads
     private static int uploadCount = 0; // Add a counter to track the number of uploads
-    private static List<String[]> dataList = new ArrayList<>(); // List to hold data from CSV
+    private static final List<String[]> dataList = new ArrayList<>(); // List to hold data from CSV
     private static final Object lock = new Object(); // Synchronization lock
 
     public void startUploading(Context context) {
