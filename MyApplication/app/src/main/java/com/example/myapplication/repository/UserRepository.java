@@ -34,7 +34,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+
+/**
+ * Repository class for handling user data operations including authentication,
+ * Firestore interactions, and real-time updates.
+ * @author Shuhui Yang
+ */
 public class UserRepository {
+
 
     private static volatile UserRepository instance;
     private FirebaseAuth mAuth;
@@ -47,39 +54,12 @@ public class UserRepository {
     private List<FoodBank> subscribedFoodBanks = new ArrayList<>();
 
 
-    //private List<FoodBank> allFoodBanks = new ArrayList<>();
-//    FoodBankRepository foodBankRepository=FoodBankRepository.getInstance();
 
-//    private void loadFoodBanks() {
-//        foodBankRepository.readFoodBanks(new FoodBankRepository.DataStatus() {
-//            @Override
-//            public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
-//
-//                subscribedFoodBanks = foodBankRepository.
-//                        getFoodBankListByIdList(liveUser.getValue().getSubscribedFoodBanks());
-//                Log.d("shabidaima","666");
-//                //allFoodBanks=foodBankRepository.getFoodBanks();
-//
-//            }
-//
-//            @Override
-//            public void DataIsInserted() {
-//            }
-//
-//            @Override
-//            public void DataIsUpdated() {
-//            }
-//
-//            @Override
-//            public void DataIsDeleted() {
-//            }
-//
-//            @Override
-//            public void Error(Exception e) {
-//            }
-//        });
-//    }
 
+    /**
+     * Private constructor to initialize Firebase authentication, Firestore,
+     * current user, and live data.
+     */
 
     private UserRepository(){
         this.mAuth = FirebaseAuth.getInstance();
@@ -88,9 +68,14 @@ public class UserRepository {
         this.liveUser = new MutableLiveData<>();
         this.storageReference = FirebaseStorage.getInstance().getReference();
 
-        //Log.d("userDaipai", String.valueOf(allFoodBanks.isEmpty()));
     }
 
+
+    /**
+     * Gets the singleton instance of UserRepository.
+     *
+     * @return The singleton instance of UserRepository.
+     */
     public static UserRepository getInstance() {
         if (instance == null) {
             synchronized (UserRepository.class) {
@@ -102,6 +87,11 @@ public class UserRepository {
         return instance;
     }
 
+
+
+    /**
+     * Loads the current user's profile from Firestore and updates liveUser.
+     */
     public void loadUser() {
         if (currentUser != null) {
             String email = currentUser.getEmail();
@@ -139,6 +129,13 @@ public class UserRepository {
         }
     }
 
+
+
+    /**
+     * Creates a new user profile in Firestore.
+     *
+     * @param user The FirebaseUser object containing the user's information.
+     */
     public void createUserProfile(FirebaseUser user) {
         String emailAddress = user.getEmail();
         Map<String, Object> userMap = new HashMap<>();
@@ -158,6 +155,12 @@ public class UserRepository {
         loadUser();
     }
 
+
+    /**
+     * Sets the current FirebaseUser.
+     *
+     * @param firebaseUser The FirebaseUser to set as the current user.
+     */
     public void setUser(FirebaseUser firebaseUser){
         lock.lock();
         try {
@@ -167,6 +170,12 @@ public class UserRepository {
         }
     }
 
+
+    /**
+     * Returns the live data object containing the current user's data.
+     *
+     * @return The MutableLiveData object containing the current user's data.
+     */
     public MutableLiveData<User> getLiveUser(){
         lock.lock();
         try{
@@ -175,6 +184,13 @@ public class UserRepository {
             lock.unlock();
         }
     }
+
+
+    /**
+     * Returns the current user object.
+     *
+     * @return The current User object.
+     */
 
     public User getUser(){
         lock.lock();
@@ -185,6 +201,13 @@ public class UserRepository {
         }
     }
 
+
+
+    /**
+     * Returns the current user's email.
+     *
+     * @return The current user's email.
+     */
     public String getUserEmail(){
         try {
             return Objects.requireNonNull(liveUser.getValue()).getEmail();
@@ -192,6 +215,12 @@ public class UserRepository {
         }
     }
 
+
+    /**
+     * Returns the current user's profile image URL.
+     *
+     * @return The current user's profile image URL.
+     */
     public String getuserimg(){
         lock.lock();
         try {
@@ -201,11 +230,15 @@ public class UserRepository {
         }
     }
 
-
+    /**
+     * Updates the current user's username.
+     *
+     * @param name The new username to set.
+     */
     public void updateUserName(String name){
         lock.lock();
         try {
-//            Objects.requireNonNull(liveUser.getValue()).setUserName(name);
+
             User currentUser = liveUser.getValue();
             assert currentUser != null;
             currentUser.setUserName(name);
@@ -220,13 +253,19 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedUser", "Error updating user name", e);
                     });
-//            liveUser.setValue(user);
+
         } finally {
             lock.unlock();
         }
     }
 
 
+    /**
+     * Uploads the user's profile image to Firebase Storage and updates the user's profile.
+     *
+     * @param uri     The Uri of the image to upload.
+     * @param context The context to use for displaying Toast messages.
+     */
     public void uploadImageToFirebase(Uri uri, Context context) {
         lock.lock();
         try{
@@ -253,6 +292,14 @@ public class UserRepository {
         }
 
     }
+
+
+
+    /**
+     * Saves the user's profile image URL to Firestore.
+     *
+     * @param imageUrl The URL of the uploaded image.
+     */
     private void saveImageUrlToFirestore(String imageUrl) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("imgUrl", imageUrl);
@@ -261,10 +308,15 @@ public class UserRepository {
         db.collection("User").document(userId).update(updates);
     }
 
+
+    /**
+     * Updates the user's contact number in Firestore and live data.
+     *
+     * @param number The new contact number to set.
+     */
     public void updateContactNumber(String number){
         lock.lock();
         try {
-//            Objects.requireNonNull(liveUser.getValue()).setContactNumber(number);
             User currentUser = liveUser.getValue();
             assert currentUser != null;
             currentUser.setContactNumber(number);
@@ -279,16 +331,18 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedUser", "Error updating contact number", e);
                     });
-//            liveUser.setValue(user);
+
         } finally {
             lock.unlock();
         }
     }
 
+
+
+
     public void addSubscribedFoodBanks(String id){
         lock.lock();
         try {
-//            Objects.requireNonNull(liveUser.getValue()).addSubscribedFoodBank(id);
             User currentUser = liveUser.getValue();
             assert currentUser != null;
             currentUser.addSubscribedFoodBank(id);
@@ -315,7 +369,7 @@ public class UserRepository {
     public void removeSubscribedFoodBanks(String id){
         lock.lock();
         try {
-//            Objects.requireNonNull(liveUser.getValue()).removeSubscribedFoodBank(id);
+
             User currentUser = liveUser.getValue();
             assert currentUser != null;
             currentUser.removeSubscribedFoodBank(id);
@@ -331,7 +385,7 @@ public class UserRepository {
                     .addOnFailureListener(e -> {
                         Log.e("UpdatedFoodBanks", "Error updating food banks", e);
                     });
-//            liveUser.setValue(user);
+
         } finally {
             lock.unlock();
         }
@@ -384,12 +438,6 @@ public class UserRepository {
         }
     }
 
-    public FirebaseFirestore getfStore() {
-        lock.lock();
-
-        return fStore;
-
-    }
 
     public List<FoodBank> getSubscribedFoodBanks() {
         return subscribedFoodBanks;
