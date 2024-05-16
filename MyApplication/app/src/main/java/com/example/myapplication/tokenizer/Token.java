@@ -4,7 +4,7 @@ package com.example.myapplication.tokenizer;
  * The Token class represents a token with a string value and a type.
  * Tokens are used in parsing and tokenization processes, to
  * break down input data into meaningful components for further processing.
- * @author Zijian Yang
+ * @author Zijian Yang u7724610
  */
 public class Token {
     // The string value of the token

@@ -24,7 +24,7 @@ import java.util.List;
  * from the FoodBankRepository and updates the UI as data changes. It also calculates and updates
  * the distances of food banks from a user-defined location.
  *
- * @author Zijian Yang
+ * @author Zijian Yang u7724610
  */
 public class FoodbankViewModel extends ViewModel {
     // Live data object for FoodBanks
