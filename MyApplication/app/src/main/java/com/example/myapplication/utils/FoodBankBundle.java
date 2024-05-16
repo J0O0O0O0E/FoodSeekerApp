@@ -28,6 +28,38 @@ public class FoodBankBundle {
 
     public static final String KEY_FOODBANKBUNDLE_REGION = "fb_region";
 
+    /**
+     * Creates a Bundle containing details about a FoodBank.
+     *
+     * This method takes a FoodBank object and extracts its properties to store them
+     * in a Bundle. This Bundle can then be used to pass the FoodBank details between
+     * different components or activities.
+     *
+     * The keys used to store the properties in the Bundle are predefined constants.
+     * The following properties are included in the Bundle:
+     * - State (open/close based on the status of the FoodBank)
+     * - Region
+     * - Name
+     * - Telephone number
+     * - Email
+     * - Street
+     * - City (Suburb)
+     * - Postcode
+     * - Country
+     * - Opening hours
+     * - Capacity
+     * - Distance to the user
+     * - Founding date
+     * - Latitude
+     * - Longitude
+     * - Food bank ID
+     * - Rating
+     * - Quantities of specific food items (Pasta, Bread, Milk, Pie, Vegetables)
+     *
+     * @param foodBank the FoodBank object whose details are to be stored in the Bundle
+     * @return a Bundle containing the FoodBank's details
+     */
+
     public static Bundle createFoodBankBundle(FoodBank foodBank) {
         Bundle bundle = new Bundle();
 
@@ -36,7 +68,6 @@ public class FoodBankBundle {
         } else {
             bundle.putString(KEY_FOODBANKBUNDLE_STATE, "close");
         }
-
         bundle.putString(KEY_FOODBANKBUNDLE_REGION,foodBank.getRegion());
         bundle.putString(KEY_FOODBANKBUNDLE_NAME, foodBank.getName());
         bundle.putString(KEY_FOODBANKBUNDLE_NUMBER, foodBank.getTel());
