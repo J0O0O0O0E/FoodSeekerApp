@@ -14,7 +14,7 @@ import com.example.myapplication.parser.BusinessHoursParser;
  * that aim to connect food banks with users.
  *
  * @package com.example.myapplication.model
- * @author Zijian Yang
+ * @author Zijian Yang u7724610
  */
 
 public class FoodBank {

@@ -31,6 +31,7 @@ import com.example.myapplication.repository.UserRepository;
  * Activity to display detailed information about a FoodBank.
  * This activity includes a bar chart showing food quantities, a WebView for displaying the location on Google Maps,
  * and buttons for sharing and subscribing to the FoodBank.
+ * @author Si Chen u7756543
  */
 public class FoodBankProfileActivity extends AppCompatActivity implements View.OnClickListener {
 

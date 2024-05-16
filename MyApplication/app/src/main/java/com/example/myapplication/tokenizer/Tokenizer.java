@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * The Tokenizer class is responsible for breaking down a string of text into a series of tokens.
  * These tokens can then be used for further processing, such as parsing or evaluating expressions.
- * @author Zijian Yang, Si Chen
+ * @author Zijian Yang u7724610, Si Chen u7756543
  */
 public class Tokenizer {
     // Buffer to hold the text being tokenized

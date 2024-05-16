@@ -50,7 +50,7 @@ import java.util.List;
  * initializes user interaction components like search and list view, and handles navigation to detailed
  * food bank profiles when an item in the list is tapped.
  *
- * @author Si Chen, Zijian Yang
+ * @author Si Chen u7756543, Zijian Yang u7724610
  */
 public class FoodbankFragment extends Fragment {
     private FragmentFoodbankBinding binding;
