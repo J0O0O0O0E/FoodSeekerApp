@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 /**
  * AVLNode class represents a node in an AVL tree.
- * @author Zijian Yang
+ * @author Zijian Yang u7724610
  */
 class AVLNode {
     FoodBank data;  // The FoodBank data stored in this node

@@ -31,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * This class implements a singleton pattern to ensure that only one instance of the repository exists.
  * It also uses AVL and DoubleAVL trees to efficiently manage and query FoodBank data.
- * @author Zijian Yang
+ * @author Zijian Yang u7724610
  */
 public class FoodBankRepository {
 

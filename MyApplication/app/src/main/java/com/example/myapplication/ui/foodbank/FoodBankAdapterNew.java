@@ -19,7 +19,7 @@ import java.util.Locale;
  * Adapter class for displaying a list of FoodBank objects in a ListView.
  * This adapter provides views for each FoodBank item in the list, including
  * the name, status, street, and distance of the FoodBank.
- * @author Si Chen
+ * @author Si Chen u7756543
  */
 public class FoodBankAdapterNew extends BaseAdapter {
     private Context mContext;  // The context in which the adapter is running

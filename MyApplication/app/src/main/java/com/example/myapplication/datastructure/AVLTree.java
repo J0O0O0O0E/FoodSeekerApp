@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Represents an AVL Tree by ID, a self-balancing binary search tree, where the heights of the two child subtrees of any node differ by at most one.
- * @author Zijian Yang
+ * @author Zijian Yang u7724610
  */
 public class AVLTree {
     private FoodBank value; // Stores the value at this node

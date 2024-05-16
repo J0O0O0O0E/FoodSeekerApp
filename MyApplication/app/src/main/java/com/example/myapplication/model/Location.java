@@ -7,8 +7,7 @@ package com.example.myapplication.model;
  * determining the great-circle distance between two points on a sphere based on their
  * longitudes and latitudes.
  *
- * @author Zijian Yang
- * @package com.example.myapplication.model
+ * @author Zijian Yang u7724610
  */
 public class Location {
     // Latitude of the location
