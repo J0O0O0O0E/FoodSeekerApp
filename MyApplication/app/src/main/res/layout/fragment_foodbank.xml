@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:padding="8dp"
-        android:text="Input name or input 'distance/capacity/rating &gt;&lt;= integer'"
+        android:text="Input name or input 'capacity/rating &gt;&lt;= integer'"
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintLeft_toLeftOf="parent"
