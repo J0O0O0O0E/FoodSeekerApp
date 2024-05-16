@@ -34,7 +34,7 @@ import java.util.Objects;
  * LoginActivity is the activity responsible for user authentication.
  * This activity provides a user interface where users can log in to the app.
  * @author Zhi li, u7640966
- * @author penny
+ * @author Shuhui Yang u7662582
  * @author si chen
  *  <a href="https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0">...</a>
  */

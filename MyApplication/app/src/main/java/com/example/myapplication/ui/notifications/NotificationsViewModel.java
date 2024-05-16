@@ -13,6 +13,7 @@ import java.util.List;
  * NotificationsViewModel is a ViewModel that manages and stores UI-related data for notifications.
  * It provides live data for a list of notifications and methods to update this list.
  * @author : zhili, u7640966
+ * @author : Shuhui Yang u7662582
  */
 public class NotificationsViewModel extends ViewModel {
 
