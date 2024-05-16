@@ -15,10 +15,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Class storing business hours for a food bank in different days of the week.
+ * This class supports handling multiple time ranges per day, including special cases like 24-hour operations.
+ * @author Shuhui Yang
+ */
 public class BusinessHours {
+    // Map storing business hours by day of the week with multiple time ranges.
     public Map<DayOfWeek, List<TimeRange>> weeklyHours = new HashMap<>();
 
+
+
+    /**
+     * Default constructor initializing the BusinessHours object.
+     */
     public BusinessHours(){}
+
+
+    /**
+     * Adds business hours for a specified day of the week into the map.
+     * Handles the special case where end time is specified as "24:00".
+     *
+     * @param day        The day of the week to add hours to.
+     * @param startTime  Start time in HH:mm format.
+     * @param endTime    End time in HH:mm format, handles "24:00" as "00:00".
+     */
     public void addHours(DayOfWeek day, String startTime, String endTime) {
         // Handling the special case of "24:00"
         if (endTime.equals("24:00")) {
@@ -37,6 +58,13 @@ public class BusinessHours {
         weeklyHours.computeIfAbsent(day, k -> new ArrayList<>()).add(timeRange);
     }
 
+
+    /**
+     * Checks if the food bank is closed at a given datetime.
+     *
+     * @param currentTime The current datetime to check.
+     * @return true if the food bank is closed at the specified time, false otherwise.
+     */
     public boolean isFoodBankClosed(LocalDateTime currentTime) {
         DayOfWeek currentDayOfWeek = currentTime.getDayOfWeek();
         LocalTime localTime = currentTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES);
@@ -53,6 +81,12 @@ public class BusinessHours {
     }
 
 
+    /**
+     * Determines if a notification is needed based on the current time and the business hours.
+     *
+     * @param currentTime The current datetime to check against the business hours.
+     * @return true if a notification is needed, false otherwise.
+     */
     public boolean ifNotifyNeeded(LocalDateTime currentTime) {
         DayOfWeek currentDayOfWeek = currentTime.getDayOfWeek();
         LocalTime localTime = currentTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES);
@@ -91,6 +125,9 @@ public class BusinessHours {
 
 
 
+    /**
+     * Inner class to represent a range of time.
+     */
     static class TimeRange {
         LocalTime start;
         LocalTime end;
