@@ -138,6 +138,11 @@ public class BusinessHours {
         }
 
         public boolean isTimeInRange(LocalTime time) {
+            // Check if both start and end are 00:00
+            if (start.equals(LocalTime.MIDNIGHT) && end.equals(LocalTime.MIDNIGHT)) {
+                return true;
+            }
+
             return !time.isBefore(start) && !time.isAfter(end);
         }
 
