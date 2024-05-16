@@ -35,7 +35,8 @@ import java.util.Objects;
  * This activity provides a user interface where users can log in to the app.
  * @author Zhi li, u7640966
  * @author penny
- * @author si chen
+ * @author Si Chen u7756543
+ * @author Haoxuan Xu u7747847
  *  <a href="https://learn.microsoft.com/en-us/dotnet/api/android.views.view.requestfocus?view=net-android-34.0">...</a>
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
