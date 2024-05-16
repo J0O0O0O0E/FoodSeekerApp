@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 navView.setVisibility(View.VISIBLE);
             }
         });
-//        // Start the announcement simulation
-////        AnnouncementSimulator simulator = new AnnouncementSimulator(this);
-////        simulator.startSimulation();
+//         Start the announcement simulation
+        AnnouncementSimulator simulator = new AnnouncementSimulator(this);
+        simulator.startSimulation();
         scheduleCheck();
     }
 
