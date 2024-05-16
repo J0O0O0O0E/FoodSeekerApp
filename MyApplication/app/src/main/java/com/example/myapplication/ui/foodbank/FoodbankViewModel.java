@@ -45,38 +45,9 @@ public class FoodbankViewModel extends ViewModel {
         mText.setValue("This is Foodbank fragment");
         foodBankRepository = FoodBankRepository.getInstance();
         foodBanksLiveData = new MutableLiveData<>();
-        loadFoodBanks();
+        foodBanksLiveData.setValue(foodBankRepository.getFoodBanks());
     }
 
-    /**
-     * Loads food banks from the repository and observes data changes. Upon data loading,
-     * the food banks are set to the LiveData object for observation and UI updates.
-     */
-    private void loadFoodBanks() {
-        foodBankRepository.readFoodBanks(new FoodBankRepository.DataStatus() {
-            @Override
-            public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
-                foodBanksLiveData.setValue(foodBanks);
-                doubleAVLTreeLiveData.setValue(foodBankRepository.getDoubleAVLTree());
-            }
-
-            @Override
-            public void DataIsInserted() {
-            }
-
-            @Override
-            public void DataIsUpdated() {
-            }
-
-            @Override
-            public void DataIsDeleted() {
-            }
-
-            @Override
-            public void Error(Exception e) {
-            }
-        });
-    }
 
     /**
      * Provides the LiveData object that contains the list of FoodBank objects.
