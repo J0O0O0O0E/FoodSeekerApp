@@ -24,10 +24,8 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.repository.FoodBankRepository;
 import com.example.myapplication.repository.UserRepository;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -47,16 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnSignup;
     private EditText username,pw;
 
-//    check if the user is signed in
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            startActivity( new Intent(LoginActivity.this, MainActivity.class));
-//        }
-//    }
+
 
 
     @Override
@@ -80,13 +69,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         username = (EditText) findViewById(R.id.login_name);
         pw =findViewById(R.id.login_passw);
 
-//        // Set up a click listener for the login button
-//        btnLogin.setOnClickListener(v -> {
-//            // Here, we assume the login logic is handled, and the user has authenticated successfully
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//            finish(); // Finish LoginActivity so the user cannot navigate back to it
-//        });
 
         // Set up a click listener for the Signup button
         btnSignup.setOnClickListener(v -> {

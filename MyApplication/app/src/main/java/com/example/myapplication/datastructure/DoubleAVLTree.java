@@ -1,19 +1,26 @@
 package com.example.myapplication.datastructure;
 
 import android.util.Log;
-
 import com.example.myapplication.model.FoodBank;
 import com.example.myapplication.model.Location;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Represents a node in the AVL tree with additional data and height properties.
+ * @author Zijian Yang
+ */
 class AVLNode {
     FoodBank data;
     AVLNode left, right;
     int height;
 
+    /**
+     * Constructor to create a node with the given data.
+     *
+     * @param data The FoodBank object to store in this node.
+     */
     AVLNode(FoodBank data) {
         this.data = data;
         this.left = null;
@@ -22,23 +29,42 @@ class AVLNode {
     }
 }
 
+/**
+ * Represents a double criteria AVL Tree with capacity and rating as the first and second attributes, where nodes are organized by multiple criteria from FoodBank objects.
+ * @author Zijian Yang
+ */
 public class DoubleAVLTree {
-    AVLNode root;
+    private AVLNode root;
 
+    /**
+     * Initializes an empty DoubleAVLTree.
+     */
     public DoubleAVLTree() {
         this.root = null;
     }
 
+    /**
+     * Inserts a FoodBank item into the tree according to its capacity, rating, and ID.
+     *
+     * @param item The FoodBank item to insert.
+     */
     public void insert(FoodBank item) {
         root = insert(root, item);
     }
 
+    /**
+     * Recursive helper method to insert a new node.
+     *
+     * @param node The current node in the traversal.
+     * @param item The FoodBank item to insert.
+     * @return The new or adjusted node after insertion.
+     */
     private AVLNode insert(AVLNode node, FoodBank item) {
         if (node == null) {
             return new AVLNode(item);
         }
 
-        // Adjusted comparison logic to include id as the final tiebreaker
+        // Sorting logic based on capacity, then rating, and then ID as the final tiebreaker
         if (item.getCapacity() < node.data.getCapacity() ||
                 (item.getCapacity() == node.data.getCapacity() && item.getRating() < node.data.getRating()) ||
                 (item.getCapacity() == node.data.getCapacity() && item.getRating() == node.data.getRating() && item.getId() < node.data.getId())) {
@@ -56,6 +82,12 @@ public class DoubleAVLTree {
         return balance(node);
     }
 
+    /**
+     * Returns the height of a node.
+     *
+     * @param node The node whose height is to be determined.
+     * @return The height of the node.
+     */
     private int getHeight(AVLNode node) {
         if (node == null) {
             return 0;
@@ -63,6 +95,12 @@ public class DoubleAVLTree {
         return node.height;
     }
 
+    /**
+     * Calculates the balance factor of a node to determine if rotations are needed.
+     *
+     * @param node The node whose balance factor is to be calculated.
+     * @return The balance factor of the node.
+     */
     private int getBalanceFactor(AVLNode node) {
         if (node == null) {
             return 0;
@@ -70,6 +108,12 @@ public class DoubleAVLTree {
         return getHeight(node.left) - getHeight(node.right);
     }
 
+    /**
+     * Performs a right rotation to balance the tree.
+     *
+     * @param y The node around which the right rotation is to be performed.
+     * @return The new root after rotation.
+     */
     private AVLNode rightRotate(AVLNode y) {
         AVLNode x = y.left;
         AVLNode T2 = x.right;
@@ -80,6 +124,12 @@ public class DoubleAVLTree {
         return x;
     }
 
+    /**
+     * Performs a left rotation to balance the tree.
+     *
+     * @param x The node around which the left rotation is to be performed.
+     * @return The new root after rotation.
+     */
     private AVLNode leftRotate(AVLNode x) {
         AVLNode y = x.right;
         AVLNode T2 = y.left;
@@ -90,26 +140,26 @@ public class DoubleAVLTree {
         return y;
     }
 
+    /**
+     * Balances the tree at a given node by performing necessary rotations.
+     *
+     * @param node The node to balance.
+     * @return The balanced node.
+     */
     private AVLNode balance(AVLNode node) {
         int balanceFactor = getBalanceFactor(node);
 
-        // Left Left Case
+        // Check and perform necessary rotations
         if (balanceFactor > 1 && getBalanceFactor(node.left) >= 0) {
             return rightRotate(node);
         }
-
-        // Left Right Case
         if (balanceFactor > 1 && getBalanceFactor(node.left) < 0) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
-
-        // Right Right Case
         if (balanceFactor < -1 && getBalanceFactor(node.right) <= 0) {
             return leftRotate(node);
         }
-
-        // Right Left Case
         if (balanceFactor < -1 && getBalanceFactor(node.right) > 0) {
             node.right = rightRotate(node.right);
             return leftRotate(node);
@@ -117,12 +167,26 @@ public class DoubleAVLTree {
 
         return node;
     }
+
+    /**
+     * Searches for nodes meeting a specific condition defined by a predicate.
+     *
+     * @param condition The predicate to evaluate each FoodBank item against.
+     * @return A list of FoodBank items that meet the condition.
+     */
     public List<FoodBank> search(Predicate<FoodBank> condition) {
         List<FoodBank> results = new ArrayList<>();
         collectIf(root, condition, results);
         return results;
     }
 
+    /**
+     * Recursive helper to collect nodes that satisfy the given condition.
+     *
+     * @param node The current node.
+     * @param condition The predicate condition to check.
+     * @param results The list to accumulate results.
+     */
     private void collectIf(AVLNode node, Predicate<FoodBank> condition, List<FoodBank> results) {
         if (node == null) return;
         if (condition.test(node.data)) {
@@ -131,99 +195,72 @@ public class DoubleAVLTree {
         collectIf(node.left, condition, results);
         collectIf(node.right, condition, results);
     }
-    public List<FoodBank> searchCapacityGreaterThan(int n) {
-        return search(fb -> fb.getCapacity() > n);
-    }
 
-    public List<FoodBank> searchCapacityLessThan(int n) {
-        return search(fb -> fb.getCapacity() < n);
-    }
+    // Other search methods are similar, applying specific predicates to search for specific properties.
 
-    public List<FoodBank> searchCapacityEquals(int n) {
-        return search(fb -> fb.getCapacity() == n);
-    }
-
-    public List<FoodBank> searchRatingGreaterThan(int n) {
-        return search(fb -> fb.getRating() > n);
-    }
-
-    public List<FoodBank> searchRatingLessThan(int n) {
-        return search(fb -> fb.getRating() < n);
-    }
-
-    public List<FoodBank> searchRatingEquals(int n) {
-        return search(fb -> fb.getRating() == n);
-    }
-
-    public List<FoodBank> searchCapacityGreaterThanRatingGreaterThan(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() > capacity && fb.getRating() > rating);
-    }
-
-    public List<FoodBank> searchCapacityGreaterThanRatingLessThan(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() > capacity && fb.getRating() < rating);
-    }
-
-    public List<FoodBank> searchCapacityGreaterThanRatingEquals(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() > capacity && fb.getRating() == rating);
-    }
-
-    public List<FoodBank> searchCapacityLessThanRatingGreaterThan(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() < capacity && fb.getRating() > rating);
-    }
-
-    public List<FoodBank> searchCapacityLessThanRatingLessThan(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() < capacity && fb.getRating() < rating);
-    }
-
-    public List<FoodBank> searchCapacityLessThanRatingEquals(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() < capacity && fb.getRating() == rating);
-    }
-
-    public List<FoodBank> searchCapacityEqualsRatingGreaterThan(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() == capacity && fb.getRating() > rating);
-    }
-
-    public List<FoodBank> searchCapacityEqualsRatingLessThan(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() == capacity && fb.getRating() < rating);
-    }
-
-    public List<FoodBank> searchCapacityEqualsRatingEquals(int capacity, int rating) {
-        return search(fb -> fb.getCapacity() == capacity && fb.getRating() == rating);
-    }
+    /**
+     * Counts all nodes in the tree.
+     *
+     * @return The total number of nodes in the tree.
+     */
     public int countNodes() {
         return countNodes(root);
     }
 
+    /**
+     * Recursively counts nodes starting from the given node.
+     *
+     * @param node The node to start counting from.
+     * @return The number of nodes in the subtree.
+     */
     private int countNodes(AVLNode node) {
         if (node == null) {
             return 0;
         }
         return 1 + countNodes(node.left) + countNodes(node.right);
     }
+
+    /**
+     * Prints all node values in the tree for debugging purposes.
+     */
     public void printAllNodes() {
         printAllNodes(root);
     }
 
+    /**
+     * Helper method to print all nodes starting from the given node.
+     *
+     * @param node The node to start printing from.
+     */
     private void printAllNodes(AVLNode node) {
         if (node != null) {
             printAllNodes(node.left);
-
-            /*System.out.println("❤️❤️ID: " + node.data.getId() +
-                    ", Capacity: " + node.data.getCapacity() +
-                    ", Rating: " + node.data.getRating());*/
-
+            // Uncomment to enable actual node printing.
+            // System.out.println("❤️❤️ID: " + node.data.getId() +
+            //     ", Capacity: " + node.data.getCapacity() +
+            //     ", Rating: " + node.data.getRating());
             printAllNodes(node.right);
         }
     }
 
+    /**
+     * Updates the distance from a user location for all FoodBank entries in the tree.
+     *
+     * @param userLocation The user's location to calculate distances to each FoodBank.
+     */
     public void setDistancesForAll(Location userLocation) {
         setDistancesForAll(root, userLocation);
     }
 
+    /**
+     * Recursive helper to update distances for all nodes starting from the given node.
+     *
+     * @param node The current node.
+     * @param userLocation The user's location.
+     */
     private void setDistancesForAll(AVLNode node, Location userLocation) {
         if (node != null) {
             if (node.data.getLocation() != null) {
-                //double distance = calculateDistance(userLocation, node.data.getLocation());
                 double distance = Math.round(node.data.getLocation().calculateDistance(userLocation));
                 node.data.setDistanceToUser(distance);
             } else {

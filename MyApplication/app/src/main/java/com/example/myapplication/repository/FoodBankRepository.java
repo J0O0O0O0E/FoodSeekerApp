@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -60,6 +62,8 @@ public class FoodBankRepository {
 
 
     private CompletableFuture<Void> dataLoadedFuture;
+
+    private ExecutorService executorService;
 
     // Lock for thread-safe operations
     private final Lock lock = new ReentrantLock();
@@ -109,6 +113,7 @@ public class FoodBankRepository {
         doubleAVLTree = new DoubleAVLTree();
         foodBanksLiveData = new MutableLiveData<>();
         dataLoadedFuture = new CompletableFuture<>();
+        executorService = Executors.newSingleThreadExecutor();
         loadFoodBanks();
     }
 
@@ -128,145 +133,112 @@ public class FoodBankRepository {
         return instance;
     }
 
-    /**
-     * Gets a list of FoodBank objects by their IDs.
-     *
-     * @param idList List of FoodBank IDs.
-     * @return List of FoodBank objects.
-     */
-    public List<FoodBank> getFoodBankListByIdList(List<String> idList){
-        try{
+
+    public List<FoodBank> getFoodBankListByIdList(List<String> idList) {
+        try {
             awaitDataLoaded();
             if (foodBanks.isEmpty()) {
-            Log.d("FoodBankList","Empty food bank list");
-            return new ArrayList<>();
-        }
-            Log.d("daipai","taidaipaile");
+                return new ArrayList<>();
+            }
             return idList.stream()
-                    .map(id -> getFoodBankById(Integer.parseInt(id)))
+                    .map(id -> avlTree.findById(    Integer.parseInt(id)))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-
-        }catch (InterruptedException | ExecutionException e){
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
     public FoodBank getFoodBankById(int id) {
-        try{
+        try {
             awaitDataLoaded();
             if (foodBanks.isEmpty()) {
                 return null;
             }
-
             Optional<FoodBank> result = foodBanks.stream()
                     .filter(foodBank -> foodBank.getId() == id)
                     .findFirst();
-
             return result.orElse(null);
-        }catch (InterruptedException | ExecutionException e){
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
-
     }
 
-
-
-    /**
-     * Reads the list of FoodBanks from Firebase and notifies the DataStatus callback interface upon completion
-     * or if an error occurs.
-     *
-     * @param dataStatus The callback interface through which data load results or errors are communicated.
-     */
     public void readFoodBanks(final DataStatus dataStatus) {
         lock.lock();
-        // Reference to the root in the database, root dir has no parameter for getReference method
-        try{DatabaseReference ref = database.getReference();
-        // Add value event listener to fetch data
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Clear the existing list
-                foodBanks.clear();
-                avlTree = new AVLTree();
-                // List to hold the keys of the nodes
-                ArrayList<String> keys = new ArrayList<>();
-                // Loop through the snapshot children
-                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                    // Store the key
-                    keys.add(keyNode.getKey());
-                    // Get the FoodBank object from the snapshot
-                    FoodBank foodBank = keyNode.getValue(FoodBank.class);
-                    // Set the Location for instance via Location class and latitude and longitude
-                    foodBank.setLocation(new Location(foodBank.getLat(), foodBank.getLon()));
-                    // Add it to the food banks list
-                    foodBanks.add(foodBank);
-                    avlTree = avlTree.insert(avlTree, foodBank);
-                    doubleAVLTree.insert(foodBank);
+        try {
+            DatabaseReference ref = database.getReference();
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    foodBanks.clear();
+                    avlTree = new AVLTree();
+                    ArrayList<String> keys = new ArrayList<>();
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                        keys.add(keyNode.getKey());
+                        FoodBank foodBank = keyNode.getValue(FoodBank.class);
+                        foodBank.setLocation(new Location(foodBank.getLat(), foodBank.getLon()));
+                        foodBanks.add(foodBank);
+                        avlTree = avlTree.insert(avlTree, foodBank);
+                        doubleAVLTree.insert(foodBank);
+                    }
+                    avlTree.countNodes();
+                    doubleAVLTree.printAllNodes();
+                    doubleAVLTree.countNodes();
+                    dataStatus.DataIsLoaded(foodBanks, keys);
                 }
-
-                // Log out the tree for debugging purposes
-                // avlTree.printInOrder();
-                avlTree.countNodes();
-                doubleAVLTree.printAllNodes();
-                doubleAVLTree.countNodes();
-
-                // Notify that data is loaded along with the keys of the nodes
-                dataStatus.DataIsLoaded(foodBanks, keys);
-            }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
-                        dataStatus.Error(databaseError.toException());
-
+                    dataStatus.Error(databaseError.toException());
                 }
             });
-        }
-        finally{
+        } finally {
             lock.unlock();
         }
-        }
+    }
 
-    /**
-     * Loads the list of FoodBanks from Firebase.
-     */
     private void loadFoodBanks() {
-        readFoodBanks(new DataStatus() {
-            @Override
-            public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
-                foodBanksLiveData.postValue(foodBanks);
-                dataLoadedFuture.complete(null);
-            }
+        executorService.execute(() -> {
+            readFoodBanks(new DataStatus() {
+                @Override
+                public void DataIsLoaded(ArrayList<FoodBank> foodBanks, List<String> keys) {
+                    foodBanksLiveData.postValue(foodBanks);
+                    dataLoadedFuture.complete(null);
+                }
 
-            @Override
-            public void DataIsInserted() {}
+                @Override
+                public void DataIsInserted() {}
 
-            @Override
-            public void DataIsUpdated() {}
+                @Override
+                public void DataIsUpdated() {}
 
-            @Override
-            public void DataIsDeleted() {}
+                @Override
+                public void DataIsDeleted() {}
 
-            @Override
-            public void Error(Exception e) {
-                dataLoadedFuture.completeExceptionally(e);
-            }
+                @Override
+                public void Error(Exception e) {
+                    dataLoadedFuture.completeExceptionally(e);
+                }
+            });
         });
     }
 
-    public DoubleAVLTree getDoubleAVLTree(){
+    public DoubleAVLTree getDoubleAVLTree() {
         return doubleAVLTree;
-    }
-
-
-    public ArrayList<FoodBank> getFoodBanks() {
-        return foodBanks;
     }
 
     public void awaitDataLoaded() throws InterruptedException, ExecutionException {
         dataLoadedFuture.get();
+    }
+
+    public boolean isDataLoaded() {
+        return dataLoadedFuture.isDone();
+    }
+
+    public MutableLiveData<ArrayList<FoodBank>> getFoodBanksLiveData() {
+        return foodBanksLiveData;
     }
 }

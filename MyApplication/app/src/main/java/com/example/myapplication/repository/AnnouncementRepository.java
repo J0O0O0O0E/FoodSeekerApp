@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// check this!:
-//https://www.youtube.com/watch?v=YgjYVbg1oiA
-
 
 /**
  * A repository class to manage the retrieval and handling of announcement data
@@ -28,7 +25,6 @@ import java.util.List;
  * Bibliography:
  * - <a href="https://www.youtube.com/watch?v=YgjYVbg1oiA">...</a>
  * - <a href="https://firebase.google.com/docs/firestore/query-data/listen">...</a>
- * - <a href="https://www.youtube.com/watch?v=YgjYVbg1oiA">...</a>
  */
 public class  AnnouncementRepository {
 

@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:hint="Enter title"
             android:padding="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

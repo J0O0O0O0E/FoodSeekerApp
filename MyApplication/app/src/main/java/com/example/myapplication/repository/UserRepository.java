@@ -38,7 +38,14 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Repository class for handling user data operations including authentication,
  * Firestore interactions, and real-time updates.
- * @author Shuhui Yang
+ *
+ * This class follows the Singleton design pattern to ensure only one instance
+ * of UserRepository exists throughout the application lifecycle.
+ *
+ * This class provides methods to load, update, and manage user data in Firestore,
+ * including user profile information, subscribed food banks, and profile images.
+ *
+ * @autor Shuhui Yang
  */
 public class UserRepository {
 
@@ -340,6 +347,12 @@ public class UserRepository {
 
 
 
+
+    /**
+     * Adds a food bank to the user's list of subscribed food banks.
+     *
+     * @param id The ID of the food bank to add.
+     */
     public void addSubscribedFoodBanks(String id){
         lock.lock();
         try {
@@ -366,6 +379,13 @@ public class UserRepository {
         }
     }
 
+
+
+    /**
+     * Removes a food bank from the user's list of subscribed food banks.
+     *
+     * @param id The ID of the food bank to remove.
+     */
     public void removeSubscribedFoodBanks(String id){
         lock.lock();
         try {
@@ -391,6 +411,12 @@ public class UserRepository {
         }
     }
 
+
+
+    /**
+     * Updates the user's subscribed food banks in real-time by adding a snapshot listener
+     * to the Firestore document representing the user.
+     */
     public void updateFoodBanks(){
         DocumentReference docRef = fStore.
                 collection("User").document(
@@ -423,6 +449,13 @@ public class UserRepository {
         });
     }
 
+
+
+    /**
+     * Updates the user's subscribed food banks in live data.
+     *
+     * @param foodBankIds The list of food bank IDs to update.
+     */
     private void updateLiveUserFoodBanks(List<String> foodBankIds) {
         lock.lock();
         try {
@@ -439,6 +472,12 @@ public class UserRepository {
     }
 
 
+
+    /**
+     * Returns the list of subscribed food banks.
+     *
+     * @return The list of subscribed food banks.
+     */
     public List<FoodBank> getSubscribedFoodBanks() {
         return subscribedFoodBanks;
     }
