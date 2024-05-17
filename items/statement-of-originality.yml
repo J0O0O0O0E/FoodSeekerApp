@@ -42,17 +42,11 @@ code:
 # (or remove it altogether if you haven't used any external assets)
 assets:
   # NOTE: "Bliss" is just here as an example, you SHOULD REMOVE IT
-  - comment: "Announcements used images"
+  - comment: "Announcements used images and news"
     url: https://www.wfp.org/
     licence: fair use
 
-  - comment: "Announcement used images"
-    url: https://www.wfp.org/
-    licence: fair use
 
-  - comment: "Announcement used images"
-    url: https://www.wfp.org/
-    licence: fair use
 
 ### Questions (answer before final submission):
 1. You (as a group) completed this work (tick the most appropriate option):
