@@ -355,10 +355,12 @@ The grammar for the **`Tokenizer`** and **`FoodBankParserTree`** is designed to 
 Production Rules:
 
 ```
-<FilterCriteria> ::= <Keyword> <Comparison> <Value>
-<Keyword> ::= "rating" | "capacity"
-<Comparison> ::= ">" | "<" | "="
-<Value> ::= <integer>
+ <Exp>::= <term>| <term><term> ​
+ <term> ::= <Keyword> <Comparison> <Value> ​
+ <Keyword> ::= "rating" | "capacity"​
+ <Comparison> ::= ">" | "<" | "=" ​
+ <Value> ::= <integer>
+
 ```
 
 Advantages of the design:
